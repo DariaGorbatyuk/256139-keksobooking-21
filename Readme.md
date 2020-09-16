@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
-* Студент: [Daria](https://up.htmlacademy.ru/javascript/21/user/256139).
-* Наставник: `Неизвестно`.
+* Студент: [Дарья Горбатюк](https://up.htmlacademy.ru/javascript/21/user/256139).
+* Наставник: [Дина Абрамова](https://htmlacademy.ru/profile/id1483099).
 
 ---
 
