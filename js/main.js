@@ -1,6 +1,6 @@
 'use strict';
 const map = document.querySelector(`.map`);
-const pin = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const ADVERTISEMENTS_AMOUNT = 8;
 const TITLES = [`Просторная светлая квартира`, `Маленькая грязная квартира`, `Подводный лофт для экстремалов`, `Шикарный зимний дворец`, `Каюта на затонувшем корабле`, `Бунгало в центре города`, `Картонная коробка эконом класса`];
 const PRICES = [0, 10000, 20000, 5000, 70000, 60000, 1000000, 5];
@@ -73,7 +73,7 @@ const renderAdvertisements = () => {
 
 
 const renderPin = (advertisement) => {
-  let newPin = pin.cloneNode(true);
+  let newPin = pinTemplate.cloneNode(true);
   const pinImg = newPin.querySelector(`img`);
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
@@ -85,20 +85,16 @@ const renderPin = (advertisement) => {
   return newPin;
 };
 
+const renderPinsList = (advertisements) => {
+  const pins = map.querySelector(`.map__pins`);
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
+    let pin = renderPin(advertisements[i]);
+    fragment.appendChild(pin);
+  }
+  pins.appendChild(fragment);
+};
 
-const advertisements = renderAdvertisements();
-console.log(renderPin(advertisements[0]));
 map.classList.remove(`map--faded`);
-// На основе данных, созданных в первом пункте, создайте DOM-элементы, соответствующие меткам на карте, и заполните их данными из массива.
-// Итоговую разметку метки .map__pin можно взять из шаблона #pin.
-//
-// У метки укажите:
-//
-// Координаты: style="left: {{location.x + смещение по X}}px; top: {{location.y + смещение по Y}}px;"
-// Обратите внимание. Координаты X и Y, которые вы вставите в разметку, это не координаты левого верхнего угла блока метки, а координаты, на которые указывает метка своим острым концом. Чтобы найти эту координату нужно учесть размеры элемента с меткой.
-//
-// У изображения метки укажите:
-//
-// Аватар: src="{{author.avatar}}"
-// Альтернативный текст: alt="{{заголовок объявления}}"
-// Отрисуйте сгенерированные DOM-элементы в блок .map__pins. Для вставки элементов используйте DocumentFragment.
+renderPinsList(renderAdvertisements());
+
