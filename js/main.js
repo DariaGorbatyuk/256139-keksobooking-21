@@ -52,10 +52,10 @@ const renderAdvertisements = () => {
       'offer': {
         'title': TITLES[randomRoom],
         'address': `${x}, ${y}`,
-        'price': PRICES[getRandomInt(0, PRICES.length)],
+        'price': PRICES[randomRoom],
         'type': TYPES[getRandomInt(0, TYPES.length)],
-        'rooms': AMOUNT_ROOMS[getRandomInt(0, AMOUNT_ROOMS.length)],
-        'guests': AMOUNT_GUESTS[getRandomInt(0, AMOUNT_GUESTS.length)],
+        'rooms': AMOUNT_ROOMS[randomRoom],
+        'guests': AMOUNT_GUESTS[randomRoom],
         'checkin': CHECKS[getRandomInt(0, CHECKS.length)],
         'checkout': CHECKS[getRandomInt(0, CHECKS.length)],
         'features': FEATURES.slice(0, getRandomInt(0, FEATURES.length)),
@@ -77,7 +77,7 @@ const renderPin = (advertisement) => {
   const pinImg = newPin.querySelector(`img`);
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
-  newPin.style = `left: ${advertisement.location.x + pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
+  newPin.style = `left: ${advertisement.location.x - pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
   Object.assign(pinImg, {
     src: advertisement.author.avatar,
     alt: advertisement.offer.title
