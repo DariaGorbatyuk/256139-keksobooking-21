@@ -89,11 +89,11 @@ const fillPhotos = (advertisement, newCard) => { // не обрабатывае�
     photo.src = advertisement.offer.photos[0];
   }
   const fragment = document.createDocumentFragment();
-  for (let i = 1; i < advertisement.offer.photos.length; i++) {
+  advertisement.offer.photos.forEach((advertPhoto)=>{
     let newPhoto = photo.cloneNode();
-    newPhoto.src = advertisement.offer.photos[i];
+    newPhoto.src = advertPhoto;
     fragment.appendChild(newPhoto);
-  }
+  });
   photos.appendChild(fragment);
 };
 
@@ -115,15 +115,15 @@ const renderCard = (advertisements) => {
   newCard.querySelector(`.popup__type`).textContent = APARTMENTS_TYPE[advertisement.offer.type];
   newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
-  fillFeatures(advertisement, newCard);
   newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
-  fillPhotos(advertisement, newCard);
   newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
+  fillFeatures(advertisement, newCard);
+  fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
   return newCard;
 };
 
 map.classList.remove(`map--faded`);
-const adv = renderAdvertisements();
-renderPinsList(renderAdvertisements());
-console.log(renderCard(renderAdvertisements()));
+const advertisements = renderAdvertisements();
+renderPinsList(advertisements);
+renderCard(advertisements);
