@@ -83,7 +83,11 @@ const renderPinsList = (advertisements) => {
 const fillPhotos = (advertisement, newCard) => { // не обрабатывает пустой массив. как и все остальное в принципе
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
-  photo.src = advertisement.offer.photos[0];
+  if (advertisement.offer.photos.length === 0) {
+    photo.remove();
+  } else {
+    photo.src = advertisement.offer.photos[0];
+  }
   const fragment = document.createDocumentFragment();
   for (let i = 1; i < advertisement.offer.photos.length; i++) {
     let newPhoto = photo.cloneNode();
@@ -93,16 +97,14 @@ const fillPhotos = (advertisement, newCard) => { // не обрабатывае�
   photos.appendChild(fragment);
 };
 
-/* const fillFeatures = (advertisement, newCard) => {
-  let features = Array.from(newCard.querySelectorAll(`.popup__feature`));
-  console.log(`${advertisement.offer.features}`);
-  /!* for (let i = 0; i < advertisement.offer.features.length; i++) {
-    console.log(`popup__feature--${advertisement.offer.features[i]}`);
-    console.log((features[i].classList.contains(`popup__feature--${advertisement.offer.features[i]}`)));
-  }*!/
-  let difference = features.filter((x) => !advertisement.offer.features.includes(x));
-  return features;
-};*/
+const fillFeatures = (advertisement, newCard) => {
+  const features = Array.from(newCard.querySelectorAll(`.popup__feature`));
+  for (let i = 0; i < features.length; i++) {
+    if (!features[i].classList.contains(`popup__feature--${advertisement.offer.features[i]}`)) {
+      features[i].remove();
+    }
+  }
+};
 
 const renderCard = (advertisements) => {
   const advertisement = advertisements[0];
@@ -113,7 +115,7 @@ const renderCard = (advertisements) => {
   newCard.querySelector(`.popup__type`).textContent = APARTMENTS_TYPE[advertisement.offer.type];
   newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
-  // fillFeatures(advertisement, newCard);
+  fillFeatures(advertisement, newCard);
   newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
   fillPhotos(advertisement, newCard);
   newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
@@ -123,21 +125,5 @@ const renderCard = (advertisements) => {
 
 map.classList.remove(`map--faded`);
 const adv = renderAdvertisements();
-console.log(adv[0]);
 renderPinsList(renderAdvertisements());
 console.log(renderCard(renderAdvertisements()));
-// // На основе первого по порядку элемента из сгенерированного массива и шаблона #card создайте DOM-элемент объявления (карточка объявления), заполните его данными из объекта:
-// //
-// // Выведите заголовок объявления offer.title в заголовок .popup__title.
-// // Выведите адрес offer.address в блок .popup__text--address.
-// // Выведите цену offer.price в блок .popup__text--price строкой вида {{offer.price}}₽/ночь. Например, 5200₽/ночь.
-// // В блок .popup__type выведите тип жилья offer.type: Квартира для flat, Бунгало для bungalow, Дом для house, Дворец для palace.
-// // Выведите количество гостей и комнат offer.rooms и offer.guests в блок .popup__text--capacity строкой вида {{offer.rooms}} комнаты для {{offer.guests}} гостей. Например, 2 комнаты для 3 гостей.
-// // Время заезда и выезда offer.checkin и offer.checkout в блок .popup__text--time строкой вида Заезд после {{offer.checkin}}, выезд до {{offer.checkout}}. Например, заезд после 14:00, выезд до 12:00.
-// // В список .popup__features выведите все доступные удобства в объявлении.
-// // В блок .popup__description выведите описание объекта недвижимости offer.description.
-// // В блок .popup__photos выведите все фотографии из списка offer.photos. Каждая из строк массива photos должна записываться как src соответствующего изображения.
-//
-// // Замените src у аватарки пользователя — изображения, которое записано в .popup__avatar — на значения поля author.avatar отрисовываемого объекта.
-// // Если данных для заполнения не хватает, соответствующий блок в карточке скрывается.
-// // Вставьте полученный DOM-элемент в блок .map перед блоком.map__filters-container
