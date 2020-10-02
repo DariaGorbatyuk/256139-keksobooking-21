@@ -57,10 +57,8 @@ const renderPin = (advertisement) => {
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
   newPin.style = `left: ${advertisement.location.x - pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
-  Object.assign(pinImg, {
-    src: advertisement.author.avatar,
-    alt: advertisement.offer.title
-  });
+  pinImg.setAttribute(`src`, `${advertisement.author.avatar}`);
+  pinImg.setAttribute(`alt`, `${advertisement.offer.title}`);
   return newPin;
 };
 
@@ -75,6 +73,5 @@ const renderPinsList = (advertisements) => {
 };
 
 map.classList.remove(`map--faded`);
-console.log(renderAdvertisements());
 renderPinsList(renderAdvertisements());
 
