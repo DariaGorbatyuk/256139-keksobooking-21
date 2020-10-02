@@ -18,36 +18,15 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min; // Максимум не включается, минимум включается
 };
 
-const createArr = (length) => {
-  const arr = [];
-  for (let i = 1; i <= length; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
-
-const shuffleArr = (arr) => { // Перемешивание массива
-  let j;
-  let swap;
-  for (let i = arr.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * i + 1);
-    swap = arr[j];
-    arr[j] = arr[i];
-    arr[i] = swap;
-  }
-  return arr;
-};
-
 const renderAdvertisements = () => {
   const advertisements = [];
-  const numbers = shuffleArr(createArr(ADVERTISEMENTS_AMOUNT));
   for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
     let randomRoom = getRandomInt(0, ADVERTISEMENTS_AMOUNT);
     let x = getRandomInt(0, map.offsetWidth);
     let y = getRandomInt(130, 630);
     advertisements[i] = {
       'author': {
-        'avatar': `img/avatars/user0${numbers[i]}.png`
+        'avatar': `img/avatars/user0${i + 1}.png`
       },
       'offer': {
         'title': TITLES[randomRoom],
@@ -96,5 +75,6 @@ const renderPinsList = (advertisements) => {
 };
 
 map.classList.remove(`map--faded`);
+console.log(renderAdvertisements());
 renderPinsList(renderAdvertisements());
 
