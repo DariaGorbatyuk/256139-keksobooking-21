@@ -13,7 +13,7 @@ const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `condit
 const DESCRIPTIONS = [`Без детей, животных, амбиций и планов на жизнь`, `Плюсы тараканов в том, что вам не будет одиноко, минусы - аренду они не платят`, `Мокро, холодно, неудобно, но крайне необычно`, `Счета за отопление соизмеримы разве что с вашим эго`, `Красивые фото обеспечены, но говорят, там водятся призраки`, `Стандартное бунгало, соломенная крыша, выход к океану`, `Очень уютная коробка, но немного продувает и менты гоняют`, `Не верьте росказням, что все предыдущие владельцы погибли при мистических обстоятельствах`];
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
 
-const APARTMENTS_TYPE = {
+const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
   house: `Дом`,
@@ -112,7 +112,7 @@ const renderCard = (advertisements) => {
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
   newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
   newCard.querySelector(`.popup__text--price`).textContent = `${advertisement.offer.price}р/ночь`;
-  newCard.querySelector(`.popup__type`).textContent = APARTMENTS_TYPE[advertisement.offer.type];
+  newCard.querySelector(`.popup__type`).textContent = ApartmentsType[advertisement.offer.type];
   newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
   newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
