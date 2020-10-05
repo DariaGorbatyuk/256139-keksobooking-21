@@ -80,7 +80,7 @@ const renderPinsList = (advertisements) => {
   pins.appendChild(fragment);
 };
 
-const fillPhotos = (advertisement, newCard) => { // не обрабатывает пустой массив. как и все остальное в принципе
+const fillPhotos = (advertisement, newCard) => {
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
   if (advertisement.offer.photos.length === 0) {
