@@ -106,8 +106,7 @@ const fillFeatures = (advertisement, newCard) => {
   }
 };
 
-const renderCard = (advertisements) => {
-  const advertisement = advertisements[0];
+const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
   newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
@@ -120,10 +119,9 @@ const renderCard = (advertisements) => {
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
-  return newCard;
 };
 
 map.classList.remove(`map--faded`);
 const advertisements = getAdvertisements();
 renderPinsList(advertisements);
-renderCard(advertisements);
+renderCard(advertisements[0]);
