@@ -26,7 +26,7 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min; // Максимум не включается, минимум включается
 };
 
-const renderAdvertisements = () => {
+const getAdvertisements = () => {
   const advertisements = [];
   for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
     let randomRoom = getRandomInt(0, ADVERTISEMENTS_AMOUNT);
@@ -59,7 +59,7 @@ const renderAdvertisements = () => {
 };
 
 
-const renderPin = (advertisement) => {
+const getPin = (advertisement) => {
   let newPin = pinTemplate.cloneNode(true);
   const pinImg = newPin.querySelector(`img`);
   const pinWidth = Number(pinImg.getAttribute(`width`));
@@ -74,7 +74,7 @@ const renderPinsList = (advertisements) => {
   const pins = map.querySelector(`.map__pins`);
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
-    let pin = renderPin(advertisements[i]);
+    let pin = getPin(advertisements[i]);
     fragment.appendChild(pin);
   }
   pins.appendChild(fragment);
@@ -124,6 +124,6 @@ const renderCard = (advertisements) => {
 };
 
 map.classList.remove(`map--faded`);
-const advertisements = renderAdvertisements();
+const advertisements = getAdvertisements();
 renderPinsList(advertisements);
 renderCard(advertisements);
