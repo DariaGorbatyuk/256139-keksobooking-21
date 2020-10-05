@@ -89,7 +89,7 @@ const fillPhotos = (advertisement, newCard) => {
     photo.src = advertisement.offer.photos[0];
   }
   const fragment = document.createDocumentFragment();
-  advertisement.offer.photos.forEach((advertPhoto)=>{
+  advertisement.offer.photos.forEach((advertPhoto) => {
     let newPhoto = photo.cloneNode();
     newPhoto.src = advertPhoto;
     fragment.appendChild(newPhoto);
@@ -99,11 +99,11 @@ const fillPhotos = (advertisement, newCard) => {
 
 const fillFeatures = (advertisement, newCard) => {
   const features = Array.from(newCard.querySelectorAll(`.popup__feature`));
-  for (let i = 0; i < features.length; i++) {
-    if (!features[i].classList.contains(`popup__feature--${advertisement.offer.features[i]}`)) {
-      features[i].remove();
+  features.forEach((feature, i) => {
+    if (!feature.classList.contains(`popup__feature--${advertisement.offer.features[i]}`)) {
+      feature.remove();
     }
-  }
+  });
 };
 
 const renderCard = (advertisement) => {
