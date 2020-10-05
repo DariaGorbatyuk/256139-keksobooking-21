@@ -65,8 +65,8 @@ const getPin = (advertisement) => {
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
   newPin.style = `left: ${advertisement.location.x - pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
-  pinImg.setAttribute(`src`, `${advertisement.author.avatar}`);
-  pinImg.setAttribute(`alt`, `${advertisement.offer.title}`);
+  pinImg.setAttribute(`src`, advertisement.author.avatar);
+  pinImg.setAttribute(`alt`, advertisement.offer.title);
   return newPin;
 };
 
