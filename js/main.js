@@ -121,7 +121,47 @@ const renderCard = (advertisement) => {
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
 };
 
-map.classList.remove(`map--faded`);
 const advertisements = getAdvertisements();
-renderPinsList(advertisements);
-renderCard(advertisements[0]);
+// renderCard(advertisements[0]);
+const adForm = document.querySelector(`.ad-form`);
+const filterForm = map.querySelector(`.map__filters`);
+const adFieldsets = adForm.querySelectorAll(`fieldset`);
+const filterSelects = filterForm.querySelectorAll(`select`);
+const mainPin = map.querySelector(`.map__pin--main`);
+
+const disabledTags = (tags)=>{
+  tags.forEach((item)=>{
+    item.disabled = true;
+  });
+};
+const enabledTags = (tags)=>{
+  tags.forEach((item)=>{
+    item.disabled = false;
+  });
+};
+
+const setPassiveMode = ()=>{
+  disabledTags(adFieldsets);
+  disabledTags(filterSelects);
+};
+
+const setActiveMode = ()=>{
+  enabledTags(adFieldsets);
+  enabledTags(filterSelects);
+  map.classList.remove(`map--faded`);
+  renderPinsList(advertisements);
+};
+
+mainPin.addEventListener(`click`, function (evt) {
+  if (evt.button === 0) {
+    setActiveMode();
+  }
+});
+// не удаляю обработчики
+mainPin.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    setActiveMode();
+  }
+});
+
+setPassiveMode();
