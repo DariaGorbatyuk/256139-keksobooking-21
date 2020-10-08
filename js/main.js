@@ -6,8 +6,8 @@ const ADVERTISEMENTS_AMOUNT = 8;
 const TITLES = [`Просторная светлая квартира`, `Маленькая грязная квартира`, `Подводный лофт для экстремалов`, `Шикарный зимний дворец`, `Каюта на затонувшем корабле`, `Бунгало в центре города`, `Картонная коробка эконом класса`, `Старый дом с богатой историей для семьи`];
 const PRICES = [20, 10000, 20000, 5000, 70000, 60000, 100, 5, 10000];
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
-const AMOUNT_ROOMS = [1, 3, 32, 1, 4, 2, 1, 7];
-const AMOUNT_GUESTS = [2, 4, 100, 2, 2, 2, 3, 7];
+const AMOUNT_ROOMS = [1, 3, 32, 2, 4, 3, 1, 7];
+const AMOUNT_GUESTS = [1, 4, 100, 2, 2, 2, 3, 7];
 const CHECKS = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTIONS = [`Без детей, животных, амбиций и планов на жизнь`, `Плюсы тараканов в том, что вам не будет одиноко, минусы - аренду они не платят`, `Мокро, холодно, неудобно, но крайне необычно`, `Счета за отопление соизмеримы разве что с вашим эго`, `Красивые фото обеспечены, но говорят, там водятся призраки`, `Стандартное бунгало, соломенная крыша, выход к океану`, `Очень уютная коробка, но немного продувает и менты гоняют`, `Не верьте росказням, что все предыдущие владельцы погибли при мистических обстоятельствах`];
@@ -127,7 +127,11 @@ const adForm = document.querySelector(`.ad-form`);
 const filterForm = map.querySelector(`.map__filters`);
 const adFieldsets = adForm.querySelectorAll(`fieldset`);
 const filterSelects = filterForm.querySelectorAll(`select`);
+const address = adForm.querySelector(`#address`);
 const mainPin = map.querySelector(`.map__pin--main`);
+const mainPinWidth = mainPin.offsetWidth;
+const mainPinHeight = mainPin.offsetHeight;
+const mainPinArrow = 22;
 
 const disabledTags = (tags)=>{
   tags.forEach((item)=>{
@@ -143,6 +147,8 @@ const enabledTags = (tags)=>{
 const setPassiveMode = ()=>{
   disabledTags(adFieldsets);
   disabledTags(filterSelects);
+  const coords = getCoords(mainPin);
+  address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2)}`;
 };
 
 const setActiveMode = ()=>{
@@ -150,18 +156,34 @@ const setActiveMode = ()=>{
   enabledTags(filterSelects);
   map.classList.remove(`map--faded`);
   renderPinsList(advertisements);
+  address.readOnly = true;
 };
 
 mainPin.addEventListener(`click`, function (evt) {
   if (evt.button === 0) {
     setActiveMode();
+    setNewAddress();
   }
 });
 // не удаляю обработчики
 mainPin.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
     setActiveMode();
+    setNewAddress();
   }
 });
 
+const setNewAddress = ()=>{
+  const coords = getCoords(mainPin);
+  address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2 + mainPinArrow)}`;
+};
+
+const getCoords = (elem)=>{
+  let box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+};
 setPassiveMode();
