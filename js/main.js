@@ -12,6 +12,17 @@ const CHECKS = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTIONS = [`Без детей, животных, амбиций и планов на жизнь`, `Плюсы тараканов в том, что вам не будет одиноко, минусы - аренду они не платят`, `Мокро, холодно, неудобно, но крайне необычно`, `Счета за отопление соизмеримы разве что с вашим эго`, `Красивые фото обеспечены, но говорят, там водятся призраки`, `Стандартное бунгало, соломенная крыша, выход к океану`, `Очень уютная коробка, но немного продувает и менты гоняют`, `Не верьте росказням, что все предыдущие владельцы погибли при мистических обстоятельствах`];
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+const adForm = document.querySelector(`.ad-form`);
+const filterForm = map.querySelector(`.map__filters`);
+const adFieldsets = adForm.querySelectorAll(`fieldset`);
+const filterSelects = filterForm.querySelectorAll(`select`);
+const address = adForm.querySelector(`#address`);
+const mainPin = map.querySelector(`.map__pin--main`);
+const mainPinWidth = mainPin.offsetWidth;
+const mainPinHeight = mainPin.offsetHeight;
+const mainPinArrow = 22;
+const adRoomNumber = adForm.querySelector(`#room_number`);
+const adRoomCapacity = adForm.querySelector(`#capacity`);
 
 const ApartmentsType = {
   palace: `Дворец`,
@@ -121,21 +132,6 @@ const renderCard = (advertisement) => {
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
 };
 
-const advertisements = getAdvertisements();
-// renderCard(advertisements[0]);
-const adForm = document.querySelector(`.ad-form`);
-const filterForm = map.querySelector(`.map__filters`);
-const adFieldsets = adForm.querySelectorAll(`fieldset`);
-const filterSelects = filterForm.querySelectorAll(`select`);
-const address = adForm.querySelector(`#address`);
-const mainPin = map.querySelector(`.map__pin--main`);
-const mainPinWidth = mainPin.offsetWidth;
-const mainPinHeight = mainPin.offsetHeight;
-const mainPinArrow = 22;
-const adSubmit = adForm.querySelector(`.ad-form__submit`);
-const adRoomNumber = adForm.querySelector(`#room_number`);
-const adRoomCapacity = adForm.querySelector(`#capacity`);
-
 
 const disabledTags = (tags)=>{
   tags.forEach((item)=>{
@@ -170,7 +166,7 @@ mainPin.addEventListener(`click`, function (evt) {
     setNewAddress();
   }
 });
-// не удаляю обработчики
+// не понимаю как удалять обработчики
 mainPin.addEventListener(`keydown`, function (evt) {
   if (evt.key === `Enter`) {
     setActiveMode();
@@ -193,7 +189,6 @@ const getCoords = (elem)=>{
 };
 
 const verifyRoomsCapacity = function () {
-  console.log(adRoomNumber.value);
   switch (adRoomNumber.value) {
     case `1`:
       if (adRoomCapacity.value === `1`) {
@@ -217,7 +212,7 @@ const verifyRoomsCapacity = function () {
       }
       break;
     case `100`:
-      if (adRoomCapacity.value === `не для гостей`) {
+      if (adRoomCapacity.value === `0`) {
         adRoomCapacity.setCustomValidity(``);
       } else {
         adRoomCapacity.setCustomValidity(`100 комнат — не для гостей`);
@@ -225,9 +220,6 @@ const verifyRoomsCapacity = function () {
   }
 };
 
-// setPassiveMode();
-setActiveMode();
-// change!!!
 adRoomNumber.addEventListener(`change`, function () {
   verifyRoomsCapacity();
 });
@@ -235,11 +227,9 @@ adRoomNumber.addEventListener(`change`, function () {
 adRoomCapacity.addEventListener(`change`, function () {
   verifyRoomsCapacity();
 });
-/*
-adForm.addEventListener(`submit`, function (evt) {
-  evt.preventDefault();
-  verifyRoomsCapacity();
-});
-*/
+
+const advertisements = getAdvertisements();
+// renderCard(advertisements[0]);
+setPassiveMode();
 
 
