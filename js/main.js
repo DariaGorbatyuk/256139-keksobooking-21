@@ -1,7 +1,7 @@
 'use strict';
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
 const ADVERTISEMENTS_AMOUNT = 8;
 const TITLES = [`Просторная светлая квартира`, `Маленькая грязная квартира`, `Подводный лофт для экстремалов`, `Шикарный зимний дворец`, `Каюта на затонувшем корабле`, `Бунгало в центре города`, `Картонная коробка эконом класса`, `Старый дом с богатой историей для семьи`];
 const PRICES = [20, 10000, 20000, 5000, 70000, 60000, 100, 5, 10000];
@@ -24,12 +24,12 @@ const mainPinArrow = 22;
 const adRoomNumber = adForm.querySelector(`#room_number`);
 const adRoomCapacity = adForm.querySelector(`#capacity`);
 
-const ApartmentsType = {
+/* const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
   house: `Дом`,
   bungalow: `Бунгало`
-};
+};*/
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -91,7 +91,7 @@ const renderPinsList = (advertisements) => {
   pins.appendChild(fragment);
 };
 
-const fillPhotos = (advertisement, newCard) => {
+/* const fillPhotos = (advertisement, newCard) => {
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
   if (advertisement.offer.photos.length === 0) {
@@ -115,8 +115,9 @@ const fillFeatures = (advertisement, newCard) => {
       feature.remove();
     }
   });
-};
+};*/
 
+/*
 const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
@@ -131,6 +132,7 @@ const renderCard = (advertisement) => {
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
 };
+*/
 
 
 const disabledTags = (tags)=>{
