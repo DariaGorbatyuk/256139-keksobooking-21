@@ -132,6 +132,10 @@ const mainPin = map.querySelector(`.map__pin--main`);
 const mainPinWidth = mainPin.offsetWidth;
 const mainPinHeight = mainPin.offsetHeight;
 const mainPinArrow = 22;
+const adSubmit = adForm.querySelector(`.ad-form__submit`);
+const adRoomNumber = adForm.querySelector(`#room_number`);
+const adRoomCapacity = adForm.querySelector(`#capacity`);
+
 
 const disabledTags = (tags)=>{
   tags.forEach((item)=>{
@@ -157,6 +161,7 @@ const setActiveMode = ()=>{
   map.classList.remove(`map--faded`);
   renderPinsList(advertisements);
   address.readOnly = true;
+  verifyRoomsCapacity();
 };
 
 mainPin.addEventListener(`click`, function (evt) {
@@ -186,4 +191,55 @@ const getCoords = (elem)=>{
     left: box.left + pageXOffset
   };
 };
-setPassiveMode();
+
+const verifyRoomsCapacity = function () {
+  console.log(adRoomNumber.value);
+  switch (adRoomNumber.value) {
+    case `1`:
+      if (adRoomCapacity.value === `1`) {
+        adRoomCapacity.setCustomValidity(``);
+      } else {
+        adRoomCapacity.setCustomValidity(`1 комната — для 1 гостя`);
+      }
+      break;
+    case `2`:
+      if (adRoomCapacity.value === `1` || adRoomCapacity.value === `2`) {
+        adRoomCapacity.setCustomValidity(``);
+      } else {
+        adRoomCapacity.setCustomValidity(`2 комнаты — для 2 гостей или для 1 гостя`);
+      }
+      break;
+    case `3`:
+      if (adRoomCapacity.value === `1` || adRoomCapacity.value === `2` || adRoomCapacity.value === `3`) {
+        adRoomCapacity.setCustomValidity(``);
+      } else {
+        adRoomCapacity.setCustomValidity(`3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя`);
+      }
+      break;
+    case `100`:
+      if (adRoomCapacity.value === `не для гостей`) {
+        adRoomCapacity.setCustomValidity(``);
+      } else {
+        adRoomCapacity.setCustomValidity(`100 комнат — не для гостей`);
+      }
+  }
+};
+
+// setPassiveMode();
+setActiveMode();
+// change!!!
+adRoomNumber.addEventListener(`change`, function () {
+  verifyRoomsCapacity();
+});
+
+adRoomCapacity.addEventListener(`change`, function () {
+  verifyRoomsCapacity();
+});
+/*
+adForm.addEventListener(`submit`, function (evt) {
+  evt.preventDefault();
+  verifyRoomsCapacity();
+});
+*/
+
+
