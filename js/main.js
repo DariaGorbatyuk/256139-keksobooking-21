@@ -219,6 +219,7 @@ const verifyRoomsCapacity = function () {
       } else {
         adRoomCapacity.setCustomValidity(`100 комнат — не для гостей`);
       }
+      break;
   }
 };
 
