@@ -152,6 +152,7 @@ const setActiveMode = ()=>{
   setStateForTags(adFieldsets, false);
   setStateForTags(filterSelects, false);
   map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
   renderPinsList(advertisements);
   address.readOnly = true;
   verifyRoomsCapacity();
