@@ -186,36 +186,13 @@ const getCoords = (elem)=>{
   };
 };
 
-const verifyRoomsCapacity = function () {
-  switch (adRoomNumber.value) {
-    case `1`:
-      if (adRoomCapacity.value === `1`) {
-        adRoomCapacity.setCustomValidity(``);
-      } else {
-        adRoomCapacity.setCustomValidity(`1 комната — для 1 гостя`);
-      }
-      break;
-    case `2`:
-      if (adRoomCapacity.value === `1` || adRoomCapacity.value === `2`) {
-        adRoomCapacity.setCustomValidity(``);
-      } else {
-        adRoomCapacity.setCustomValidity(`2 комнаты — для 2 гостей или для 1 гостя`);
-      }
-      break;
-    case `3`:
-      if (adRoomCapacity.value === `1` || adRoomCapacity.value === `2` || adRoomCapacity.value === `3`) {
-        adRoomCapacity.setCustomValidity(``);
-      } else {
-        adRoomCapacity.setCustomValidity(`3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя`);
-      }
-      break;
-    case `100`:
-      if (adRoomCapacity.value === `0`) {
-        adRoomCapacity.setCustomValidity(``);
-      } else {
-        adRoomCapacity.setCustomValidity(`100 комнат — не для гостей`);
-      }
-      break;
+const verifyRoomsCapacity = ()=> {
+  if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
+    adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
+  } else if (adRoomCapacity.value <= adRoomNumber.value) {
+    adRoomCapacity.setCustomValidity(``);
+  } else {
+    adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
   }
 };
 
