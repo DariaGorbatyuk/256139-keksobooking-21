@@ -22,6 +22,7 @@ const mainPin = map.querySelector(`.map__pin--main`);
 const adRoomNumber = adForm.querySelector(`#room_number`);
 const adRoomCapacity = adForm.querySelector(`#capacity`);
 const pinsContainer = map.querySelector(`.map__pins`);
+// const card = cardTemplate.querySelector(`.map__card`);
 const mainPinWidth = mainPin.offsetWidth;
 const mainPinHeight = mainPin.offsetHeight;
 
@@ -119,6 +120,7 @@ const fillFeatures = (advertisement, newCard) => {
 
 const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
+  const cardClose = newCard.querySelector(`.popup__close`);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
   newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
   newCard.querySelector(`.popup__text--price`).textContent = `${advertisement.offer.price}р/ночь`;
@@ -130,6 +132,12 @@ const renderCard = (advertisement) => {
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
+  cardClose.addEventListener(`click`, onCardCloseClick);
+};
+
+const onCardCloseClick = (evt)=>{
+  evt.target.parentNode.remove();
+  evt.target.removeEventListener(`click`, onCardCloseClick);
 };
 
 
@@ -154,22 +162,17 @@ const setActiveMode = ()=>{
   renderPinsList(advertisements);
   address.readOnly = true;
   verifyRoomsCapacity();
-  pinsContainer.addEventListener(`click`, (evt)=>{
-    let target = evt.target;
-    const pins = Array.from(map.querySelectorAll(`.map__pin:not(.map__pin--main)`));
-    if (target.parentNode.matches(`.map__pin--main`)) {
-      return;
-    }
-    // console.log(target.parentNode);
-    /*    console.log(pins);
-    console.log(target.parentNode);*/
-    let indexOfAdv = pins.indexOf(target.parentNode); // но оно аботет
-    // console.log(indexOfAdv);
-    renderCard(advertisements[indexOfAdv]);
-  });
+  pinsContainer.addEventListener(`click`, onSmallPinClick);
 };
 
-
+const onSmallPinClick = (evt)=>{
+  if (evt.target.parentNode.matches(`.map__pin--main`)) {
+    return;
+  }
+  const pins = Array.from(map.querySelectorAll(`.map__pin:not(.map__pin--main)`));
+  let indexOfAdv = pins.indexOf(evt.target.parentNode);
+  renderCard(advertisements[indexOfAdv]);
+};
 const onMainPinClick = (evt)=>{
   if (evt.button !== 0) {
     return;
@@ -224,4 +227,3 @@ adRoomCapacity.addEventListener(`change`, ()=> {
 
 const advertisements = getAdvertisements();
 setPassiveMode();
-
