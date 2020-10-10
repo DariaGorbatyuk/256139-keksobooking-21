@@ -19,10 +19,10 @@ const adFieldsets = adForm.querySelectorAll(`fieldset`);
 const filterSelects = filterForm.querySelectorAll(`select`);
 const address = adForm.querySelector(`#address`);
 const mainPin = map.querySelector(`.map__pin--main`);
-const mainPinWidth = mainPin.offsetWidth;
-const mainPinHeight = mainPin.offsetHeight;
 const adRoomNumber = adForm.querySelector(`#room_number`);
 const adRoomCapacity = adForm.querySelector(`#capacity`);
+const mainPinWidth = mainPin.offsetWidth;
+const mainPinHeight = mainPin.offsetHeight;
 
 /* const ApartmentsType = {
   palace: `Дворец`,
@@ -158,19 +158,24 @@ const setActiveMode = ()=>{
   verifyRoomsCapacity();
 };
 
-mainPin.addEventListener(`click`, function (evt) {
-  if (evt.button === 0) {
-    setActiveMode();
-    setNewAddress();
+const onMainPinClick = (evt)=>{
+  if (evt.button !== 0) {
+    return;
   }
-});
-// не понимаю как удалять обработчики
-mainPin.addEventListener(`keydown`, function (evt) {
-  if (evt.key === `Enter`) {
-    setActiveMode();
-    setNewAddress();
+  setActiveMode();
+  setNewAddress();
+  mainPin.removeEventListener(`click`, onMainPinClick);
+  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+};
+const onMainPinPressEnter = (evt)=>{
+  if (evt.key !== `Enter`) {
+    return;
   }
-});
+  setActiveMode();
+  setNewAddress();
+  mainPin.removeEventListener(`click`, onMainPinClick);
+  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+};
 
 const setNewAddress = ()=>{
   const coords = getCoords(mainPin);
@@ -195,17 +200,17 @@ const verifyRoomsCapacity = ()=> {
     adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
   }
 };
-
-adRoomNumber.addEventListener(`change`, function () {
+mainPin.addEventListener(`click`, onMainPinClick);
+mainPin.addEventListener(`keydown`, onMainPinPressEnter);
+adRoomNumber.addEventListener(`change`, ()=> {
   verifyRoomsCapacity();
 });
 
-adRoomCapacity.addEventListener(`change`, function () {
+adRoomCapacity.addEventListener(`change`, ()=> {
   verifyRoomsCapacity();
 });
 
 const advertisements = getAdvertisements();
 // renderCard(advertisements[0]);
 setPassiveMode();
-
 
