@@ -12,7 +12,7 @@ const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0
 const MAIN_PIN_ARROW = 22;
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
 const adForm = document.querySelector(`.ad-form`);
 const filterForm = map.querySelector(`.map__filters`);
 const adFieldsets = adForm.querySelectorAll(`fieldset`);
@@ -21,15 +21,16 @@ const address = adForm.querySelector(`#address`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const adRoomNumber = adForm.querySelector(`#room_number`);
 const adRoomCapacity = adForm.querySelector(`#capacity`);
+const pinsContainer = map.querySelector(`.map__pins`);
 const mainPinWidth = mainPin.offsetWidth;
 const mainPinHeight = mainPin.offsetHeight;
 
-/* const ApartmentsType = {
+const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
   house: `Дом`,
   bungalow: `Бунгало`
-};*/
+};
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -82,16 +83,15 @@ const getPin = (advertisement) => {
 };
 
 const renderPinsList = (advertisements) => {
-  const pins = map.querySelector(`.map__pins`);
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
     let pin = getPin(advertisements[i]);
     fragment.appendChild(pin);
   }
-  pins.appendChild(fragment);
+  pinsContainer.appendChild(fragment);
 };
 
-/* const fillPhotos = (advertisement, newCard) => {
+const fillPhotos = (advertisement, newCard) => {
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
   if (advertisement.offer.photos.length === 0) {
@@ -115,9 +115,8 @@ const fillFeatures = (advertisement, newCard) => {
       feature.remove();
     }
   });
-};*/
+};
 
-/*
 const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
@@ -132,7 +131,6 @@ const renderCard = (advertisement) => {
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
 };
-*/
 
 
 const setStateForTags = (tags, state)=>{
@@ -156,7 +154,21 @@ const setActiveMode = ()=>{
   renderPinsList(advertisements);
   address.readOnly = true;
   verifyRoomsCapacity();
+  pinsContainer.addEventListener(`click`, (evt)=>{
+    let target = evt.target;
+    const pins = Array.from(map.querySelectorAll(`.map__pin:not(.map__pin--main)`));
+    if (target.parentNode.matches(`.map__pin--main`)) {
+      return;
+    }
+    // console.log(target.parentNode);
+    /*    console.log(pins);
+    console.log(target.parentNode);*/
+    let indexOfAdv = pins.indexOf(target.parentNode); // но оно аботет
+    // console.log(indexOfAdv);
+    renderCard(advertisements[indexOfAdv]);
+  });
 };
+
 
 const onMainPinClick = (evt)=>{
   if (evt.button !== 0) {
@@ -211,6 +223,5 @@ adRoomCapacity.addEventListener(`change`, ()=> {
 });
 
 const advertisements = getAdvertisements();
-// renderCard(advertisements[0]);
 setPassiveMode();
 
