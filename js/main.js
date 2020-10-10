@@ -135,27 +135,22 @@ const renderCard = (advertisement) => {
 */
 
 
-const disabledTags = (tags)=>{
+const setStateForTags = (tags, state)=>{
   tags.forEach((item)=>{
-    item.disabled = true;
-  });
-};
-const enabledTags = (tags)=>{
-  tags.forEach((item)=>{
-    item.disabled = false;
+    item.disabled = state;
   });
 };
 
 const setPassiveMode = ()=>{
-  disabledTags(adFieldsets);
-  disabledTags(filterSelects);
+  setStateForTags(adFieldsets, true);
+  setStateForTags(filterSelects, true);
   const coords = getCoords(mainPin);
   address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2)}`;
 };
 
 const setActiveMode = ()=>{
-  enabledTags(adFieldsets);
-  enabledTags(filterSelects);
+  setStateForTags(adFieldsets, false);
+  setStateForTags(filterSelects, false);
   map.classList.remove(`map--faded`);
   renderPinsList(advertisements);
   address.readOnly = true;
