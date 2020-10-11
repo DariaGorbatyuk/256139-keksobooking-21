@@ -134,16 +134,22 @@ const renderCard = (advertisement) => {
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
   cardClose.addEventListener(`click`, onCardCloseClick);
   document.addEventListener(`keydown`, onPopupEscPress);
+  pinsContainer.removeEventListener(`click`, onSmallPinClick);
+  pinsContainer.removeEventListener(`keydown`, onSmallPinEnterPress);
 };
 const onPopupEscPress = (evt)=>{
   if (evt.key !== `Escape`) {
     return;
   }
   document.querySelector(`.map__card `).remove();
+  pinsContainer.addEventListener(`click`, onSmallPinClick);
+  pinsContainer.addEventListener(`keydown`, onSmallPinEnterPress);
 };
 
 const onCardCloseClick = (evt)=>{
   evt.target.parentNode.remove();
+  pinsContainer.addEventListener(`click`, onSmallPinClick);
+  pinsContainer.addEventListener(`keydown`, onSmallPinEnterPress);
 };
 
 
