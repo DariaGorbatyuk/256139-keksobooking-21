@@ -1,24 +1,35 @@
 'use strict';
-const map = document.querySelector(`.map`);
-const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
 const ADVERTISEMENTS_AMOUNT = 8;
 const TITLES = [`Просторная светлая квартира`, `Маленькая грязная квартира`, `Подводный лофт для экстремалов`, `Шикарный зимний дворец`, `Каюта на затонувшем корабле`, `Бунгало в центре города`, `Картонная коробка эконом класса`, `Старый дом с богатой историей для семьи`];
 const PRICES = [20, 10000, 20000, 5000, 70000, 60000, 100, 5, 10000];
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
-const AMOUNT_ROOMS = [1, 3, 32, 1, 4, 2, 1, 7];
-const AMOUNT_GUESTS = [2, 4, 100, 2, 2, 2, 3, 7];
+const AMOUNT_ROOMS = [1, 3, 32, 2, 4, 3, 1, 7];
+const AMOUNT_GUESTS = [1, 4, 100, 2, 2, 2, 3, 7];
 const CHECKS = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTIONS = [`Без детей, животных, амбиций и планов на жизнь`, `Плюсы тараканов в том, что вам не будет одиноко, минусы - аренду они не платят`, `Мокро, холодно, неудобно, но крайне необычно`, `Счета за отопление соизмеримы разве что с вашим эго`, `Красивые фото обеспечены, но говорят, там водятся призраки`, `Стандартное бунгало, соломенная крыша, выход к океану`, `Очень уютная коробка, но немного продувает и менты гоняют`, `Не верьте росказням, что все предыдущие владельцы погибли при мистических обстоятельствах`];
 const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+const MAIN_PIN_ARROW = 22;
+const map = document.querySelector(`.map`);
+const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+const adForm = document.querySelector(`.ad-form`);
+const filterForm = map.querySelector(`.map__filters`);
+const adFieldsets = adForm.querySelectorAll(`fieldset`);
+const filterSelects = filterForm.querySelectorAll(`select`);
+const address = adForm.querySelector(`#address`);
+const mainPin = map.querySelector(`.map__pin--main`);
+const adRoomNumber = adForm.querySelector(`#room_number`);
+const adRoomCapacity = adForm.querySelector(`#capacity`);
+const mainPinWidth = mainPin.offsetWidth;
+const mainPinHeight = mainPin.offsetHeight;
 
-const ApartmentsType = {
+/* const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
   house: `Дом`,
   bungalow: `Бунгало`
-};
+};*/
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -80,7 +91,7 @@ const renderPinsList = (advertisements) => {
   pins.appendChild(fragment);
 };
 
-const fillPhotos = (advertisement, newCard) => {
+/* const fillPhotos = (advertisement, newCard) => {
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
   if (advertisement.offer.photos.length === 0) {
@@ -104,8 +115,9 @@ const fillFeatures = (advertisement, newCard) => {
       feature.remove();
     }
   });
-};
+};*/
 
+/*
 const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
@@ -120,8 +132,85 @@ const renderCard = (advertisement) => {
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
 };
+*/
 
-map.classList.remove(`map--faded`);
+
+const setStateForTags = (tags, state)=>{
+  tags.forEach((item)=>{
+    item.disabled = state;
+  });
+};
+
+const setPassiveMode = ()=>{
+  setStateForTags(adFieldsets, true);
+  setStateForTags(filterSelects, true);
+  const coords = getCoords(mainPin);
+  address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2)}`;
+};
+
+const setActiveMode = ()=>{
+  setStateForTags(adFieldsets, false);
+  setStateForTags(filterSelects, false);
+  map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  renderPinsList(advertisements);
+  address.readOnly = true;
+  verifyRoomsCapacity();
+};
+
+const onMainPinClick = (evt)=>{
+  if (evt.button !== 0) {
+    return;
+  }
+  setActiveMode();
+  setNewAddress();
+  mainPin.removeEventListener(`click`, onMainPinClick);
+  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+};
+const onMainPinPressEnter = (evt)=>{
+  if (evt.key !== `Enter`) {
+    return;
+  }
+  setActiveMode();
+  setNewAddress();
+  mainPin.removeEventListener(`click`, onMainPinClick);
+  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+};
+
+const setNewAddress = ()=>{
+  const coords = getCoords(mainPin);
+  address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2 + MAIN_PIN_ARROW)}`;
+};
+
+const getCoords = (elem)=>{
+  let box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+};
+
+const verifyRoomsCapacity = ()=> {
+  if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
+    adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
+  } else if (adRoomCapacity.value <= adRoomNumber.value) {
+    adRoomCapacity.setCustomValidity(``);
+  } else {
+    adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
+  }
+};
+mainPin.addEventListener(`click`, onMainPinClick);
+mainPin.addEventListener(`keydown`, onMainPinPressEnter);
+adRoomNumber.addEventListener(`change`, ()=> {
+  verifyRoomsCapacity();
+});
+
+adRoomCapacity.addEventListener(`change`, ()=> {
+  verifyRoomsCapacity();
+});
+
 const advertisements = getAdvertisements();
-renderPinsList(advertisements);
-renderCard(advertisements[0]);
+// renderCard(advertisements[0]);
+setPassiveMode();
+
