@@ -143,26 +143,20 @@ const renderCard = (advertisement) => {
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
-  cardClose.addEventListener(`click`, onCardCloseClick);
-  document.addEventListener(`keydown`, onPopupEscPress);
+  cardClose.addEventListener(`click`, onPopupClose);
+  document.addEventListener(`keydown`, onPopupClose);
   pinsContainer.removeEventListener(`click`, onSmallPinActive);
   pinsContainer.removeEventListener(`keydown`, onSmallPinActive);
 };
-const onPopupEscPress = (evt) => { // одинаковые
-  if (evt.key !== `Escape`) {
+
+const onPopupClose = (evt)=>{
+  if (evt.key !== `Escape` && evt.button !== 0) {
     return;
   }
   document.querySelector(`.map__card `).remove();
   pinsContainer.addEventListener(`click`, onSmallPinActive);
   pinsContainer.addEventListener(`keydown`, onSmallPinActive);
 };
-
-const onCardCloseClick = (evt) => {
-  evt.target.parentNode.remove();
-  pinsContainer.addEventListener(`click`, onSmallPinActive);
-  pinsContainer.addEventListener(`keydown`, onSmallPinActive);
-};
-
 
 const setStateForTags = (tags, state) => {
   tags.forEach((item) => {
@@ -235,10 +229,10 @@ const onChangeRoomCapacity = ()=>{
 const verifyRoomsCapacity = () => {
   if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
     adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
-  } else if (adRoomCapacity.value <= adRoomNumber.value) {
-    adRoomCapacity.setCustomValidity(``);
-  } else {
+  } else if (adRoomCapacity.value > adRoomNumber.value) {
     adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
+  } else {
+    adRoomCapacity.setCustomValidity(``);
   }
 };
 const onChangeTypeOfHousing = ()=>{
