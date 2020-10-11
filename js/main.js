@@ -247,3 +247,5 @@ adRoomCapacity.addEventListener(`change`, ()=> {
 
 const advertisements = getAdvertisements();
 setPassiveMode();
+// validation continuous
+
