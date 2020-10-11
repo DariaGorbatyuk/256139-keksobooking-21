@@ -24,6 +24,8 @@ const adRoomCapacity = adForm.querySelector(`#capacity`);
 const pinsContainer = map.querySelector(`.map__pins`);
 const typeOfHousing = adForm.querySelector(`#type`);
 const priceForNight = adForm.querySelector(`#price`);
+const timeIn = adForm.querySelector(`#timein`);
+const timeOut = adForm.querySelector(`#timeout`);
 const mainPinWidth = mainPin.offsetWidth;
 const mainPinHeight = mainPin.offsetHeight;
 
@@ -189,6 +191,9 @@ const setActiveMode = () => {
   typeOfHousing.addEventListener(`change`, verifyPriceForNight);
   adRoomNumber.addEventListener(`change`, onChangeRoomCapacity);
   adRoomCapacity.addEventListener(`change`, onChangeRoomCapacity);
+  timeIn.addEventListener(`change`, onTimeClick);
+  timeOut.addEventListener(`change`, onTimeClick);
+
 };
 const onSmallPinEnterPress = (evt) => {
   if (evt.key !== `Enter`) {
@@ -255,9 +260,14 @@ const verifyPriceForNight = () => {
 const onChangeRoomCapacity = ()=>{
   verifyRoomsCapacity();
 };
+const onTimeClick = (evt)=>{
+  timeIn.value = evt.target.value;
+  timeOut.value = evt.target.value;
+};
 mainPin.addEventListener(`click`, onMainPinClick);
 mainPin.addEventListener(`keydown`, onMainPinPressEnter);
 
 const advertisements = getAdvertisements();
 setPassiveMode();
 // validation continuous
+
