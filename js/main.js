@@ -255,5 +255,4 @@ mainPin.addEventListener(`keydown`, onMainPinActive);
 
 const advertisements = getAdvertisements();
 setPassiveMode();
-// validation continuous
 
