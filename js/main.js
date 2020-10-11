@@ -133,11 +133,17 @@ const renderCard = (advertisement) => {
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
   cardClose.addEventListener(`click`, onCardCloseClick);
+  document.addEventListener(`keydown`, onPopupEscPress);
+};
+const onPopupEscPress = (evt)=>{
+  if (evt.key !== `Escape`) {
+    return;
+  }
+  document.querySelector(`.map__card `).remove();
 };
 
 const onCardCloseClick = (evt)=>{
   evt.target.parentNode.remove();
-  evt.target.removeEventListener(`click`, onCardCloseClick);
 };
 
 
