@@ -169,14 +169,22 @@ const setActiveMode = ()=>{
   address.readOnly = true;
   verifyRoomsCapacity();
   pinsContainer.addEventListener(`click`, onSmallPinClick);
+  pinsContainer.addEventListener(`keydown`, onSmallPinEnterPress);
 };
-
+const onSmallPinEnterPress = (evt)=>{
+  if (evt.key !== `Enter`) {
+    return;
+  }
+  const pinsContainerWithoutMain = [...pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`)];
+  let indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target);
+  renderCard(advertisements[indexOfAdv]);
+};
 const onSmallPinClick = (evt)=>{
   if (evt.target.parentNode.matches(`.map__pin--main`)) {
     return;
   }
-  const pins = Array.from(map.querySelectorAll(`.map__pin:not(.map__pin--main)`));
-  let indexOfAdv = pins.indexOf(evt.target.parentNode);
+  const pinsContainerWithoutMain = [...pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`)];
+  let indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target.parentNode);
   renderCard(advertisements[indexOfAdv]);
 };
 const onMainPinClick = (evt)=>{
