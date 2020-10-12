@@ -189,6 +189,8 @@ const setActiveMode = () => {
 const onSmallPinActive = (evt)=>{
   if (evt.key !== `Enter` && evt.button !== 0) {
     return;
+  } else if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
+    return;
   }
   const mapCard = map.querySelector(`.map__card `);
   if (mapCard) {
@@ -200,6 +202,7 @@ const onSmallPinActive = (evt)=>{
     indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target);
   }
   renderCard(advertisements[indexOfAdv]);
+
 };
 const onMainPinActive = (evt) => {
   if (evt.button !== 0 && evt.key !== `Enter`) {
