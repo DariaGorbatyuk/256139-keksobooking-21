@@ -145,17 +145,13 @@ const renderCard = (advertisement) => {
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
   cardClose.addEventListener(`click`, onPopupClose);
   document.addEventListener(`keydown`, onPopupClose);
-  pinsContainer.removeEventListener(`click`, onSmallPinActive);
-  pinsContainer.removeEventListener(`keydown`, onSmallPinActive);
 };
 
 const onPopupClose = (evt)=>{
   if (evt.key !== `Escape` && evt.button !== 0) {
     return;
   }
-  document.querySelector(`.map__card `).remove();
-  pinsContainer.addEventListener(`click`, onSmallPinActive);
-  pinsContainer.addEventListener(`keydown`, onSmallPinActive);
+  map.querySelector(`.map__card `).remove();
 };
 
 const setStateForTags = (tags, state) => {
@@ -193,6 +189,10 @@ const setActiveMode = () => {
 const onSmallPinActive = (evt)=>{
   if (evt.key !== `Enter` && evt.button !== 0) {
     return;
+  }
+  const mapCard = map.querySelector(`.map__card `);
+  if (mapCard) {
+    mapCard.remove();
   }
   const pinsContainerWithoutMain = [...pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`)];
   let indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target.parentNode);
