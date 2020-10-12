@@ -189,7 +189,8 @@ const setActiveMode = () => {
 const onSmallPinActive = (evt)=>{
   if (evt.key !== `Enter` && evt.button !== 0) {
     return;
-  } else if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
+  }
+  if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
     return;
   }
   const mapCard = map.querySelector(`.map__card `);
