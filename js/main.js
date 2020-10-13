@@ -57,6 +57,7 @@ const getAdvertisements = () => {
     let x = getRandomInt(0, map.offsetWidth);
     let y = getRandomInt(130, 630);
     advertisements[i] = {
+      'id': i,
       'author': {
         'avatar': `img/avatars/user0${i + 1}.png`
       },
@@ -89,6 +90,7 @@ const getPin = (advertisement) => {
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
   newPin.style = `left: ${advertisement.location.x - pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
+  newPin.setAttribute(`data-id`, advertisement.id);
   pinImg.setAttribute(`src`, advertisement.author.avatar);
   pinImg.setAttribute(`alt`, advertisement.offer.title);
   return newPin;
@@ -197,13 +199,11 @@ const onSmallPinActive = (evt)=>{
   if (mapCard) {
     mapCard.remove();
   }
-  const pinsContainerWithoutMain = [...pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`)];
-  let indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target.parentNode);
-  if (evt.key === `Enter`) {
-    indexOfAdv = pinsContainerWithoutMain.indexOf(evt.target);
+  let indexAdv = evt.target.parentNode.dataset.id;
+  if (evt.target.dataset.id) {
+    indexAdv = evt.target.dataset.id;
   }
-  renderCard(advertisements[indexOfAdv]);
-
+  renderCard(advertisements[indexAdv]);
 };
 const onMainPinActive = (evt) => {
   if (evt.button !== 0 && evt.key !== `Enter`) {
