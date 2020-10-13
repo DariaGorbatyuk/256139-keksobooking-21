@@ -12,7 +12,7 @@ const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0
 const MAIN_PIN_ARROW = 22;
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
 const adForm = document.querySelector(`.ad-form`);
 const filterForm = map.querySelector(`.map__filters`);
 const adFieldsets = adForm.querySelectorAll(`fieldset`);
@@ -21,15 +21,28 @@ const address = adForm.querySelector(`#address`);
 const mainPin = map.querySelector(`.map__pin--main`);
 const adRoomNumber = adForm.querySelector(`#room_number`);
 const adRoomCapacity = adForm.querySelector(`#capacity`);
+const pinsContainer = map.querySelector(`.map__pins`);
+const typeOfHousing = adForm.querySelector(`#type`);
+const priceForNight = adForm.querySelector(`#price`);
+const timeIn = adForm.querySelector(`#timein`);
+const timeOut = adForm.querySelector(`#timeout`);
 const mainPinWidth = mainPin.offsetWidth;
 const mainPinHeight = mainPin.offsetHeight;
 
-/* const ApartmentsType = {
+
+const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
   house: `Дом`,
   bungalow: `Бунгало`
-};*/
+};
+
+const MinPriceForNight = {
+  bungalow: `0`,
+  flat: `1000`,
+  house: `5000`,
+  palace: `10000`
+};
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -44,6 +57,7 @@ const getAdvertisements = () => {
     let x = getRandomInt(0, map.offsetWidth);
     let y = getRandomInt(130, 630);
     advertisements[i] = {
+      'id': i,
       'author': {
         'avatar': `img/avatars/user0${i + 1}.png`
       },
@@ -76,22 +90,22 @@ const getPin = (advertisement) => {
   const pinWidth = Number(pinImg.getAttribute(`width`));
   const pinHeight = Number(pinImg.getAttribute(`height`));
   newPin.style = `left: ${advertisement.location.x - pinWidth / 2}px; top: ${advertisement.location.y + pinHeight}px`;
+  newPin.setAttribute(`data-id`, advertisement.id);
   pinImg.setAttribute(`src`, advertisement.author.avatar);
   pinImg.setAttribute(`alt`, advertisement.offer.title);
   return newPin;
 };
 
 const renderPinsList = (advertisements) => {
-  const pins = map.querySelector(`.map__pins`);
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < ADVERTISEMENTS_AMOUNT; i++) {
     let pin = getPin(advertisements[i]);
     fragment.appendChild(pin);
   }
-  pins.appendChild(fragment);
+  pinsContainer.appendChild(fragment);
 };
 
-/* const fillPhotos = (advertisement, newCard) => {
+const fillPhotos = (advertisement, newCard) => {
   const photos = newCard.querySelector(`.popup__photos`);
   const photo = photos.querySelector(`.popup__photo`);
   if (advertisement.offer.photos.length === 0) {
@@ -115,11 +129,11 @@ const fillFeatures = (advertisement, newCard) => {
       feature.remove();
     }
   });
-};*/
+};
 
-/*
 const renderCard = (advertisement) => {
   let newCard = cardTemplate.cloneNode(true);
+  const cardClose = newCard.querySelector(`.popup__close`);
   newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
   newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
   newCard.querySelector(`.popup__text--price`).textContent = `${advertisement.offer.price}р/ночь`;
@@ -131,58 +145,81 @@ const renderCard = (advertisement) => {
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
+  cardClose.addEventListener(`click`, onPopupClose);
+  document.addEventListener(`keydown`, onPopupClose);
 };
-*/
 
+const onPopupClose = (evt)=>{
+  if (evt.key !== `Escape` && evt.button !== 0) {
+    return;
+  }
+  map.querySelector(`.map__card `).remove();
+};
 
-const setStateForTags = (tags, state)=>{
-  tags.forEach((item)=>{
+const setStateForTags = (tags, state) => {
+  tags.forEach((item) => {
     item.disabled = state;
   });
 };
 
-const setPassiveMode = ()=>{
+const setPassiveMode = () => {
   setStateForTags(adFieldsets, true);
   setStateForTags(filterSelects, true);
   const coords = getCoords(mainPin);
   address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2)}`;
 };
 
-const setActiveMode = ()=>{
+const setActiveMode = () => {
   setStateForTags(adFieldsets, false);
   setStateForTags(filterSelects, false);
   map.classList.remove(`map--faded`);
   adForm.classList.remove(`ad-form--disabled`);
   renderPinsList(advertisements);
   address.readOnly = true;
+  setNewAddress();
   verifyRoomsCapacity();
-};
+  verifyPriceForNight();
+  pinsContainer.addEventListener(`click`, onSmallPinActive);
+  pinsContainer.addEventListener(`keydown`, onSmallPinActive);
+  typeOfHousing.addEventListener(`change`, onChangeTypeOfHousing);
+  adRoomNumber.addEventListener(`change`, onChangeRoomCapacity);
+  adRoomCapacity.addEventListener(`change`, onChangeRoomCapacity);
+  timeIn.addEventListener(`change`, onTimeChange);
+  timeOut.addEventListener(`change`, onTimeChange);
 
-const onMainPinClick = (evt)=>{
-  if (evt.button !== 0) {
+};
+const onSmallPinActive = (evt)=>{
+  if (evt.key !== `Enter` && evt.button !== 0) {
     return;
   }
-  setActiveMode();
-  setNewAddress();
-  mainPin.removeEventListener(`click`, onMainPinClick);
-  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
-};
-const onMainPinPressEnter = (evt)=>{
-  if (evt.key !== `Enter`) {
+  if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
     return;
   }
+  const mapCard = map.querySelector(`.map__card `);
+  if (mapCard) {
+    mapCard.remove();
+  }
+  let indexAdv = evt.target.parentNode.dataset.id;
+  if (evt.target.dataset.id) {
+    indexAdv = evt.target.dataset.id;
+  }
+  renderCard(advertisements[indexAdv]);
+};
+const onMainPinActive = (evt) => {
+  if (evt.button !== 0 && evt.key !== `Enter`) {
+    return;
+  }
+  mainPin.removeEventListener(`click`, onMainPinActive);
+  mainPin.removeEventListener(`keydown`, onMainPinActive);
   setActiveMode();
-  setNewAddress();
-  mainPin.removeEventListener(`click`, onMainPinClick);
-  mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
 };
 
-const setNewAddress = ()=>{
+const setNewAddress = () => {
   const coords = getCoords(mainPin);
   address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2 + MAIN_PIN_ARROW)}`;
 };
 
-const getCoords = (elem)=>{
+const getCoords = (elem) => {
   let box = elem.getBoundingClientRect();
 
   return {
@@ -190,27 +227,36 @@ const getCoords = (elem)=>{
     left: box.left + pageXOffset
   };
 };
-
-const verifyRoomsCapacity = ()=> {
+const onChangeRoomCapacity = ()=>{
+  verifyRoomsCapacity();
+};
+const verifyRoomsCapacity = () => {
   if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
     adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
-  } else if (adRoomCapacity.value <= adRoomNumber.value) {
-    adRoomCapacity.setCustomValidity(``);
-  } else {
+  } else if (adRoomCapacity.value > adRoomNumber.value) {
     adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
+  } else {
+    adRoomCapacity.setCustomValidity(``);
   }
 };
-mainPin.addEventListener(`click`, onMainPinClick);
-mainPin.addEventListener(`keydown`, onMainPinPressEnter);
-adRoomNumber.addEventListener(`change`, ()=> {
-  verifyRoomsCapacity();
-});
+const onChangeTypeOfHousing = ()=>{
+  verifyPriceForNight();
+};
+const verifyPriceForNight = () => {
+  priceForNight.setAttribute(`min`, MinPriceForNight[typeOfHousing.value]);
+  priceForNight.setAttribute(`placeholder`, MinPriceForNight[typeOfHousing.value]);
+};
 
-adRoomCapacity.addEventListener(`change`, ()=> {
-  verifyRoomsCapacity();
-});
+const onTimeChange = (evt)=>{
+  setTimeInOut(evt);
+};
+const setTimeInOut = (evt)=>{
+  timeIn.value = evt.target.value;
+  timeOut.value = evt.target.value;
+};
+mainPin.addEventListener(`click`, onMainPinActive);
+mainPin.addEventListener(`keydown`, onMainPinActive);
 
 const advertisements = getAdvertisements();
-// renderCard(advertisements[0]);
 setPassiveMode();
 
