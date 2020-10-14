@@ -42,6 +42,16 @@
     timeIn.value = evt.target.value;
     timeOut.value = evt.target.value;
   };
+
+  const onChangeAdRoomCapacity = ()=>{
+    window.form.verifyRoomsCapacity();
+  };
+  const onChangeAdTypeOfHousing = ()=>{
+    window.form.verifyPriceForNight();
+  };
+  const onTimeChange = (evt)=>{
+    window.form.setTimeInOut(evt);
+  };
   window.form = {
     'setNewAddress': setNewAddress,
     'verifyRoomsCapacity': verifyRoomsCapacity,
@@ -57,6 +67,9 @@
     'adPriceForNight': adPriceForNight,
     'filterSelects': filterSelects,
     'timeIn': timeIn,
-    'timeOut': timeOut
+    'timeOut': timeOut,
+    'onChangeAdRoomCapacity': onChangeAdRoomCapacity,
+    'onChangeAdTypeOfHousing': onChangeAdTypeOfHousing,
+    'onTimeChange': onTimeChange
   };
 })();

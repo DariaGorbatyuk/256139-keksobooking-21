@@ -4,12 +4,8 @@ const onMainPinActive = (evt) => {
     return;
   }
   window.data.mainPin.removeEventListener(`click`, onMainPinActive);
-  // mainPin.removeEventListener(`keydown`, onMainPinActive);
-  window.map.setActiveMode();
+  window.mods.setActiveMode();
 };
-
 window.data.mainPin.addEventListener(`click`, onMainPinActive);
-// mainPin.addEventListener(`keydown`, onMainPinActive);
-
-window.map.setPassiveMode();
+window.mods.setPassiveMode();
 
