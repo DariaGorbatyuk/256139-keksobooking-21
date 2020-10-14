@@ -83,7 +83,7 @@ const MinPriceForNight = {
   };
 })();
 
-// pin
+// get - pin
 (()=>{
   const getPin = (advertisement) => {
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -101,17 +101,9 @@ const MinPriceForNight = {
     'getPin': getPin
   };
 })();
-// rendering
-(()=>{
-  const renderPinsList = (advertisements) => {
-    const fragment = document.createDocumentFragment();
-    for (let i = 0; i < advertisements.length; i++) {
-      let pin = window.pin.getPin(advertisements[i]);
-      fragment.appendChild(pin);
-    }
-    pinsContainer.appendChild(fragment);
-  };
 
+// get - card
+(()=>{
   const fillPhotos = (advertisement, newCard) => {
     const photos = newCard.querySelector(`.popup__photos`);
     const photo = photos.querySelector(`.popup__photo`);
@@ -141,7 +133,6 @@ const MinPriceForNight = {
   const getCard = (advertisement) => {
     const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
     let newCard = cardTemplate.cloneNode(true);
-    const cardClose = newCard.querySelector(`.popup__close`);
     newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
     newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
     newCard.querySelector(`.popup__text--price`).textContent = `${advertisement.offer.price}р/ночь`;
@@ -152,13 +143,30 @@ const MinPriceForNight = {
     newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
     fillFeatures(advertisement, newCard);
     fillPhotos(advertisement, newCard);
+    return newCard;
+  };
+
+  window.card = {
+    'getCard': getCard
+  };
+})();
+
+// render
+(()=>{
+  const renderPinsList = (advertisements) => {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < advertisements.length; i++) {
+      let pin = window.pin.getPin(advertisements[i]);
+      fragment.appendChild(pin);
+    }
+    pinsContainer.appendChild(fragment);
+  };
+  const renderCard = (advertisement)=>{
+    const newCard = window.card.getCard(advertisement);
+    const cardClose = newCard.querySelector(`.popup__close`);
     map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
     cardClose.addEventListener(`click`, onPopupClose);
     document.addEventListener(`keydown`, onPopupClose);
-  };
-
-  const renderCard = ()=>{
-
   };
   window.render = {
     'renderPinsList': renderPinsList,
@@ -232,7 +240,9 @@ const onMainPinActive = (evt) => {
   mainPin.removeEventListener(`keydown`, onMainPinActive);
   setActiveMode();
 };
+(()=>{
 
+})();
 const setNewAddress = () => {
   const coords = getCoords(mainPin);
   address.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2 + MAIN_PIN_ARROW)}`;
