@@ -1,11 +1,21 @@
 'use strict';
-const onMainPinActive = (evt) => {
-  if (evt.button !== 0 && evt.key !== `Enter`) {
+const onMainPinClick = (evt) => {
+  if (evt.button !== 0) {
     return;
   }
-  window.data.mainPin.removeEventListener(`click`, onMainPinActive);
+  window.moving.recalculateCoords(evt, window.data.mainPin, window.render.pinsContainer);
   window.mods.setActiveMode();
+  window.form.setNewAddress(false);
+  window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
 };
-window.data.mainPin.addEventListener(`click`, onMainPinActive);
+const onMainPinPressEnter = (evt)=>{
+  if (evt.key !== `Enter`) {
+    return;
+  }
+  window.mods.setActiveMode();
+  window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+};
+window.data.mainPin.addEventListener(`mousedown`, onMainPinClick);
+window.data.mainPin.addEventListener(`keydown`, onMainPinPressEnter);
 window.mods.setPassiveMode();
 

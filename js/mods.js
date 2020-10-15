@@ -22,7 +22,6 @@
     window.form.adForm.classList.remove(`ad-form--disabled`);
     window.render.renderPinsList(advertisements);
     window.form.adAddress.readOnly = true;
-    window.form.setNewAddress(false);
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
     pinsContainer.addEventListener(`click`, onSmallPinActive);
