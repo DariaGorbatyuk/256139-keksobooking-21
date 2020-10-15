@@ -13,16 +13,22 @@
   const timeOut = adForm.querySelector(`#timeout`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
-  const MAIN_PIN_ARROW = 22; // это надо как то исправить
+  const MAIN_PIN_ARROW = 22;
   const MinPriceForNight = {
     bungalow: `0`,
     flat: `1000`,
     house: `5000`,
     palace: `10000`
   };
-  const setNewAddress = () => {
-    const coords = window.coords.getCoords(window.data.mainPin);
-    adAddress.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2 + MAIN_PIN_ARROW)}`;
+  const setNewAddress = (isFirstTime) => {
+    const mapCoords = window.coords.getCoords(window.data.map);
+    let coordsMainPin = window.coords.getCoords(window.data.mainPin);
+    let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
+    let coordsMainPinTop = coordsMainPin.top;
+    adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop - mainPinHeight - MAIN_PIN_ARROW)}`;
+    if (isFirstTime) {
+      adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop + mainPinHeight / 2)}`;
+    }
   };
   const verifyRoomsCapacity = () => {
     if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {

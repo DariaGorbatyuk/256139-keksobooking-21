@@ -1,6 +1,5 @@
 'use strict';
 (() => {
-  const mainPin = window.data.mainPin;
   const pinsContainer = window.render.pinsContainer;
   const advertisements = window.data.advertisements;
 
@@ -11,12 +10,9 @@
   };
 
   const setPassiveMode = () => {
-    const mainPinWidth = mainPin.offsetWidth;
-    const mainPinHeight = mainPin.offsetHeight;
     setStateForTags(window.form.adFieldsets, true);
     setStateForTags(window.form.filterSelects, true);
-    const coords = window.coords.getCoords(mainPin);
-    window.form.adAddress.value = `${Math.floor(coords.left + mainPinWidth / 2)}, ${Math.floor(coords.top + mainPinHeight / 2)}`;
+    window.form.setNewAddress(true);
   };
 
   const setActiveMode = () => {
@@ -26,7 +22,7 @@
     window.form.adForm.classList.remove(`ad-form--disabled`);
     window.render.renderPinsList(advertisements);
     window.form.adAddress.readOnly = true;
-    window.form.setNewAddress();
+    window.form.setNewAddress(false);
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
     pinsContainer.addEventListener(`click`, onSmallPinActive);
