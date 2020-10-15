@@ -16,6 +16,7 @@
   };
 
   const setActiveMode = () => {
+    window.mods.isActiveTrue = true;
     setStateForTags(window.form.adFieldsets, false);
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
@@ -53,7 +54,8 @@
 
   window.mods = {
     'setPassiveMode': setPassiveMode,
-    'setActiveMode': setActiveMode
+    'setActiveMode': setActiveMode,
+    'isActiveTrue': false
   };
 
 })();

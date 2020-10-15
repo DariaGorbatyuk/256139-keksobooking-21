@@ -23,6 +23,7 @@
     };
     const onMouseUp = (upEvt)=>{
       upEvt.preventDefault();
+      window.form.setNewAddress(false);
       container.removeEventListener(`mousemove`, onMouseMove);
       container.removeEventListener(`mouseup`, onMouseUp);
     };

@@ -3,9 +3,10 @@ const onMainPinClick = (evt) => {
   if (evt.button !== 0) {
     return;
   }
+  if (!window.mods.isActiveTrue) {
+    window.mods.setActiveMode();
+  }
   window.moving.recalculateCoords(evt, window.data.mainPin, window.render.pinsContainer);
-  window.mods.setActiveMode();
-  window.form.setNewAddress(false);
   window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
 };
 const onMainPinPressEnter = (evt)=>{

@@ -13,7 +13,6 @@
   const timeOut = adForm.querySelector(`#timeout`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
-  const MAIN_PIN_ARROW = 22;
   const MinPriceForNight = {
     bungalow: `0`,
     flat: `1000`,
@@ -24,11 +23,24 @@
     const mapCoords = window.coords.getCoords(window.data.map);
     let coordsMainPin = window.coords.getCoords(window.data.mainPin);
     let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
-    let coordsMainPinTop = coordsMainPin.top;
-    adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop - mainPinHeight - MAIN_PIN_ARROW)}`;
+    let y = Math.floor(coordsMainPin.top - mainPinHeight);
+    y = checkLimits(y);
+    adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${y}`;
     if (isFirstTime) {
-      adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop + mainPinHeight / 2)}`;
+      y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
+      y = checkLimits(y);
+      adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${y}`;
     }
+  };
+  const checkLimits = (y)=>{
+    const MIN_Y_COORD = 130;
+    const MAX_Y_COORD = 630;
+    if (y < MIN_Y_COORD) {
+      y = MIN_Y_COORD;
+    } else if (y > MAX_Y_COORD) {
+      y = MAX_Y_COORD;
+    }
+    return y;
   };
   const verifyRoomsCapacity = () => {
     if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
