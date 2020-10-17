@@ -95,23 +95,23 @@
     window.form.setTimeInOut(evt);
   };
   window.form = {
-    'setNewAddress': setNewAddress,
-    'verifyRoomsCapacity': verifyRoomsCapacity,
-    'verifyPriceForNight': verifyPriceForNight,
-    'setTimeInOut': setTimeInOut,
-    'adForm': adForm,
-    'filterForm': filterForm,
-    'adFieldsets': adFieldsets,
-    'adAddress': adAddress,
-    'adRoomNumber': adRoomNumber,
-    'adRoomCapacity': adRoomCapacity,
-    'adTypeOfHousing': adTypeOfHousing,
-    'adPriceForNight': adPriceForNight,
-    'filterSelects': filterSelects,
-    'timeIn': timeIn,
-    'timeOut': timeOut,
-    'onChangeAdRoomCapacity': onChangeAdRoomCapacity,
-    'onChangeAdTypeOfHousing': onChangeAdTypeOfHousing,
-    'onTimeChange': onTimeChange
+    setNewAddress,
+    verifyRoomsCapacity,
+    verifyPriceForNight,
+    setTimeInOut,
+    adForm,
+    filterForm,
+    adFieldsets,
+    adAddress,
+    adRoomNumber,
+    adRoomCapacity,
+    adTypeOfHousing,
+    adPriceForNight,
+    filterSelects,
+    timeIn,
+    timeOut,
+    onChangeAdRoomCapacity,
+    onChangeAdTypeOfHousing,
+    onTimeChange
   };
 })();
