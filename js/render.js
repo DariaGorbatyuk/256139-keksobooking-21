@@ -11,7 +11,7 @@
     pinsContainer.appendChild(fragment);
   };
   const renderCard = (advertisement)=>{
-    const newCard = window.card.getCard(advertisement);
+    const newCard = window.card.get(advertisement);
     const cardClose = newCard.querySelector(`.popup__close`);
     map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
     cardClose.addEventListener(`click`, onPopupClose);

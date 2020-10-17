@@ -32,7 +32,7 @@
     });
   };
 
-  const getCard = (advertisement) => {
+  const get = (advertisement) => {
     const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
     let newCard = cardTemplate.cloneNode(true);
     newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
@@ -49,6 +49,6 @@
   };
 
   window.card = {
-    'getCard': getCard
+    get
   };
 })();
