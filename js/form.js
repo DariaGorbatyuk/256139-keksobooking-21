@@ -14,7 +14,7 @@
   const timeOut = adForm.querySelector(`#timeout`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
-  const MinPriceForNight = {
+  const minPriceForNight = {
     bungalow: `0`,
     flat: `1000`,
     house: `5000`,
@@ -25,23 +25,36 @@
     let coordsMainPin = window.coords.getCoords(window.data.mainPin);
     let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
     let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
-    y = checkLimits(y);
-    adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${y}`;
+    let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);
+    let coords = checkLimits(x, y);
+    adAddress.value = `${coords.x}, ${coords.y}`;
     if (isFirstTime) {
       y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
-      y = checkLimits(y);
-      adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${y}`;
+      coords = checkLimits(x, y);
+      adAddress.value = `${coords.x}, ${coords.y}`;
     }
   };
-  const checkLimits = (y)=>{
-    const MIN_Y_COORD = 130;
-    const MAX_Y_COORD = 630;
-    if (y < MIN_Y_COORD) {
-      y = MIN_Y_COORD;
-    } else if (y > MAX_Y_COORD) {
-      y = MAX_Y_COORD;
+  const checkLimits = (x, y)=>{
+    const limits = {
+      minYCoord: 130,
+      maxYCoord: 630,
+      minXCoord: 0,
+      maxXCoord: window.data.map.offsetWidth
+    };
+    if (y < limits.minYCoord) {
+      y = limits.minYCoord;
+    } else if (y > limits.maxYCoord) {
+      y = limits.maxYCoord;
     }
-    return y;
+    if (x < limits.minXCoord) {
+      x = limits.minXCoord;
+    } else if (x > limits.maxXCoord) {
+      x = limits.maxXCoord;
+    }
+    return {
+      'x': x,
+      'y': y
+    };
   };
   const verifyRoomsCapacity = () => {
     if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
@@ -53,8 +66,8 @@
     }
   };
   const verifyPriceForNight = () => {
-    adPriceForNight.setAttribute(`min`, MinPriceForNight[adTypeOfHousing.value]);
-    adPriceForNight.setAttribute(`placeholder`, MinPriceForNight[adTypeOfHousing.value]);
+    adPriceForNight.setAttribute(`min`, minPriceForNight[adTypeOfHousing.value]);
+    adPriceForNight.setAttribute(`placeholder`, minPriceForNight[adTypeOfHousing.value]);
   };
 
   const setTimeInOut = (evt)=>{
