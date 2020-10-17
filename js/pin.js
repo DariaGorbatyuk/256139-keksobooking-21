@@ -1,6 +1,6 @@
 'use strict';
 (()=>{
-  const getPin = (advertisement) => {
+  const get = (advertisement) => {
     const PIN_WIDTH = 50;
     const PIN_HEIGHT = 70;
     const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
@@ -13,6 +13,6 @@
     return newPin;
   };
   window.pin = {
-    'getPin': getPin
+    get
   };
 })();

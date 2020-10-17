@@ -20,9 +20,19 @@
     house: `5000`,
     palace: `10000`
   };
+
+  const getCoords = (elem) => {
+    let box = elem.getBoundingClientRect();
+
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
+  };
+
   const setNewAddress = (isFirstTime) => {
-    const mapCoords = window.coords.getCoords(window.data.map);
-    let coordsMainPin = window.coords.getCoords(window.data.mainPin);
+    const mapCoords = getCoords(window.data.map);
+    let coordsMainPin = getCoords(window.data.mainPin);
     let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
     let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
     let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);

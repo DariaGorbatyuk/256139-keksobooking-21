@@ -52,7 +52,7 @@
   };
   window.data = {
     "advertisements": getAdvertisements(),
-    'map': map,
-    'mainPin': mainPin
+    map,
+    mainPin
   };
 })();
