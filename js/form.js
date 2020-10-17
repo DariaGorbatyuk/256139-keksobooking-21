@@ -1,5 +1,6 @@
 'use strict';
 (()=>{
+  const MAIN_PIN_ARROW = 18;
   const adForm = document.querySelector(`.ad-form`);
   const filterForm = window.data.map.querySelector(`.map__filters`);
   const adFieldsets = adForm.querySelectorAll(`fieldset`);
@@ -23,7 +24,7 @@
     const mapCoords = window.coords.getCoords(window.data.map);
     let coordsMainPin = window.coords.getCoords(window.data.mainPin);
     let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
-    let y = Math.floor(coordsMainPin.top + mainPinHeight);
+    let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
     y = checkLimits(y);
     adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${y}`;
     if (isFirstTime) {
