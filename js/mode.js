@@ -9,19 +9,19 @@
     });
   };
 
-  const setPassiveMode = () => {
+  const setPassive = () => {
     setStateForTags(window.form.adFieldsets, true);
     setStateForTags(window.form.filterSelects, true);
     window.form.setNewAddress(true);
   };
 
-  const setActiveMode = () => {
-    window.mods.isActiveTrue = true;
+  const setActive = () => {
+    window.mode.isActiveTrue = true;
     setStateForTags(window.form.adFieldsets, false);
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
     window.form.adForm.classList.remove(`ad-form--disabled`);
-    window.render.renderPinsList(advertisements);
+    window.render.pinsList(advertisements);
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
@@ -49,12 +49,12 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.render.renderCard(advertisements[indexAdv]);
+    window.render.card(advertisements[indexAdv]);
   };
 
-  window.mods = {
-    setPassiveMode,
-    setActiveMode,
+  window.mode = {
+    setPassive,
+    setActive,
     isActiveTrue: false
   };
 

@@ -2,7 +2,8 @@
 (()=>{
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
-  const renderPinsList = (advertisements) => {
+
+  const pinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < advertisements.length; i++) {
       let pin = window.pin.get(advertisements[i]);
@@ -10,7 +11,7 @@
     }
     pinsContainer.appendChild(fragment);
   };
-  const renderCard = (advertisement)=>{
+  const card = (advertisement)=>{
     const newCard = window.card.get(advertisement);
     const cardClose = newCard.querySelector(`.popup__close`);
     map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
@@ -25,8 +26,8 @@
   };
 
   window.render = {
-    renderPinsList,
-    renderCard,
+    pinsList,
+    card,
     pinsContainer
   };
 
