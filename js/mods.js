@@ -53,9 +53,9 @@
   };
 
   window.mods = {
-    'setPassiveMode': setPassiveMode,
-    'setActiveMode': setActiveMode,
-    'isActiveTrue': false
+    setPassiveMode,
+    setActiveMode,
+    isActiveTrue: false
   };
 
 })();

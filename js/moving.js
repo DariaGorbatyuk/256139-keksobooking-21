@@ -32,7 +32,7 @@
     container.addEventListener(`mouseup`, onMouseUp);
   };
   window.moving = {
-    'recalculateCoords': recalculateCoords
+    recalculateCoords
   };
 
 })();

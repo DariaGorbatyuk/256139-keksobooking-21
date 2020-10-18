@@ -25,9 +25,9 @@
   };
 
   window.render = {
-    'renderPinsList': renderPinsList,
-    'renderCard': renderCard,
-    'pinsContainer': pinsContainer
+    renderPinsList,
+    renderCard,
+    pinsContainer
   };
 
 })();
