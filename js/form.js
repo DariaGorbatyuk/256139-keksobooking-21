@@ -1,6 +1,12 @@
 'use strict';
 (()=>{
   const MAIN_PIN_ARROW = 18;
+  const MIN_PRICE_FOR_NIGHT = {
+    bungalow: `0`,
+    flat: `1000`,
+    house: `5000`,
+    palace: `10000`
+  };
   const adForm = document.querySelector(`.ad-form`);
   const filterForm = window.data.map.querySelector(`.map__filters`);
   const adFieldsets = adForm.querySelectorAll(`fieldset`);
@@ -14,12 +20,6 @@
   const timeOut = adForm.querySelector(`#timeout`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
-  const minPriceForNight = {
-    bungalow: `0`,
-    flat: `1000`,
-    house: `5000`,
-    palace: `10000`
-  };
 
   const getCoords = (elem) => {
     let box = elem.getBoundingClientRect();
@@ -76,8 +76,8 @@
     }
   };
   const verifyPriceForNight = () => {
-    adPriceForNight.setAttribute(`min`, minPriceForNight[adTypeOfHousing.value]);
-    adPriceForNight.setAttribute(`placeholder`, minPriceForNight[adTypeOfHousing.value]);
+    adPriceForNight.setAttribute(`min`, MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value]);
+    adPriceForNight.setAttribute(`placeholder`, MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value]);
   };
 
   const setTimeInOut = (evt)=>{
