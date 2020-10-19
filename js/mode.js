@@ -16,7 +16,7 @@
   };
 
   const setActive = () => {
-    window.mode.isActiveTrue = true;
+    window.mode.isActive = true;
     setStateForTags(window.form.adFieldsets, false);
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
@@ -25,8 +25,8 @@
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
-    pinsContainer.addEventListener(`click`, onSmallPinActive);
-    pinsContainer.addEventListener(`keydown`, onSmallPinActive);
+    pinsContainer.addEventListener(`click`, onSmallPinActivated);
+    pinsContainer.addEventListener(`keydown`, onSmallPinActivated);
     window.form.adTypeOfHousing.addEventListener(`change`, window.form.onChangeAdTypeOfHousing);
     window.form.adRoomNumber.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
     window.form.adRoomCapacity.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
@@ -34,7 +34,7 @@
     window.form.timeOut.addEventListener(`change`, window.form.onTimeChange);
   };
 
-  const onSmallPinActive = (evt) => {
+  const onSmallPinActivated = (evt) => {
     if (evt.key !== `Enter` && evt.button !== 0) {
       return;
     }
@@ -55,7 +55,7 @@
   window.mode = {
     setPassive,
     setActive,
-    isActiveTrue: false
+    isActive: false
   };
 
 })();

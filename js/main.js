@@ -4,7 +4,7 @@
     if (evt.button !== 0) {
       return;
     }
-    if (!window.mode.isActiveTrue) {
+    if (!window.mode.isActive) {
       window.mode.setActive();
     }
     window.moving.recalculateCoords(evt, window.data.mainPin, window.render.pinsContainer);
