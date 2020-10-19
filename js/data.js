@@ -51,7 +51,7 @@
     return advertisements;
   };
   window.data = {
-    "advertisements": getAdvertisements(),
+    advertisements: getAdvertisements(),
     map,
     mainPin
   };
