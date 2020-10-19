@@ -1,6 +1,6 @@
 'use strict';
 (() => {
-  const pinsContainer = window.render.pinsContainer;
+  const pinsContainer = window.map.pinsContainer;
   const advertisements = window.data.advertisements;
 
   const setStateForTags = (tags, state) => {
@@ -21,7 +21,7 @@
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
     window.form.adForm.classList.remove(`ad-form--disabled`);
-    window.render.pinsList(advertisements);
+    window.map.renderPinsList(advertisements);
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
@@ -49,7 +49,7 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.render.card(advertisements[indexAdv]);
+    window.map.renderCard(advertisements[indexAdv]);
   };
 
   window.mode = {

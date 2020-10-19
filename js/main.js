@@ -7,7 +7,7 @@
     if (!window.mode.isActive) {
       window.mode.setActive();
     }
-    window.moving.recalculateCoords(evt, window.data.mainPin, window.render.pinsContainer);
+    window.moving.recalculateCoords(evt, window.data.mainPin, window.map.pinsContainer);
     window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
   };
   const onMainPinPressEnter = (evt)=>{
