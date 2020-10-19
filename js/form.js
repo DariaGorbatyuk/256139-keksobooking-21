@@ -112,6 +112,7 @@
     timeOut,
     onChangeAdRoomCapacity,
     onChangeAdTypeOfHousing,
-    onTimeChange
+    onTimeChange,
+    getCoords
   };
 })();

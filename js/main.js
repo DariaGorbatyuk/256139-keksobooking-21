@@ -7,8 +7,8 @@
     if (!window.mode.isActive) {
       window.mode.setActive();
     }
-    window.moving.recalculateCoords(evt, window.data.mainPin, window.map.pinsContainer);
     window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
+    window.data.mainPin.removeEventListener(`click`, onMainPinClick);
   };
   const onMainPinPressEnter = (evt)=>{
     if (evt.key !== window.data.BUTTON_ENTER) {
@@ -17,8 +17,9 @@
     window.mode.setActive();
     window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
   };
-  window.data.mainPin.addEventListener(`mousedown`, onMainPinClick);
+  window.data.mainPin.addEventListener(`click`, onMainPinClick);
   window.data.mainPin.addEventListener(`keydown`, onMainPinPressEnter);
+  window.data.mainPin.addEventListener(`mousedown`, window.moving.onMainPinMouseDown);
   window.mode.setPassive();
 })();
 
