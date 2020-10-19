@@ -7,9 +7,9 @@
     let newPin = pinTemplate.cloneNode(true);
     const pinImg = newPin.querySelector(`img`);
     newPin.style = `left: ${advertisement.location.x - PIN_WIDTH / 2}px; top: ${advertisement.location.y - PIN_HEIGHT}px`;
-    newPin.setAttribute(`data-id`, advertisement.id);
-    pinImg.setAttribute(`src`, advertisement.author.avatar);
-    pinImg.setAttribute(`alt`, advertisement.offer.title);
+    newPin.dataset.id = advertisement.id;
+    pinImg.src = advertisement.author.avatar;
+    pinImg.alt = advertisement.offer.title;
     return newPin;
   };
   window.pin = {

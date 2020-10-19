@@ -76,8 +76,8 @@
     }
   };
   const verifyPriceForNight = () => {
-    adPriceForNight.setAttribute(`min`, MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value]);
-    adPriceForNight.setAttribute(`placeholder`, MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value]);
+    adPriceForNight.min = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
+    adPriceForNight.placeholder = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
   };
 
   const setTimeInOut = (evt)=>{
