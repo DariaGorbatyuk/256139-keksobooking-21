@@ -62,8 +62,8 @@
       x = limits.maxXCoord;
     }
     return {
-      'x': x,
-      'y': y
+      x,
+      y
     };
   };
   const verifyRoomsCapacity = () => {
