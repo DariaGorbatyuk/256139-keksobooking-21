@@ -18,8 +18,27 @@
     cardClose.addEventListener(`click`, onPopupClose);
     document.addEventListener(`keydown`, onPopupClose);
   };
+
+  const onSmallPinActivated = (evt) => {
+    if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LKM) {
+      return;
+    }
+    if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
+      return;
+    }
+    const mapCard = window.data.map.querySelector(`.map__card `);
+    if (mapCard) {
+      mapCard.remove();
+    }
+    let indexAdv = evt.target.parentNode.dataset.id;
+    if (evt.target.dataset.id) {
+      indexAdv = evt.target.dataset.id;
+    }
+    window.map.renderCard(window.data.advertisements[indexAdv]);
+  };
+
   const onPopupClose = (evt)=>{
-    if (evt.key !== `Escape` && evt.button !== 0) {
+    if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LKM) {
       return;
     }
     map.querySelector(`.map__card `).remove();
@@ -28,7 +47,8 @@
   window.map = {
     renderPinsList,
     renderCard,
-    pinsContainer
+    pinsContainer,
+    onSmallPinActivated,
   };
 
 })();

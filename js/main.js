@@ -1,7 +1,7 @@
 'use strict';
 (()=>{
   const onMainPinClick = (evt) => {
-    if (evt.button !== 0) {
+    if (evt.button !== window.data.LKM) {
       return;
     }
     if (!window.mode.isActive) {
@@ -11,7 +11,7 @@
     window.data.mainPin.removeEventListener(`keydown`, onMainPinPressEnter);
   };
   const onMainPinPressEnter = (evt)=>{
-    if (evt.key !== `Enter`) {
+    if (evt.key !== window.data.BUTTON_ENTER) {
       return;
     }
     window.mode.setActive();
