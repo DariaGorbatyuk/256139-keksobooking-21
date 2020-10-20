@@ -6,7 +6,7 @@
   const renderPinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < advertisements.length; i++) {
-      let pin = window.pin.get(advertisements[i]);
+      let pin = window.pin.get(advertisements[i], i);
       fragment.appendChild(pin);
     }
     pinsContainer.appendChild(fragment);
@@ -34,7 +34,7 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.data.advertisements[indexAdv]);
+    window.map.renderCard(window.load.advertisements[indexAdv]);
   };
 
   const onPopupClose = (evt)=>{

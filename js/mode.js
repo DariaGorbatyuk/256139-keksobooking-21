@@ -1,7 +1,6 @@
 'use strict';
 (() => {
   const pinsContainer = window.map.pinsContainer;
-  const advertisements = window.data.advertisements;
 
   const setStateForTags = (tags, state) => {
     tags.forEach((item) => {
@@ -21,7 +20,7 @@
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
     window.form.adForm.classList.remove(`ad-form--disabled`);
-    window.map.renderPinsList(advertisements);
+    window.map.renderPinsList(window.load.advertisements);
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
