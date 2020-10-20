@@ -1,5 +1,12 @@
 'use strict';
 (()=>{
+  const MAIN_PIN_ARROW = 18;
+  const MIN_PRICE_FOR_NIGHT = {
+    bungalow: `0`,
+    flat: `1000`,
+    house: `5000`,
+    palace: `10000`
+  };
   const adForm = document.querySelector(`.ad-form`);
   const filterForm = window.data.map.querySelector(`.map__filters`);
   const adFieldsets = adForm.querySelectorAll(`fieldset`);
@@ -13,22 +20,51 @@
   const timeOut = adForm.querySelector(`#timeout`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
-  const MAIN_PIN_ARROW = 22;
-  const MinPriceForNight = {
-    bungalow: `0`,
-    flat: `1000`,
-    house: `5000`,
-    palace: `10000`
+
+  const getCoords = (elem) => {
+    let box = elem.getBoundingClientRect();
+
+    return {
+      top: box.top + pageYOffset,
+      left: box.left + pageXOffset
+    };
   };
+
   const setNewAddress = (isFirstTime) => {
-    const mapCoords = window.coords.getCoords(window.data.map);
-    let coordsMainPin = window.coords.getCoords(window.data.mainPin);
+    const mapCoords = getCoords(window.data.map);
+    let coordsMainPin = getCoords(window.data.mainPin);
     let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
-    let coordsMainPinTop = coordsMainPin.top;
-    adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop - mainPinHeight - MAIN_PIN_ARROW)}`;
+    let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
+    let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);
+    let coords = checkLimits(x, y);
+    adAddress.value = `${coords.x}, ${coords.y}`;
     if (isFirstTime) {
-      adAddress.value = `${Math.floor(coordsMainPinLeft + mainPinWidth / 2)}, ${Math.floor(coordsMainPinTop + mainPinHeight / 2)}`;
+      y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
+      coords = checkLimits(x, y);
+      adAddress.value = `${coords.x}, ${coords.y}`;
     }
+  };
+  const checkLimits = (x, y)=>{
+    const limits = {
+      minYCoord: 130,
+      maxYCoord: 630,
+      minXCoord: 0,
+      maxXCoord: window.data.map.offsetWidth
+    };
+    if (y < limits.minYCoord) {
+      y = limits.minYCoord;
+    } else if (y > limits.maxYCoord) {
+      y = limits.maxYCoord;
+    }
+    if (x < limits.minXCoord) {
+      x = limits.minXCoord;
+    } else if (x > limits.maxXCoord) {
+      x = limits.maxXCoord;
+    }
+    return {
+      x,
+      y
+    };
   };
   const verifyRoomsCapacity = () => {
     if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
@@ -40,8 +76,8 @@
     }
   };
   const verifyPriceForNight = () => {
-    adPriceForNight.setAttribute(`min`, MinPriceForNight[adTypeOfHousing.value]);
-    adPriceForNight.setAttribute(`placeholder`, MinPriceForNight[adTypeOfHousing.value]);
+    adPriceForNight.min = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
+    adPriceForNight.placeholder = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
   };
 
   const setTimeInOut = (evt)=>{
@@ -59,23 +95,23 @@
     window.form.setTimeInOut(evt);
   };
   window.form = {
-    'setNewAddress': setNewAddress,
-    'verifyRoomsCapacity': verifyRoomsCapacity,
-    'verifyPriceForNight': verifyPriceForNight,
-    'setTimeInOut': setTimeInOut,
-    'adForm': adForm,
-    'filterForm': filterForm,
-    'adFieldsets': adFieldsets,
-    'adAddress': adAddress,
-    'adRoomNumber': adRoomNumber,
-    'adRoomCapacity': adRoomCapacity,
-    'adTypeOfHousing': adTypeOfHousing,
-    'adPriceForNight': adPriceForNight,
-    'filterSelects': filterSelects,
-    'timeIn': timeIn,
-    'timeOut': timeOut,
-    'onChangeAdRoomCapacity': onChangeAdRoomCapacity,
-    'onChangeAdTypeOfHousing': onChangeAdTypeOfHousing,
-    'onTimeChange': onTimeChange
+    setNewAddress,
+    verifyRoomsCapacity,
+    verifyPriceForNight,
+    setTimeInOut,
+    adForm,
+    filterForm,
+    adFieldsets,
+    adAddress,
+    adRoomNumber,
+    adRoomCapacity,
+    adTypeOfHousing,
+    adPriceForNight,
+    filterSelects,
+    timeIn,
+    timeOut,
+    onChangeAdRoomCapacity,
+    onChangeAdTypeOfHousing,
+    onTimeChange
   };
 })();

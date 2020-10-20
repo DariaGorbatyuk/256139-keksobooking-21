@@ -10,6 +10,9 @@
   const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
   const DESCRIPTIONS = [`Без детей, животных, амбиций и планов на жизнь`, `Плюсы тараканов в том, что вам не будет одиноко, минусы - аренду они не платят`, `Мокро, холодно, неудобно, но крайне необычно`, `Счета за отопление соизмеримы разве что с вашим эго`, `Красивые фото обеспечены, но говорят, там водятся призраки`, `Стандартное бунгало, соломенная крыша, выход к океану`, `Очень уютная коробка, но немного продувает и менты гоняют`, `Не верьте росказням, что все предыдущие владельцы погибли при мистических обстоятельствах`];
   const PHOTOS = [`http://o0.github.io/assets/images/tokyo/hotel1.jpg`, `http://o0.github.io/assets/images/tokyo/hotel2.jpg`, `http://o0.github.io/assets/images/tokyo/hotel3.jpg`];
+  const LKM = 0;
+  const BUTTON_ENTER = `Enter`;
+  const BUTTON_ESCAPE = `Escape`;
   const map = document.querySelector(`.map`);
   const mainPin = map.querySelector(`.map__pin--main`);
 
@@ -51,8 +54,11 @@
     return advertisements;
   };
   window.data = {
-    "advertisements": getAdvertisements(),
-    'map': map,
-    'mainPin': mainPin
+    advertisements: getAdvertisements(),
+    map,
+    mainPin,
+    LKM,
+    BUTTON_ENTER,
+    BUTTON_ESCAPE
   };
 })();
