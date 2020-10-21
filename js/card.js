@@ -24,10 +24,21 @@
   };
 
   const fillFeatures = (advertisement, newCard) => {
-    const features = Array.from(newCard.querySelectorAll(`.popup__feature`));
-    features.forEach((feature, i) => {
-      if (!feature.classList.contains(`popup__feature--${advertisement.offer.features[i]}`)) {
-        feature.remove();
+    const features = newCard.querySelectorAll(`.popup__feature`);
+    let res = [];
+    for (let i = 0; i < features.length; i++) {
+      let j = res.length;
+      for (j; j < advertisement.offer.features.length; j++) {
+        let ind = features[i].className.indexOf(advertisement.offer.features[j]);
+        if (ind !== -1) {
+          res.push(features[i]);
+          break;
+        }
+      }
+    }
+    features.forEach((x)=> {
+      if (!res.includes(x)) {
+        x.remove();
       }
     });
   };
