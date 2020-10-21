@@ -86,13 +86,13 @@
   };
 
   const onChangeAdRoomCapacity = ()=>{
-    window.form.verifyRoomsCapacity();
+    verifyRoomsCapacity();
   };
   const onChangeAdTypeOfHousing = ()=>{
-    window.form.verifyPriceForNight();
+    verifyPriceForNight();
   };
   const onTimeChange = (evt)=>{
-    window.form.setTimeInOut(evt);
+    setTimeInOut(evt);
   };
   window.form = {
     setNewAddress,
