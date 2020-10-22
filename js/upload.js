@@ -8,14 +8,16 @@
     xhr.responseType = `json`;
     xhr.open(`POST`, URL);
     xhr.send(new FormData(window.form.adForm));
-    xhr.addEventListener(`load`, ()=>{
+    xhr.addEventListener(`load`, () => {
       successMessage();
       window.mode.setPassive();
+      let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+      collection.forEach((item) => item.remove());
     });
   };
   window.form.adForm.addEventListener(`submit`, onSubmit);
 })();
-const onActive = (evt)=>{
+const onActive = (evt) => {
   if (evt.button !== window.data.LKM && evt.key !== window.data.BUTTON_ESCAPE) {
     return;
   }
@@ -23,7 +25,7 @@ const onActive = (evt)=>{
   document.removeEventListener(`keydown`, onActive);
   document.removeEventListener(`click`, onActive);
 };
-const successMessage = ()=>{
+const successMessage = () => {
   const messageTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
   const newMessage = messageTemplate.cloneNode(true);
   window.data.map.insertAdjacentElement(`afterbegin`, newMessage);

@@ -14,6 +14,9 @@
     setStateForTags(window.form.adFieldsets, true);
     setStateForTags(window.form.filterSelects, true);
     window.form.setNewAddress(true);
+    window.data.mainPin.addEventListener(`click`, onMainPinActive);
+    window.data.mainPin.addEventListener(`keydown`, onMainPinActive);
+    window.data.mainPin.addEventListener(`mousedown`, onMainPinMouseDown);
   };
 
   const setActive = () => {
