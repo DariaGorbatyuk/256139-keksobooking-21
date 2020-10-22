@@ -74,7 +74,7 @@
     window.map.pinsContainer.removeEventListener(`mouseup`, onMouseUp);
   };
   const onMainPinActive = (evt) => {
-    if (evt.button !== window.data.LKM && evt.key !== window.data.BUTTON_ENTER) {
+    if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ENTER) {
       return;
     }
     if (!isActive) {

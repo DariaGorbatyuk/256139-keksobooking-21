@@ -3,7 +3,7 @@
   const main = document.querySelector(`main`);
   const URL = `https://21.javascript.pages.academy/keksobooking`;
   const onErrorActive = (evt) => {
-    if (evt.button !== window.data.LKM && evt.key !== window.data.BUTTON_ESCAPE) {
+    if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ESCAPE) {
       return;
     }
     document.querySelector(`.error`).remove();
@@ -36,7 +36,7 @@
     xhr.timeout = 5000;
   };
   const onActive = (evt) => {
-    if (evt.button !== window.data.LKM && evt.key !== window.data.BUTTON_ESCAPE) {
+    if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ESCAPE) {
       return;
     }
     main.querySelector(`.success`).remove();
