@@ -1,6 +1,7 @@
 'use strict';
 (() => {
   const pinsContainer = window.map.pinsContainer;
+  let isActive;
   let startCoords = {x: 0, y: 0}; // мне кажется не правильно что я в одном файле и координаты считаю и режимы задаю?
 
   const setStateForTags = (tags, state) => {
@@ -9,7 +10,7 @@
     });
   };
   const setPassive = () => {
-    window.mode.isActive = false;
+    isActive = false;
     window.data.map.classList.add(`map--faded`);
     window.form.adForm.classList.add(`ad-form--disabled`);
     setStateForTags(window.form.adFieldsets, true);
@@ -21,7 +22,7 @@
   };
 
   const setActive = () => {
-    window.mode.isActive = true;
+    isActive = true;
     setStateForTags(window.form.adFieldsets, false);
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
@@ -75,12 +76,16 @@
     if (evt.button !== window.data.LKM && evt.key !== window.data.BUTTON_ENTER) {
       return;
     }
-    if (!window.mode.isActive) {
+    if (!isActive) {
       setActive();
     }
     window.data.mainPin.removeEventListener(`keydown`, onMainPinActive);
     window.data.mainPin.removeEventListener(`click`, onMainPinActive);
   };
 
+  window.mode = {
+    setActive,
+    setPassive
+  };
   setPassive();
 })();
