@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const pinsContainer = window.map.pinsContainer;
-
+  // move to move
   let startCoords = {x: 0, y: 0};
 
   const setStateForTags = (tags, state) => {
@@ -53,6 +53,7 @@
   };
 
   const setPassive = () => {
+    window.mode.isActive = false;
     window.data.map.classList.add(`map--faded`);
     window.form.adForm.classList.add(`ad-form--disabled`);
     setStateForTags(window.form.adFieldsets, true);
