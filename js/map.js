@@ -34,7 +34,7 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.load.advertisements[indexAdv]);
+    window.map.renderCard(window.download.advertisements[indexAdv]);
   };
 
   const onPopupClose = (evt)=>{

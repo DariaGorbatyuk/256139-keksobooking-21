@@ -9,6 +9,8 @@
   };
 
   const setPassive = () => {
+    window.data.map.classList.add(`map--faded`);
+    window.form.adForm.classList.add(`ad-form--disabled`);
     setStateForTags(window.form.adFieldsets, true);
     setStateForTags(window.form.filterSelects, true);
     window.form.setNewAddress(true);
@@ -20,7 +22,7 @@
     setStateForTags(window.form.filterSelects, false);
     window.data.map.classList.remove(`map--faded`);
     window.form.adForm.classList.remove(`ad-form--disabled`);
-    window.map.renderPinsList(window.load.advertisements);
+    window.map.renderPinsList(window.download.advertisements);
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();

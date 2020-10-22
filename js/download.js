@@ -5,9 +5,7 @@
   xhr.responseType = `json`;
 
   const onSuccess = (data)=>{
-    window.load = {
-      advertisements: data
-    };
+    window.download.advertisements = data;
   };
   const onError = (error)=>{
     let node = document.createElement(`div`);
@@ -15,7 +13,7 @@
     node.textContent = error;
     window.data.map.insertAdjacentElement(`afterbegin`, node);
   };
-  xhr.addEventListener(`load`, ()=>{
+  const onLoad = ()=>{
     let error;
     switch (xhr.status) {
       case 200:
@@ -47,9 +45,13 @@
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
     xhr.timeout = 10000;
-  });
+  };
+  xhr.addEventListener(`load`, onLoad);
 
   xhr.open(`GET`, URL);
   xhr.send();
+  window.download = {
+    onLoad
+  };
 
 })();
