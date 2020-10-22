@@ -15,6 +15,7 @@
     window.form.adForm.classList.add(`ad-form--disabled`);
     setStateForTags(window.form.adFieldsets, true);
     setStateForTags(window.form.filterSelects, true);
+    window.data.mainPin.style = `left: 570px; top: 375px;`;
     window.form.setNewAddress(true);
     window.data.mainPin.addEventListener(`click`, onMainPinActive);
     window.data.mainPin.addEventListener(`keydown`, onMainPinActive);

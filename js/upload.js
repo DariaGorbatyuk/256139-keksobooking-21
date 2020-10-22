@@ -11,14 +11,7 @@
     document.removeEventListener(`click`, onErrorActive);
   };
   const onSuccess = () => {
-    let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-    collection.forEach((item) => {
-      item.remove();
-    });
-    const card = window.data.map.querySelector(`.map__card`);
-    if (card) {
-      card.remove();
-    }
+    window.form.deletePinsAndCard();
     window.mode.setPassive();
     window.form.adForm.reset();
     successMessage();
