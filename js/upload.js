@@ -20,7 +20,7 @@
     const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
     let newError = errorTemplate.cloneNode(true);
     main.insertAdjacentElement(`afterbegin`, newError);
-    newError.addEventListener(`click`, onErrorActive);
+    newError.querySelector(`.error__button`).addEventListener(`click`, onErrorActive);
     document.addEventListener(`keydown`, onErrorActive);
     document.addEventListener(`click`, onErrorActive);
   };
