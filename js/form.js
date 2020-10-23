@@ -130,6 +130,7 @@
     onChangeAdRoomCapacity,
     onChangeAdTypeOfHousing,
     onTimeChange,
-    onReset
+    onReset,
+    getCoords
   };
 })();
