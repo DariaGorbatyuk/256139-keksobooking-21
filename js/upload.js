@@ -2,7 +2,7 @@
 (() => {
   const main = document.querySelector(`main`);
   const URL = `https://21.javascript.pages.academy/keksobooking`;
-  const onErrorClose = (evt) => {
+  const onErrorClose = (evt) => { // убрать одинаковые фукции
     if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ESCAPE) {
       return;
     }
@@ -28,26 +28,25 @@
     let xhr = new XMLHttpRequest();
     xhr.open(`POST`, URL);
     xhr.send(new FormData(window.form.adForm));
-    xhr.addEventListener(`load`, onSuccess);
-    xhr.addEventListener(`error`, onError);
-    xhr.addEventListener(`timeout`, onError);
+    xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
     xhr.timeout = 5000;
   };
-  const onActive = (evt) => {
+  const onRemoveSucccessMessage = (evt) => {
     if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ESCAPE) {
       return;
     }
     main.querySelector(`.success`).remove();
-    document.removeEventListener(`keydown`, onActive);
-    document.removeEventListener(`click`, onActive);
+    document.removeEventListener(`keydown`, onRemoveSucccessMessage);
+    document.removeEventListener(`click`, onRemoveSucccessMessage);
   };
   const successMessage = () => {
     const messageTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
     const newMessage = messageTemplate.cloneNode(true);
     main.insertAdjacentElement(`afterbegin`, newMessage);
-    document.addEventListener(`keydown`, onActive);
-    document.addEventListener(`click`, onActive);
+    document.addEventListener(`keydown`, onRemoveSucccessMessage);
+    document.addEventListener(`click`, onRemoveSucccessMessage);
   };
+
   window.form.adForm.addEventListener(`submit`, onSubmit);
 })();
 
