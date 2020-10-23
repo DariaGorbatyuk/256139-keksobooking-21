@@ -130,6 +130,6 @@
     onChangeAdRoomCapacity,
     onChangeAdTypeOfHousing,
     onTimeChange,
-    deletePinsAndCard
+    onReset
   };
 })();

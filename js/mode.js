@@ -2,7 +2,7 @@
 (() => {
   const pinsContainer = window.map.pinsContainer;
   let isActive;
-  let startCoords = {x: 0, y: 0}; // мне кажется не правильно что я в одном файле и координаты считаю и режимы задаю?
+  let startCoords = {x: 0, y: 0};
 
   const setStateForTags = (tags, state) => {
     tags.forEach((item) => {
