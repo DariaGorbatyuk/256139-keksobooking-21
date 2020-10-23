@@ -16,6 +16,13 @@
   xhr.open(`GET`, URL);
   xhr.send();
   xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
+  xhr.addEventListener(`error`, () => {
+    onError(`Запрос не может быть выполнен, ошибка соединения`);
+  });
+  xhr.addEventListener(`timeout`, () => {
+    onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+  });
+  xhr.timeout = 5000;
   window.download = {
     advertisements: undefined
   };
