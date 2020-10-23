@@ -1,6 +1,6 @@
 'use strict';
 (() =>{
-  const LKM = 0;
+  const LEFT_MOUSE_BUTTON = 0;
   const BUTTON_ENTER = `Enter`;
   const BUTTON_ESCAPE = `Escape`;
   const map = document.querySelector(`.map`);
@@ -9,7 +9,7 @@
   window.data = {
     map,
     mainPin,
-    LKM,
+    LEFT_MOUSE_BUTTON,
     BUTTON_ENTER,
     BUTTON_ESCAPE
   };

@@ -20,7 +20,7 @@
   };
 
   const onSmallPinActivated = (evt) => {
-    if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LKM) {
+    if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }
     if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
@@ -34,11 +34,11 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.load.advertisements[indexAdv]);
+    window.map.renderCard(window.download.advertisements[indexAdv]);
   };
 
   const onPopupClose = (evt)=>{
-    if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LKM) {
+    if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }
     map.querySelector(`.map__card `).remove();

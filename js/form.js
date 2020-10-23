@@ -1,5 +1,5 @@
 'use strict';
-(()=>{
+(() => {
   const MAIN_PIN_ARROW = 18;
   const MIN_PRICE_FOR_NIGHT = {
     bungalow: `0`,
@@ -18,6 +18,7 @@
   const adPriceForNight = adForm.querySelector(`#price`);
   const timeIn = adForm.querySelector(`#timein`);
   const timeOut = adForm.querySelector(`#timeout`);
+  const resetButton = adForm.querySelector(`.ad-form__reset`);
   const mainPinWidth = window.data.mainPin.offsetWidth;
   const mainPinHeight = window.data.mainPin.offsetHeight;
 
@@ -44,7 +45,7 @@
       adAddress.value = `${coords.x}, ${coords.y}`;
     }
   };
-  const checkLimits = (x, y)=>{
+  const checkLimits = (x, y) => {
     const limits = {
       minYCoord: 130,
       maxYCoord: 630,
@@ -80,20 +81,36 @@
     adPriceForNight.placeholder = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
   };
 
-  const setTimeInOut = (evt)=>{
+  const setTimeInOut = (evt) => {
     timeIn.value = evt.target.value;
     timeOut.value = evt.target.value;
   };
 
-  const onChangeAdRoomCapacity = ()=>{
+  const onChangeAdRoomCapacity = () => {
     verifyRoomsCapacity();
   };
-  const onChangeAdTypeOfHousing = ()=>{
+  const onChangeAdTypeOfHousing = () => {
     verifyPriceForNight();
   };
-  const onTimeChange = (evt)=>{
+  const onTimeChange = (evt) => {
     setTimeInOut(evt);
   };
+  const onReset = () => {
+    deletePinsAndCard();
+    window.mode.setPassive();
+    window.form.adForm.reset();
+  };
+  const deletePinsAndCard = ()=>{
+    let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    collection.forEach((item) => {
+      item.remove();
+    });
+    const card = window.data.map.querySelector(`.map__card`);
+    if (card) {
+      card.remove();
+    }
+  };
+  resetButton.addEventListener(`click`, onReset);
   window.form = {
     setNewAddress,
     verifyRoomsCapacity,
@@ -112,6 +129,8 @@
     timeOut,
     onChangeAdRoomCapacity,
     onChangeAdTypeOfHousing,
-    onTimeChange
+    onTimeChange,
+    onReset,
+    getCoords
   };
 })();
