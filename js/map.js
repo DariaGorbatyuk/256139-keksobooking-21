@@ -1,11 +1,12 @@
 'use strict';
 (()=>{
+  const MAX_PIN_COUNT = 5;
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
 
   const renderPinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < advertisements.length; i++) {
+    for (let i = 0; i < MAX_PIN_COUNT; i++) {
       let pin = window.pin.get(advertisements[i], i);
       fragment.appendChild(pin);
     }
