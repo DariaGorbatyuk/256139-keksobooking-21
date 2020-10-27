@@ -1,12 +1,13 @@
 'use strict';
 (() => {
-  const MAX_PIN_COUNT = 5;
+  let MAX_PIN_COUNT = 5;
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
 
   const renderPinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < MAX_PIN_COUNT; i++) {
+    let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
+    for (let i = 0; i < count; i++) {
       let pin = window.pin.get(advertisements[i], i);
       fragment.appendChild(pin);
     }
@@ -35,7 +36,11 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.download.advertisements[indexAdv]);
+    let adv = window.download.advertisements;
+    if (window.filterForm.advertisements) {
+      adv = window.filterForm.advertisements;
+    }
+    window.map.renderCard(adv[indexAdv]);
   };
 
   const onPopupClose = (evt) => {

@@ -8,11 +8,7 @@
     let newAdvertisements = window.download.advertisements.filter((item) => {
       return item.offer.type === housingType.value;
     });
-    newAdvertisements = newAdvertisements.concat(window.download.advertisements);
-    newAdvertisements = newAdvertisements.filter((item, i) => {
-      return newAdvertisements.indexOf(item) === i;
-    });
-    window.download.advertisements = newAdvertisements;
+    window.filterForm.advertisements = newAdvertisements;
     return newAdvertisements;
   };
 
