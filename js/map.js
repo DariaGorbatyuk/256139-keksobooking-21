@@ -1,5 +1,5 @@
 'use strict';
-(()=>{
+(() => {
   const MAX_PIN_COUNT = 5;
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
@@ -12,7 +12,7 @@
     }
     pinsContainer.appendChild(fragment);
   };
-  const renderCard = (advertisement)=>{
+  const renderCard = (advertisement) => {
     const newCard = window.card.get(advertisement);
     const cardClose = newCard.querySelector(`.popup__close`);
     map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
@@ -20,7 +20,7 @@
     document.addEventListener(`keydown`, onPopupClose);
   };
 
-  const onSmallPinActivated = (evt) => {
+  const onSmallPinActivated = (advertisements, evt) => {
     if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }
@@ -35,10 +35,10 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.download.advertisements[indexAdv]);
+    window.map.renderCard(advertisements[indexAdv]);
   };
 
-  const onPopupClose = (evt)=>{
+  const onPopupClose = (evt) => {
     if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }

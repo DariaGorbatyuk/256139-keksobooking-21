@@ -36,8 +36,8 @@
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
-    pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated);
-    pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated);
+    pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated.bind(null, window.download.advertisements));
+    pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated.bind(null, window.download.advertisements));
     window.form.adTypeOfHousing.addEventListener(`change`, window.form.onChangeAdTypeOfHousing);
     window.form.adRoomNumber.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
     window.form.adRoomCapacity.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
@@ -92,19 +92,6 @@
     setActive,
     setPassive
   };
-  const housingType = window.form.filterForm.querySelector(`#housing-type`);
-
-  housingType.addEventListener(`change`, () => {
-    let newAdvertisements = window.download.advertisements.filter((item) => {
-      return item.offer.type === housingType.value;
-    });
-    newAdvertisements = newAdvertisements.concat(window.download.advertisements);
-    newAdvertisements = newAdvertisements.filter((item, i) => {
-      return newAdvertisements.indexOf(item) === i;
-    });
-    window.form.deletePinsAndCard();
-    window.map.renderPinsList(newAdvertisements);
-  });
 
   setPassive();
 })();

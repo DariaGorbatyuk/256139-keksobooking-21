@@ -93,12 +93,7 @@
   const onTimeChange = (evt) => {
     setTimeInOut(evt);
   };
-  const onReset = () => {
-    deletePinsAndCard();
-    window.mode.setPassive();
-    window.form.adForm.reset();
-  };
-  const deletePinsAndCard = ()=>{
+  const deletePinsAndCard = () => {
     let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     collection.forEach((item) => {
       item.remove();
@@ -108,6 +103,12 @@
       card.remove();
     }
   };
+  const onReset = () => {
+    deletePinsAndCard();
+    window.mode.setPassive();
+    window.form.adForm.reset();
+  };
+
   resetButton.addEventListener(`click`, onReset);
   window.form = {
     setNewAddress,
