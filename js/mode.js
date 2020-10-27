@@ -92,5 +92,19 @@
     setActive,
     setPassive
   };
+  const housingType = window.form.filterForm.querySelector(`#housing-type`);
+
+  housingType.addEventListener(`change`, () => {
+    let newAdvertisements = window.download.advertisements.filter((item) => {
+      return item.offer.type === housingType.value;
+    });
+    newAdvertisements = newAdvertisements.concat(window.download.advertisements);
+    newAdvertisements = newAdvertisements.filter((item, i) => {
+      return newAdvertisements.indexOf(item) === i;
+    });
+    window.form.deletePinsAndCard();
+    window.map.renderPinsList(newAdvertisements);
+  });
+
   setPassive();
 })();

@@ -131,6 +131,7 @@
     onChangeAdTypeOfHousing,
     onTimeChange,
     onReset,
-    getCoords
+    getCoords,
+    deletePinsAndCard
   };
 })();
