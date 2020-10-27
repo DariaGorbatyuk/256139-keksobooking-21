@@ -8,9 +8,7 @@
     palace: `10000`
   };
   const adForm = document.querySelector(`.ad-form`);
-  const filterForm = window.data.map.querySelector(`.map__filters`);
   const adFieldsets = adForm.querySelectorAll(`fieldset`);
-  const filterSelects = filterForm.querySelectorAll(`select`);
   const adAddress = adForm.querySelector(`#address`);
   const adRoomNumber = adForm.querySelector(`#room_number`);
   const adRoomCapacity = adForm.querySelector(`#capacity`);
@@ -117,14 +115,12 @@
     verifyPriceForNight,
     setTimeInOut,
     adForm,
-    filterForm,
     adFieldsets,
     adAddress,
     adRoomNumber,
     adRoomCapacity,
     adTypeOfHousing,
     adPriceForNight,
-    filterSelects,
     timeIn,
     timeOut,
     onChangeAdRoomCapacity,
