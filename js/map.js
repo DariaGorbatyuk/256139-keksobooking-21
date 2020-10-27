@@ -20,7 +20,7 @@
     document.addEventListener(`keydown`, onPopupClose);
   };
 
-  const onSmallPinActivated = (advertisements, evt) => {
+  const onSmallPinActivated = (evt) => {
     if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }
@@ -35,7 +35,7 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(advertisements[indexAdv]);
+    window.map.renderCard(window.download.advertisements[indexAdv]);
   };
 
   const onPopupClose = (evt) => {

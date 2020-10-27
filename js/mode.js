@@ -36,8 +36,8 @@
     window.form.adAddress.readOnly = true;
     window.form.verifyRoomsCapacity();
     window.form.verifyPriceForNight();
-    pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated.bind(null, window.download.advertisements));
-    pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated.bind(null, window.download.advertisements));
+    pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated);
+    pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated);
     window.form.adTypeOfHousing.addEventListener(`change`, window.form.onChangeAdTypeOfHousing);
     window.form.adRoomNumber.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
     window.form.adRoomCapacity.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
