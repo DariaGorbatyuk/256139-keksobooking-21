@@ -1,17 +1,19 @@
 'use strict';
-(()=>{
+(() => {
+  let MAX_PIN_COUNT = 5;
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
 
   const renderPinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
-    for (let i = 0; i < advertisements.length; i++) {
+    let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
+    for (let i = 0; i < count; i++) {
       let pin = window.pin.get(advertisements[i], i);
       fragment.appendChild(pin);
     }
     pinsContainer.appendChild(fragment);
   };
-  const renderCard = (advertisement)=>{
+  const renderCard = (advertisement) => {
     const newCard = window.card.get(advertisement);
     const cardClose = newCard.querySelector(`.popup__close`);
     map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
@@ -34,10 +36,14 @@
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
     }
-    window.map.renderCard(window.download.advertisements[indexAdv]);
+    let adv = window.download.advertisements;
+    if (window.filterForm.advertisements) {
+      adv = window.filterForm.advertisements;
+    }
+    window.map.renderCard(adv[indexAdv]);
   };
 
-  const onPopupClose = (evt)=>{
+  const onPopupClose = (evt) => {
     if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }

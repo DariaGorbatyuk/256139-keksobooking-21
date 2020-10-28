@@ -8,9 +8,7 @@
     palace: `10000`
   };
   const adForm = document.querySelector(`.ad-form`);
-  const filterForm = window.data.map.querySelector(`.map__filters`);
   const adFieldsets = adForm.querySelectorAll(`fieldset`);
-  const filterSelects = filterForm.querySelectorAll(`select`);
   const adAddress = adForm.querySelector(`#address`);
   const adRoomNumber = adForm.querySelector(`#room_number`);
   const adRoomCapacity = adForm.querySelector(`#capacity`);
@@ -95,12 +93,7 @@
   const onTimeChange = (evt) => {
     setTimeInOut(evt);
   };
-  const onReset = () => {
-    deletePinsAndCard();
-    window.mode.setPassive();
-    window.form.adForm.reset();
-  };
-  const deletePinsAndCard = ()=>{
+  const deletePinsAndCard = () => {
     let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
     collection.forEach((item) => {
       item.remove();
@@ -110,6 +103,12 @@
       card.remove();
     }
   };
+  const onReset = () => {
+    deletePinsAndCard();
+    window.mode.setPassive();
+    window.form.adForm.reset();
+  };
+
   resetButton.addEventListener(`click`, onReset);
   window.form = {
     setNewAddress,
@@ -117,20 +116,19 @@
     verifyPriceForNight,
     setTimeInOut,
     adForm,
-    filterForm,
     adFieldsets,
     adAddress,
     adRoomNumber,
     adRoomCapacity,
     adTypeOfHousing,
     adPriceForNight,
-    filterSelects,
     timeIn,
     timeOut,
     onChangeAdRoomCapacity,
     onChangeAdTypeOfHousing,
     onTimeChange,
     onReset,
-    getCoords
+    getCoords,
+    deletePinsAndCard
   };
 })();
