@@ -9,18 +9,19 @@
   const housingRooms = filterForm.querySelector(`#housing-rooms`);
   const housingGuests = filterForm.querySelector(`#housing-guests`);
   const housingFeatures = filterForm.querySelector(`#housing-features`);
+
   const getPrice = (price) => {
     if (price <= MIN_PRICE) {
       return `low`;
-    } else if (MIN_PRICE < price < MAX_PRICE) {
+    } else if (MIN_PRICE < price && price < MAX_PRICE) {
       return `middle`;
     } else {
       return `high`;
     }
   };
-  const isSelected = (items) => {
-    items.forEach((item, i) => {
-      keys[i].selected = item.value !== `any`;
+  const checkSelected = (keys) => {
+    keys.forEach((key) => {
+      key.selected = key.filter.value !== `any`;
     });
   };
   const keys = [
@@ -49,36 +50,51 @@
       path: `guests`
     }
   ];
-
+  const getNewAdvs = (advs, selectedFilters) => {
+    advs = advs.filter((item) => {
+      let res = [];
+      let counter = 0;
+      for (let i = 0; i < selectedFilters.length; i++) {
+        let key = selectedFilters[i];
+        let advValue = item.offer[key.path];
+        if (key.name === `housingPrice`) {
+          advValue = getPrice(item.offer[key.path]);
+        }
+        let filterValue = key.filter.value;
+        if (filterValue !== String(advValue)) {
+          break;
+        }
+        counter++;
+      }
+      /*      selectedFilters.forEach((key) => {
+        let advValue = item.offer[key.path];
+        if (key.name === housingPrice) {
+          advValue = getPrice(item.offer[key.path]);
+        }
+        let filterValue = key.filter.value;
+        if (filterValue === String(advValue)) {
+          res.push(true);
+        } else {
+          res.push(false);
+        }
+      });*/
+      // return res.indexOf(false) === -1;
+      return counter === selectedFilters.length;
+    });
+    selectedFilters = [];
+    return advs;
+  };
   const onFilterChange = () => {
     debugger;
-    const selectors = [housingType, housingPrice, housingRooms, housingGuests];
-    isSelected(selectors);
-
-    let keysSelectedFilter = keys.filter((i) => i.selected);
-    let adv = window.download.advertisements;
-    if (keysSelectedFilter.length !== 0) {
-      adv = adv.filter((item) => {
-        let res = [];
-        keysSelectedFilter.forEach((key) => {
-          let advValue = item.offer[key.path];
-          if (key.name === housingPrice) {
-            advValue = getPrice(item.offer[key.path]);
-          }
-          let filterValue = key.filter.value;
-          if (filterValue === String(advValue)) {
-            res.push(true);
-          } else {
-            res.push(false);
-          }
-        });
-        return res.indexOf(false) === -1;
-      });
+    checkSelected(keys);
+    let selectedFilters = keys.filter((i) => i.selected);
+    let advs = window.download.advertisements;
+    if (selectedFilters.length !== 0) {
+      advs = getNewAdvs(advs, selectedFilters);
     }
-    keysSelectedFilter = [];
     window.form.deletePinsAndCard();
-    window.map.renderPinsList(adv);
-    window.filterForm.advertisements = adv;
+    window.map.renderPinsList(advs);
+    window.filterForm.advertisements = advs;
   };
   filterForm.addEventListener(`change`, onFilterChange);
 
