@@ -52,7 +52,6 @@
   ];
   const getNewAdvs = (advs, selectedFilters) => {
     advs = advs.filter((item) => {
-      let res = [];
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let key = selectedFilters[i];
@@ -66,26 +65,12 @@
         }
         counter++;
       }
-      /*      selectedFilters.forEach((key) => {
-        let advValue = item.offer[key.path];
-        if (key.name === housingPrice) {
-          advValue = getPrice(item.offer[key.path]);
-        }
-        let filterValue = key.filter.value;
-        if (filterValue === String(advValue)) {
-          res.push(true);
-        } else {
-          res.push(false);
-        }
-      });*/
-      // return res.indexOf(false) === -1;
       return counter === selectedFilters.length;
     });
     selectedFilters = [];
     return advs;
   };
   const onFilterChange = () => {
-    debugger;
     checkSelected(keys);
     let selectedFilters = keys.filter((i) => i.selected);
     let advs = window.download.advertisements;
@@ -104,48 +89,3 @@
     filterSelects
   };
 })();
-/*
-  */
-/*  const getRank = (adv)=>{
-    let rank = 0;
-    let maxRank = 0;
-    if (adv.offer.type === housingType.value) {
-      rank++;
-    }
-    if (getPrice(adv.offer.price) === housingPrice.value) {
-      rank++;
-    }
-    if (String(adv.offer.rooms) === housingRooms.value) {
-      rank++;
-    }
-    if (String(adv.offer.guests) === housingGuests.value) {
-      rank++;
-    }
-    /!*  if (evt.target.value === `any`) { // спорно
-      rank++;
-    }*!/
-    if (rank > maxRank) {
-      maxRank = rank;
-    }
-    adv.rank = rank;
-    return maxRank;
-  };
-  const onFilterChange = ()=>{
-
-    let adv = window.download.advertisements;
-    let maxRank;
-    debugger;
-    adv.forEach((item)=>{
-      getRank(item);
-    });
-    adv.sort((left, right)=>{
-      return right.rank - left.rank;
-    });
-    maxRank = adv[0].rank;
-    adv = adv.filter((item)=>{
-      return item.rank === maxRank;
-    });
-    window.form.deletePinsAndCard();
-    window.map.renderPinsList(adv);
-    window.filterForm.advertisements = adv;
-  };*/
