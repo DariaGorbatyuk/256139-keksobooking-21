@@ -29,7 +29,8 @@
     keys.forEach((key) => {
       if (key.name === `features`) {
         key.filter.forEach((feature, i)=>{
-          key.selected[i] = feature.checked;
+          key.checked[i] = feature.checked;
+          key.selected = key.checked.includes(true);
         });
       } else {
         key.selected = key.filter.value !== `any`;
@@ -64,10 +65,16 @@
     {
       name: `features`,
       filter: [wifi, dishWasher, parking, washer, elevator, conditioner],
-      selected: [false, false, false, false, false, false],
+      selected: false,
+      checked: [false, false, false, false, false, false],
       path: `features`
     }
   ];
+  const getFeatures = (key)=>{
+    return key.filter.filter((feature, i) => {
+      return key.checked[i];
+    });
+  };
   const getNewAdvs = (advs, selectedFilters) => {
     advs = advs.filter((item) => {
       let counter = 0;
@@ -77,11 +84,21 @@
         if (key.name === `housingPrice`) {
           advValue = getPrice(item.offer[key.path]);
         }
-        let filterValue = key.filter.value;
-        if (filterValue !== String(advValue)) {
-          break;
+        if (key.name === `features`) {
+          let chosenFeatures = getFeatures(key);
+          let features = chosenFeatures.filter((feature)=>{
+            return advValue.includes(feature.value);
+          });
+          if (features.length === chosenFeatures.length) {
+            counter++;
+          }
+        } else {
+          let filterValue = key.filter.value;
+          if (filterValue !== String(advValue)) {
+            break;
+          }
+          counter++;
         }
-        counter++;
       }
       return counter === selectedFilters.length;
     });
