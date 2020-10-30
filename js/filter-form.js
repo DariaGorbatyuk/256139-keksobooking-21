@@ -14,7 +14,6 @@
   const washer = filterForm.querySelector(`#filter-washer`);
   const elevator = filterForm.querySelector(`#filter-elevator`);
   const conditioner = filterForm.querySelector(`#filter-conditioner`);
-  // const housingFeatures = filterForm.querySelector(`#housing-features`);
 
   const getPrice = (price) => {
     if (price <= MIN_PRICE) {
@@ -75,23 +74,24 @@
       return key.checked[i];
     });
   };
+  const filterByFeatures = (key, advValue, counter)=>{
+    let chosenFeatures = getFeatures(key);
+    let features = chosenFeatures.filter((feature)=>{
+      return advValue.includes(feature.value);
+    });
+    if (features.length === chosenFeatures.length) {
+      counter++;
+    }
+    return counter;
+  };
   const getNewAdvs = (advs, selectedFilters) => {
     advs = advs.filter((item) => {
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let key = selectedFilters[i];
-        let advValue = item.offer[key.path];
-        if (key.name === `housingPrice`) {
-          advValue = getPrice(item.offer[key.path]);
-        }
+        let advValue = key.name === `housingPrice` ? getPrice(item.offer[key.path]) : item.offer[key.path];
         if (key.name === `features`) {
-          let chosenFeatures = getFeatures(key);
-          let features = chosenFeatures.filter((feature)=>{
-            return advValue.includes(feature.value);
-          });
-          if (features.length === chosenFeatures.length) {
-            counter++;
-          }
+          counter = filterByFeatures(key, advValue, counter);
         } else {
           let filterValue = key.filter.value;
           if (filterValue !== String(advValue)) {
@@ -106,7 +106,6 @@
     return advs;
   };
   const onFilterChange = () => {
-    debugger;
     checkSelected(keys);
     let selectedFilters = keys.filter((i) => i.selected);
     let advs = window.download.advertisements;

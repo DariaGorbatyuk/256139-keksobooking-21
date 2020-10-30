@@ -25,6 +25,7 @@
 
   const fillFeatures = (advertisement, newCard) => {
     const features = newCard.querySelectorAll(`.popup__feature`);
+    debugger;
     let res = [];
     for (let i = 0; i < features.length; i++) {
       let j = res.length;
