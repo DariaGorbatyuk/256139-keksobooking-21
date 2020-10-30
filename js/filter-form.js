@@ -8,7 +8,13 @@
   const housingPrice = filterForm.querySelector(`#housing-price`);
   const housingRooms = filterForm.querySelector(`#housing-rooms`);
   const housingGuests = filterForm.querySelector(`#housing-guests`);
-  const housingFeatures = filterForm.querySelector(`#housing-features`);
+  const wifi = filterForm.querySelector(`#filter-wifi`);
+  const dishWasher = filterForm.querySelector(`#filter-dishwasher`);
+  const parking = filterForm.querySelector(`#filter-parking`);
+  const washer = filterForm.querySelector(`#filter-washer`);
+  const elevator = filterForm.querySelector(`#filter-elevator`);
+  const conditioner = filterForm.querySelector(`#filter-conditioner`);
+  // const housingFeatures = filterForm.querySelector(`#housing-features`);
 
   const getPrice = (price) => {
     if (price <= MIN_PRICE) {
@@ -21,7 +27,13 @@
   };
   const checkSelected = (keys) => {
     keys.forEach((key) => {
-      key.selected = key.filter.value !== `any`;
+      if (key.name === `features`) {
+        key.filter.forEach((feature, i)=>{
+          key.selected[i] = feature.checked;
+        });
+      } else {
+        key.selected = key.filter.value !== `any`;
+      }
     });
   };
   const keys = [
@@ -48,6 +60,12 @@
       filter: housingGuests,
       selected: false,
       path: `guests`
+    },
+    {
+      name: `features`,
+      filter: [wifi, dishWasher, parking, washer, elevator, conditioner],
+      selected: [false, false, false, false, false, false],
+      path: `features`
     }
   ];
   const getNewAdvs = (advs, selectedFilters) => {
@@ -71,6 +89,7 @@
     return advs;
   };
   const onFilterChange = () => {
+    debugger;
     checkSelected(keys);
     let selectedFilters = keys.filter((i) => i.selected);
     let advs = window.download.advertisements;
