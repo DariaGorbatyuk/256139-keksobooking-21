@@ -84,8 +84,8 @@
     }
     return counter;
   };
-  const getNewAdvs = (advs, selectedFilters) => {
-    advs = advs.filter((item) => {
+  const getNewAdvs = (adverts, selectedFilters) => {
+    adverts = adverts.filter((item) => {
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let key = selectedFilters[i];
@@ -103,20 +103,20 @@
       return counter === selectedFilters.length;
     });
     selectedFilters = [];
-    return advs;
+    return adverts;
   };
   const onFilterChange = () => {
     checkSelected(keys);
     let selectedFilters = keys.filter((filter) => {
       return filter.selected;
     });
-    let advs = window.download.advertisements;
+    let adverts = window.download.advertisements;
     if (selectedFilters.length !== 0) {
-      advs = getNewAdvs(advs, selectedFilters);
+      adverts = getNewAdvs(adverts, selectedFilters);
     }
     window.form.deletePinsAndCard();
-    window.map.renderPinsList(advs);
-    window.filterForm.advertisements = advs;
+    window.map.renderPinsList(adverts);
+    window.filterForm.advertisements = adverts;
   };
   filterForm.addEventListener(`change`, onFilterChange);
 
