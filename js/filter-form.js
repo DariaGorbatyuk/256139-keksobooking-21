@@ -81,8 +81,8 @@
     }
     return counter;
   };
-  const getNewAdvs = (adverts, selectedFilters) => {
-    adverts = adverts.filter((item) => {
+  const getNewAdverts = (adverts, selectedFilters) => {
+    return adverts.filter((item) => {
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let filter = selectedFilters[i];
@@ -101,7 +101,6 @@
       }
       return counter === selectedFilters.length;
     });
-    return adverts;
   };
   const onFilterChange = () => {
     checkSelected(filters);
@@ -110,8 +109,7 @@
     });
     let adverts = window.download.advertisements;
     if (selectedFilters.length !== 0) {
-      adverts = getNewAdvs(adverts, selectedFilters);
-      selectedFilters = [];
+      adverts = getNewAdverts(adverts, selectedFilters);
     }
     window.form.deletePinsAndCard();
     window.map.renderPinsList(adverts);
