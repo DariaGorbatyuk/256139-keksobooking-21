@@ -38,8 +38,7 @@
     {
       name: `features`,
       nodes: [wifi, dishWasher, parking, washer, elevator, conditioner],
-      selected: false,
-      checked: []
+      selected: false
     }
   ];
   const getPrice = (price) => {
@@ -67,43 +66,38 @@
     });
   };
 
-  const getFeatures = (key)=>{
-    return key.nodes.filter((feature) => {
+  const getCheckedFeatures = (features)=>{
+    return features.nodes.filter((feature) => {
       return feature.checked;
     });
   };
-  const filterByFeatures = (filter, advValue, counter)=>{
-    let chosenFeatures = getFeatures(filter);
-    let features = chosenFeatures.filter((feature)=>{
+  const filterByFeatures = (features, advValue, counter)=>{
+    let chosenFeatures = getCheckedFeatures(features);
+    let containedFeatures = chosenFeatures.filter((feature)=>{
       return advValue.includes(feature.value);
     });
-    if (features.length === chosenFeatures.length) {
+    if (containedFeatures.length === chosenFeatures.length) {
       counter++;
     }
     return counter;
   };
   const getNewAdvs = (adverts, selectedFilters) => {
+    debugger;
     adverts = adverts.filter((item) => {
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let filter = selectedFilters[i];
-        let advValue;
+        let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
         switch (filter.name) {
-          case (`price`):
-            advValue = getPrice(item.offer[filter.name]);
+          case (`features`):
+            counter = filterByFeatures(filter, advValue, counter);
             break;
           default:
-            advValue = item.offer[filter.name];
-        }
-
-        if (filter.name === `features`) {
-          counter = filterByFeatures(filter, advValue, counter);
-        } else {
-          let filterValue = filter.node.value;
-          if (filterValue !== advValue.toString()) {
-            break;
-          }
-          counter++;
+            let filterValue = filter.node.value;
+            if (filterValue !== advValue.toString()) {
+              break;
+            }
+            counter++;
         }
       }
       return counter === selectedFilters.length;
