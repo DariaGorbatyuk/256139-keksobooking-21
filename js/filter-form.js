@@ -43,7 +43,7 @@
       name: `features`,
       filter: [wifi, dishWasher, parking, washer, elevator, conditioner],
       selected: false,
-      checked: [false, false, false, false, false, false],
+      checked: [],
       path: `features`
     }
   ];
@@ -56,13 +56,14 @@
       return `high`;
     }
   };
+
   const checkSelected = (keys) => {
     keys.forEach((key) => {
       if (key.name === `features`) {
         key.filter.forEach((feature, i)=>{
           key.checked[i] = feature.checked;
-          key.selected = key.checked.includes(true);
         });
+        key.selected = key.checked.includes(true);
       } else {
         key.selected = key.filter.value !== `any`;
       }
