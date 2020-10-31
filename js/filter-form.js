@@ -100,7 +100,7 @@
           counter = filterByFeatures(filter, advValue, counter);
         } else {
           let filterValue = filter.node.value;
-          if (filterValue !== String(advValue)) {
+          if (filterValue !== advValue.toString()) {
             break;
           }
           counter++;
