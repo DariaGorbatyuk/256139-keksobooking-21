@@ -55,10 +55,12 @@
   const checkSelected = (keys) => {
     keys.forEach((key) => {
       if (key.name === `features`) {
-        key.nodes.forEach((feature, i)=>{
-          key.checked[i] = feature.checked;
-        });
-        key.selected = key.checked.includes(true);
+        for (let i = 0; i < key.nodes.length; i++) {
+          if (key.nodes[i].checked) {
+            key.selected = true;
+            break;
+          }
+        }
       } else {
         key.selected = key.node.value !== `any`;
       }
@@ -66,8 +68,8 @@
   };
 
   const getFeatures = (key)=>{
-    return key.nodes.filter((feature, i) => {
-      return key.checked[i];
+    return key.nodes.filter((feature) => {
+      return feature.checked;
     });
   };
   const filterByFeatures = (filter, advValue, counter)=>{
@@ -85,7 +87,15 @@
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let filter = selectedFilters[i];
-        let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
+        let advValue;
+        switch (filter.name) {
+          case (`price`):
+            advValue = getPrice(item.offer[filter.name]);
+            break;
+          default:
+            advValue = item.offer[filter.name];
+        }
+
         if (filter.name === `features`) {
           counter = filterByFeatures(filter, advValue, counter);
         } else {
@@ -98,7 +108,6 @@
       }
       return counter === selectedFilters.length;
     });
-    selectedFilters = [];
     return adverts;
   };
   const onFilterChange = () => {
@@ -109,6 +118,7 @@
     let adverts = window.download.advertisements;
     if (selectedFilters.length !== 0) {
       adverts = getNewAdvs(adverts, selectedFilters);
+      selectedFilters = [];
     }
     window.form.deletePinsAndCard();
     window.map.renderPinsList(adverts);
