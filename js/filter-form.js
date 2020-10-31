@@ -107,7 +107,9 @@
   };
   const onFilterChange = () => {
     checkSelected(keys);
-    let selectedFilters = keys.filter((i) => i.selected);
+    let selectedFilters = keys.filter((filter) => {
+      return filter.selected;
+    });
     let advs = window.download.advertisements;
     if (selectedFilters.length !== 0) {
       advs = getNewAdvs(advs, selectedFilters);
