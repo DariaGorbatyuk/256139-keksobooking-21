@@ -18,7 +18,7 @@
     window.data.map.classList.add(`map--faded`);
     window.form.adForm.classList.add(`ad-form--disabled`);
     setStateForTags(window.form.adFieldsets, true);
-    setStateForTags(window.filterForm.filterSelects, true);
+    setStateForTags(window.filterForm.selects, true);
     mainPin.style = `left: ${(mapWidth - mainPin.offsetWidth) / 2}px; top: ${mapHeight / 2}px;`;
     window.form.setNewAddress(true);
     mainPin.addEventListener(`click`, onMainPinActive);
@@ -29,7 +29,7 @@
   const setActive = () => {
     isActive = true;
     setStateForTags(window.form.adFieldsets, false);
-    setStateForTags(window.filterForm.filterSelects, false);
+    setStateForTags(window.filterForm.selects, false);
     window.data.map.classList.remove(`map--faded`);
     window.form.adForm.classList.remove(`ad-form--disabled`);
     window.map.renderPinsList(window.download.advertisements);

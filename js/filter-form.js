@@ -3,7 +3,7 @@
   const MIN_PRICE = 10000;
   const MAX_PRICE = 50000;
   const filterForm = window.data.map.querySelector(`.map__filters`);
-  const filterSelects = filterForm.querySelectorAll(`select`);
+  const selects = filterForm.querySelectorAll(`select`);
   const housingType = filterForm.querySelector(`#housing-type`);
   const housingPrice = filterForm.querySelector(`#housing-price`);
   const housingRooms = filterForm.querySelector(`#housing-rooms`);
@@ -82,7 +82,6 @@
     return counter;
   };
   const getNewAdvs = (adverts, selectedFilters) => {
-    debugger;
     adverts = adverts.filter((item) => {
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
@@ -122,7 +121,6 @@
 
 
   window.filterForm = {
-    filterForm,
-    filterSelects
+    selects
   };
 })();
