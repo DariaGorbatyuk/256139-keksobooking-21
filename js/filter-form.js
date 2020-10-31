@@ -16,35 +16,30 @@
   const conditioner = filterForm.querySelector(`#filter-conditioner`);
   const filters = [
     {
-      name: `housingType`,
-      filter: housingType,
-      selected: false,
-      path: `type`
+      name: `type`,
+      node: housingType,
+      selected: false
     },
     {
-      name: `housingPrice`,
-      filter: housingPrice,
-      selected: false,
-      path: `price`
+      name: `price`,
+      node: housingPrice,
+      selected: false
     },
     {
-      name: `housingRooms`,
-      filter: housingRooms,
-      selected: false,
-      path: `rooms`
+      name: `rooms`,
+      node: housingRooms,
+      selected: false
     },
     {
-      name: `housingGuests`,
-      filter: housingGuests,
-      selected: false,
-      path: `guests`
+      name: `guests`,
+      node: housingGuests,
+      selected: false
     },
     {
       name: `features`,
-      filter: [wifi, dishWasher, parking, washer, elevator, conditioner],
+      nodes: [wifi, dishWasher, parking, washer, elevator, conditioner],
       selected: false,
-      checked: [],
-      path: `features`
+      checked: []
     }
   ];
   const getPrice = (price) => {
@@ -60,18 +55,18 @@
   const checkSelected = (keys) => {
     keys.forEach((key) => {
       if (key.name === `features`) {
-        key.filter.forEach((feature, i)=>{
+        key.nodes.forEach((feature, i)=>{
           key.checked[i] = feature.checked;
         });
         key.selected = key.checked.includes(true);
       } else {
-        key.selected = key.filter.value !== `any`;
+        key.selected = key.node.value !== `any`;
       }
     });
   };
 
   const getFeatures = (key)=>{
-    return key.filter.filter((feature, i) => {
+    return key.nodes.filter((feature, i) => {
       return key.checked[i];
     });
   };
@@ -90,11 +85,11 @@
       let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let filter = selectedFilters[i];
-        let advValue = filter.name === `housingPrice` ? getPrice(item.offer[filter.path]) : item.offer[filter.path];
+        let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
         if (filter.name === `features`) {
           counter = filterByFeatures(filter, advValue, counter);
         } else {
-          let filterValue = filter.filter.value;
+          let filterValue = filter.node.value;
           if (filterValue !== String(advValue)) {
             break;
           }
