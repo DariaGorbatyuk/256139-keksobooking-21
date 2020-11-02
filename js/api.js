@@ -1,24 +1,32 @@
 'use strict';
 (() => {
+  const Code = {
+    OK: 200,
+    CREATED: 201,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND: 404,
+    SERVER_ERROR: 500
+  };
   const onLoad = (xhr, onSuccess, onError) => {
     let error;
     switch (xhr.status) {
-      case 200:
+      case Code.OK:
         onSuccess(xhr.response);
         break;
-      case 201:
+      case Code.CREATED:
         onSuccess(xhr.response);
         break;
-      case 400:
+      case Code.BAD_REQUEST:
         error = `Неверный запрос`;
         break;
-      case 401:
+      case Code.UNAUTHORIZED:
         error = `Пользователь не авторизован`;
         break;
-      case 404:
+      case Code.NOT_FOUND:
         error = `Запрашиваемый ресурс не найден`;
         break;
-      case 500:
+      case Code.SERVER_ERROR:
         error = `Внутренняя ошибка сервера`;
         break;
       default:
