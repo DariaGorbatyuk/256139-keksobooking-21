@@ -1,5 +1,6 @@
 'use strict';
 (() => {
+  const TIMEOUT = 5000;
   const URL = `https://21.javascript.pages.academy/keksobooking/data`;
   const xhr = new XMLHttpRequest();
   xhr.responseType = `json`;
@@ -22,9 +23,10 @@
   xhr.addEventListener(`timeout`, () => {
     onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
   });
-  xhr.timeout = 5000;
+  xhr.timeout = TIMEOUT;
   window.download = {
-    advertisements: undefined
+    advertisements: undefined,
+    TIMEOUT
   };
 
 })();

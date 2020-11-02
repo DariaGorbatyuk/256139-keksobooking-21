@@ -45,7 +45,7 @@
     xhr.addEventListener(`timeout`, () => {
       onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
     });
-    xhr.timeout = 5000;
+    xhr.timeout = window.download.TIMEOUT;
     xhr.open(`POST`, URL);
     xhr.send(new FormData(window.form.adForm));
 
