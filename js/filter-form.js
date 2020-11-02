@@ -14,6 +14,7 @@
   const washer = filterForm.querySelector(`#filter-washer`);
   const elevator = filterForm.querySelector(`#filter-elevator`);
   const conditioner = filterForm.querySelector(`#filter-conditioner`);
+  let lastTimeout;
   const filters = [
     {
       name: `type`,
@@ -98,7 +99,7 @@
       return true;
     });
   };
-  const onFilterChange = () => {
+  const updateAdverts = ()=>{
     checkSelected(filters);
     let selectedFilters = filters.filter((filter) => {
       return filter.selected;
@@ -110,6 +111,13 @@
     window.form.deletePinsAndCard();
     window.map.renderPinsList(adverts);
     window.filterForm.advertisements = adverts;
+  };
+  const onFilterChange = () => {
+    if (lastTimeout) {
+      clearTimeout(lastTimeout);
+    }
+    lastTimeout = setTimeout(updateAdverts, 500);
+
   };
   filterForm.addEventListener(`change`, onFilterChange);
 
