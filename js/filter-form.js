@@ -71,35 +71,31 @@
       return feature.checked;
     });
   };
-  const filterByFeatures = (features, advValue, counter)=>{
+  const filterByFeatures = (features, advValue)=>{
     let chosenFeatures = getCheckedFeatures(features);
     let containedFeatures = chosenFeatures.filter((feature)=>{
       return advValue.includes(feature.value);
     });
-    if (containedFeatures.length === chosenFeatures.length) {
-      counter++;
-    }
-    return counter;
+    return containedFeatures.length === chosenFeatures.length;
   };
   const getNewAdverts = (adverts, selectedFilters) => {
     return adverts.filter((item) => {
-      let counter = 0;
       for (let i = 0; i < selectedFilters.length; i++) {
         let filter = selectedFilters[i];
+        let isMatchFilter;
         let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
         switch (filter.name) {
           case (`features`):
-            counter = filterByFeatures(filter, advValue, counter);
+            isMatchFilter = filterByFeatures(filter, advValue);
             break;
           default:
-            let filterValue = filter.node.value;
-            if (filterValue !== advValue.toString()) {
-              break;
-            }
-            counter++;
+            isMatchFilter = filter.node.value === advValue.toString();
+        }
+        if (!isMatchFilter) {
+          return false;
         }
       }
-      return counter === selectedFilters.length;
+      return true;
     });
   };
   const onFilterChange = () => {
