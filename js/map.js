@@ -4,6 +4,7 @@
   const map = window.data.map;
   const pinsContainer = map.querySelector(`.map__pins`);
 
+
   const renderPinsList = (advertisements) => {
     const fragment = document.createDocumentFragment();
     let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
@@ -22,6 +23,7 @@
   };
 
   const onSmallPinActivated = (evt) => {
+    let indexAdv;
     if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
       return;
     }
@@ -32,9 +34,16 @@
     if (mapCard) {
       mapCard.remove();
     }
-    let indexAdv = evt.target.parentNode.dataset.id;
+    let pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    pins.forEach((pin)=>{
+      pin.classList.remove(`map__pin--active`);
+    });
     if (evt.target.dataset.id) {
       indexAdv = evt.target.dataset.id;
+      evt.target.classList.add(`map__pin--active`);
+    } else {
+      indexAdv = evt.target.parentNode.dataset.id;
+      evt.target.parentNode.classList.add(`map__pin--active`);
     }
     let adv = window.download.advertisements;
     if (window.filterForm.advertisements) {
@@ -54,7 +63,7 @@
     renderPinsList,
     renderCard,
     pinsContainer,
-    onSmallPinActivated,
+    onSmallPinActivated
   };
 
 })();
