@@ -2,6 +2,7 @@
 (() => {
   const MIN_PRICE = 10000;
   const MAX_PRICE = 50000;
+  const FILTER_DELAY = 500;
   const filterForm = window.data.map.querySelector(`.map__filters`);
   const selects = filterForm.querySelectorAll(`select`);
   const housingType = filterForm.querySelector(`#housing-type`);
@@ -116,7 +117,7 @@
     if (lastTimeout) {
       clearTimeout(lastTimeout);
     }
-    lastTimeout = setTimeout(updateAdverts, 500);
+    lastTimeout = setTimeout(updateAdverts, FILTER_DELAY);
 
   };
   filterForm.addEventListener(`change`, onFilterChange);
