@@ -8,7 +8,12 @@ const renderPinsList = (advertisements) => {
   const fragment = document.createDocumentFragment();
   let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
   for (let i = 0; i < count; i++) {
-    let pin = window.pin.get(advertisements[i], i);
+    let pin;
+    try {
+      pin = window.pin.get(advertisements[i], i);
+    } catch (e) {
+      continue;
+    }
     fragment.appendChild(pin);
   }
   pinsContainer.appendChild(fragment);
