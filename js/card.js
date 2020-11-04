@@ -53,7 +53,11 @@ const get = (advertisement) => {
   newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
   newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
-  newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
+  try {
+    newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
+  } catch (e) {
+    newCard.querySelector(`.popup__avatar`).remove();
+  }
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   return newCard;

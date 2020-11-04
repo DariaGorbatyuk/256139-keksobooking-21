@@ -7,8 +7,16 @@ const get = (advertisement, i) => {
   const pinImg = newPin.querySelector(`img`);
   newPin.style = `left: ${advertisement.location.x - PIN_WIDTH / 2}px; top: ${advertisement.location.y - PIN_HEIGHT}px`;
   newPin.dataset.id = i;
-  pinImg.src = advertisement.author.avatar;
-  pinImg.alt = advertisement.offer.title;
+  try {
+    pinImg.src = advertisement.author.avatar;
+  } catch (e) {
+    pinImg.remove();
+  }
+  try {
+    pinImg.alt = advertisement.offer.title;
+  } catch (e) {
+    return undefined;
+  }
   return newPin;
 };
 window.pin = {
