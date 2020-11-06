@@ -80,7 +80,7 @@ window.api = {
 /*! runtime requirements:  */
 
 const TIMEOUT = 5000;
-/* const LINK = `https://21.javascript.pages.academy/keksobooking/data`;
+const LINK = `https://21.javascript.pages.academy/keksobooking/data`;
 const xhr = new XMLHttpRequest();
 xhr.responseType = `json`;
 
@@ -102,49 +102,9 @@ xhr.addEventListener(`error`, () => {
 xhr.addEventListener(`timeout`, () => {
   onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
 });
-xhr.timeout = TIMEOUT;*/
+xhr.timeout = TIMEOUT;
 window.download = {
-  advertisements: [
-    {
-      "author": {
-        "avatar": `img/avatars/user03.png`
-      },
-      "location": {
-        "x": 744,
-        "y": 534
-      }
-    },
-    {
-      "author": {
-        "avatar": `img/avatars/user05.png`
-      },
-      "offer": {
-        "title": `Милейший чердачок`,
-        "address": `102-0094 Tōkyō-to, Chiyoda-ku, Kioichō, 3`,
-        "price": 10000,
-        "type": `bungalow`,
-        "rooms": 1,
-        "guests": 2,
-        "checkin": `11:00`,
-        "checkout": `10:00`,
-        "features": [
-          `wifi`,
-          `washer`,
-          `elevator`
-        ],
-        "description": ``,
-        "photos": [
-          `https://cdn.ostrovok.ru/t/x500/mec/hotels/5000000/4500000/4493700/4493658/4493658_17_b.jpg`,
-          `https://cdn.ostrovok.ru/t/x500/mec/b4/c6/b4c674087f12b74bc71fe073923ec744dfe1ed8f.jpeg`,
-          `https://cdn.ostrovok.ru/t/x500/mec/1e/e8/1ee854db105a1f6bcd19ea62e1aa294724af7885.jpeg`,
-          `https://cdn.ostrovok.ru/t/x500/mec/ca/9a/ca9ad256650553cdce9d8ff8baad93d4f17b9484.jpeg`
-        ]
-      },
-      "location": {
-        "x": 361,
-        "y": 517
-      }
-    }],
+  advertisements: undefined,
   TIMEOUT
 };
 
@@ -462,15 +422,19 @@ const getPrice = (price) => {
   }
 };
 
-const checkSelected = (keys) => {
+const checkSelected = (keys) => { // переписать через some
   keys.forEach((key) => {
+    debugger;
     if (key.name === `features`) {
-      for (let i = 0; i < key.nodes.length; i++) {
+      key.selected = key.nodes.some((feature)=>{
+        return feature.checked;
+      });
+      /* for (let i = 0; i < key.nodes.length; i++) {
         if (key.nodes[i].checked) {
           key.selected = true;
           break;
         }
-      }
+      }*/
     } else {
       key.selected = key.node.value !== `any`;
     }
