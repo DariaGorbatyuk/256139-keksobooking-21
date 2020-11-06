@@ -112,6 +112,34 @@ window.download = {
 })();
 
 (() => {
+/*!**********************!*\
+  !*** ./js/avatar.js ***!
+  \**********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+const fileChooser = document.querySelector(`.ad-form__field input[type=file]`);
+const preview = document.querySelector(`.ad-form-header__preview img`);
+
+fileChooser.addEventListener(`change`, ()=>{
+  let file = fileChooser.files[0];
+  let fileType = file.type;
+  let matches = FILE_TYPES.some(function (type) {
+    return fileType.endsWith(type);
+  });
+  if (matches) {
+    let reader = new FileReader();
+    reader.addEventListener(`load`, ()=> {
+      preview.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  }
+});
+
+})();
+
+(() => {
 /*!*******************!*\
   !*** ./js/pin.js ***!
   \*******************/
@@ -424,17 +452,10 @@ const getPrice = (price) => {
 
 const checkSelected = (keys) => { // переписать через some
   keys.forEach((key) => {
-    debugger;
     if (key.name === `features`) {
       key.selected = key.nodes.some((feature)=>{
         return feature.checked;
       });
-      /* for (let i = 0; i < key.nodes.length; i++) {
-        if (key.nodes[i].checked) {
-          key.selected = true;
-          break;
-        }
-      }*/
     } else {
       key.selected = key.node.value !== `any`;
     }
