@@ -60,6 +60,7 @@ const onPopupClose = (evt) => {
     return;
   }
   map.querySelector(`.map__card `).remove();
+  document.removeEventListener(`keydown`, onPopupClose);
 };
 
 window.map = {
