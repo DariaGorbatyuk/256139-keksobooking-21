@@ -7,6 +7,7 @@ const MIN_PRICE_FOR_NIGHT = {
   palace: `10000`
 };
 const adForm = document.querySelector(`.ad-form`);
+const filter = window.data.map.querySelector(`.map__filters`);
 const adFieldsets = adForm.querySelectorAll(`fieldset`);
 const adAddress = adForm.querySelector(`#address`);
 const adRoomNumber = adForm.querySelector(`#room_number`);
@@ -105,15 +106,13 @@ const deletePinsAndCard = () => {
 const onReset = () => {
   deletePinsAndCard();
   window.mode.setPassive();
-  window.form.adForm.reset();
+  adForm.reset();
+  filter.reset();
 };
 
 resetButton.addEventListener(`click`, onReset);
 window.form = {
-  setNewAddress,
-  verifyRoomsCapacity,
-  verifyPriceForNight,
-  setTimeInOut,
+  filter,
   adForm,
   adFieldsets,
   adAddress,
@@ -123,6 +122,10 @@ window.form = {
   adPriceForNight,
   timeIn,
   timeOut,
+  setNewAddress,
+  verifyRoomsCapacity,
+  verifyPriceForNight,
+  setTimeInOut,
   onChangeAdRoomCapacity,
   onChangeAdTypeOfHousing,
   onTimeChange,
