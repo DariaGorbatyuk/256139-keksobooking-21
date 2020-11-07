@@ -23,7 +23,7 @@ const setPassive = () => {
   window.form.setNewAddress(true);
   mainPin.addEventListener(`click`, onMainPinActive);
   mainPin.addEventListener(`keydown`, onMainPinActive);
-  mainPin.addEventListener(`mousedown`, onMainPinMouseDown);
+  mainPin.removeEventListener(`mousedown`, onMainPinMouseDown);
 };
 
 const setActive = () => {
@@ -36,6 +36,7 @@ const setActive = () => {
   window.form.adAddress.readOnly = true;
   window.form.verifyRoomsCapacity();
   window.form.verifyPriceForNight();
+  mainPin.addEventListener(`mousedown`, onMainPinMouseDown);
   pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated);
   pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated);
   window.form.adTypeOfHousing.addEventListener(`change`, window.form.onChangeAdTypeOfHousing);
