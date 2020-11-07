@@ -112,34 +112,6 @@ window.download = {
 })();
 
 (() => {
-/*!**********************!*\
-  !*** ./js/avatar.js ***!
-  \**********************/
-/*! unknown exports (runtime-defined) */
-/*! runtime requirements:  */
-
-const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-const fileChooser = document.querySelector(`.ad-form__field input[type=file]`);
-const preview = document.querySelector(`.ad-form-header__preview img`);
-
-fileChooser.addEventListener(`change`, ()=>{
-  let file = fileChooser.files[0];
-  let fileType = file.type;
-  let matches = FILE_TYPES.some(function (type) {
-    return fileType.endsWith(type);
-  });
-  if (matches) {
-    let reader = new FileReader();
-    reader.addEventListener(`load`, ()=> {
-      preview.src = reader.result;
-    });
-    reader.readAsDataURL(file);
-  }
-});
-
-})();
-
-(() => {
 /*!*******************!*\
   !*** ./js/pin.js ***!
   \*******************/
@@ -387,6 +359,52 @@ window.form = {
   getCoords,
   deletePinsAndCard
 };
+
+})();
+
+(() => {
+/*!***********************!*\
+  !*** ./js/preview.js ***!
+  \***********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+const fileChooserAvatar = window.form.adForm.querySelector(`.ad-form__field input[type=file]`);
+const previewAvatar = window.form.adForm.querySelector(`.ad-form-header__preview img`);
+const fileChooserAdverb = window.form.adForm.querySelector(`.ad-form__upload input[type=file]`);
+const previewAdverb = window.form.adForm.querySelector(`.ad-form__photo`);
+
+const onLoadImg = (input, preview)=>{
+  debugger;
+  let file = input.files[0];
+  let fileType = file.type;
+  let matches = FILE_TYPES.some(function (type) {
+    return fileType.endsWith(type);
+  });
+  if (!matches) {
+    return;
+  }
+  let reader = new FileReader();
+  reader.addEventListener(`load`, ()=> {
+    if (preview.src) {
+      preview.src = reader.result;
+    } else {
+      let img = preview.querySelector(`img`);
+      if (img) {
+        img.remove();
+      }
+      preview.style = `display: flex; align-items: center; justify-content: center;`;
+      img = document.createElement(`img`);
+      img.src = reader.result;
+      preview.appendChild(img);
+    }
+  });
+  reader.readAsDataURL(file);
+
+};
+fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, previewAvatar));
+fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, previewAdverb));
 
 })();
 
