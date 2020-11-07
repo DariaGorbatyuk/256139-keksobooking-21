@@ -15,7 +15,7 @@ const get = (advertisement, i) => {
   try {
     pinImg.alt = advertisement.offer.title;
   } catch (e) {
-    return undefined;
+    return null;
   }
   return newPin;
 };

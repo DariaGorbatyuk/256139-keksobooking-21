@@ -5,6 +5,7 @@ const pinsContainer = map.querySelector(`.map__pins`);
 
 
 const renderPinsList = (advertisements) => {
+  debugger;
   const fragment = document.createDocumentFragment();
   let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
   for (let i = 0; i < count; i++) {
@@ -12,7 +13,7 @@ const renderPinsList = (advertisements) => {
     try {
       fragment.appendChild(pin);
     } catch (e) {
-      pin = ``;
+      pin = null;
     }
   }
   pinsContainer.appendChild(fragment);
