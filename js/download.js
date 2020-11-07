@@ -24,7 +24,7 @@ xhr.addEventListener(`timeout`, () => {
 });
 xhr.timeout = TIMEOUT;
 window.download = {
-  advertisements: undefined,
+  advertisements: [],
   TIMEOUT
 };
 
