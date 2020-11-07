@@ -1,5 +1,4 @@
 'use strict';
-const INDEX_NAME_FEATURE = 31;
 const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
@@ -29,8 +28,7 @@ const fillFeatures = (advertisement, newCard) => {
   for (let i = 0; i < features.length; i++) {
     let j = res.length;
     for (j; j < advertisement.offer.features.length; j++) {
-      let ind = features[i].className.indexOf(advertisement.offer.features[j]);
-      if (ind === INDEX_NAME_FEATURE) {
+      if (features[i].className.endsWith(`--${advertisement.offer.features[j]}`)) {
         res.push(features[i]);
         break;
       }

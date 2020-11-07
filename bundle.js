@@ -176,16 +176,21 @@ const fillPhotos = (advertisement, newCard) => {
 };
 
 const fillFeatures = (advertisement, newCard) => {
+  debugger;
   const features = newCard.querySelectorAll(`.popup__feature`);
   let res = [];
   for (let i = 0; i < features.length; i++) {
     let j = res.length;
     for (j; j < advertisement.offer.features.length; j++) {
-      let ind = features[i].className.indexOf(advertisement.offer.features[j]);
-      if (ind === INDEX_NAME_FEATURE) {
+      if (features[i].className.endsWith(`--${advertisement.offer.features[j]}`)) {
         res.push(features[i]);
         break;
       }
+      /* let ind = features[i].className.indexOf(advertisement.offer.features[j]);
+      if (ind === INDEX_NAME_FEATURE) {
+        res.push(features[i]);
+        break;
+      }*/
     }
   }
   features.forEach((x)=> {
@@ -376,7 +381,6 @@ const fileChooserAdverb = window.form.adForm.querySelector(`.ad-form__upload inp
 const previewAdverb = window.form.adForm.querySelector(`.ad-form__photo`);
 
 const onLoadImg = (input, preview)=>{
-  debugger;
   let file = input.files[0];
   let fileType = file.type;
   let matches = FILE_TYPES.some(function (type) {
