@@ -730,7 +730,7 @@ setPassive();
 /*! runtime requirements:  */
 
 const main = document.querySelector(`main`);
-const LINK = `https://21.javascript.pages.academy/keksobooking`;
+const LINK = ``;
 let removeTarget;
 
 const onRemoveMessage = (target, evt) => {
