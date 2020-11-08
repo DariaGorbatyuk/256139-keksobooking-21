@@ -3,6 +3,7 @@
 const pinsContainer = window.map.pinsContainer;
 const map = window.data.map;
 const mainPin = window.data.mainPin;
+const mainPinAllHeight = mainPin.offsetHeight + window.data.MAIN_PIN_ARROW;
 const mapWidth = map.offsetWidth;
 const mapHeight = map.offsetHeight;
 let isActive;
@@ -47,16 +48,14 @@ const setActive = () => {
 };
 
 const onMainPinMouseDown = (evt) => {
-  startCoords = getCoords(evt);
-  window.map.pinsContainer.addEventListener(`mousemove`, onMouseMove);
-  window.map.pinsContainer.addEventListener(`mouseup`, onMouseUp);
-};
-const getCoords = (evt) => {
-  return {
+  startCoords = {
     x: evt.clientX,
     y: evt.clientY
   };
+  window.map.pinsContainer.addEventListener(`mousemove`, onMouseMove);
+  window.map.pinsContainer.addEventListener(`mouseup`, onMouseUp);
 };
+
 const onMouseMove = (moveEvt) => {
   moveEvt.preventDefault();
 
@@ -69,8 +68,40 @@ const onMouseMove = (moveEvt) => {
     x: moveEvt.clientX,
     y: moveEvt.clientY
   };
-  mainPin.style.top = `${mainPin.offsetTop - shift.y}px`;
-  mainPin.style.left = `${mainPin.offsetLeft - shift.x}px`;
+  let arrowShift = checkCoordsLimits(shift);
+  mainPin.style.top = `${mainPin.offsetTop - arrowShift.y}px`;
+  mainPin.style.left = `${mainPin.offsetLeft - arrowShift.x}px`;
+};
+const checkCoordsLimits = (shift)=>{
+  const CoordLimits = {
+    minY: 130,
+    maxY: 630,
+    minX: 0,
+    maxX: window.data.map.offsetWidth
+  };
+  let mainPinStartArrowCoords = {
+    y: mainPin.offsetTop + mainPinAllHeight,
+    x: mainPin.offsetLeft + mainPin.offsetWidth / 2
+  };
+  let moveToCoords = {
+    x: mainPinStartArrowCoords.x - shift.x,
+    y: mainPinStartArrowCoords.y - shift.y
+  };
+  if (moveToCoords.y < CoordLimits.minY) {
+    moveToCoords.y = CoordLimits.minY;
+  } else if (moveToCoords.y > CoordLimits.maxY) {
+    moveToCoords.y = CoordLimits.maxY;
+  }
+  if (moveToCoords.x < CoordLimits.minX) {
+    moveToCoords.x = CoordLimits.minX;
+  } else if (moveToCoords.x > CoordLimits.maxX) {
+    moveToCoords.x = CoordLimits.maxX;
+  }
+
+  return {
+    x: mainPinStartArrowCoords.x - moveToCoords.x,
+    y: mainPinStartArrowCoords.y - moveToCoords.y
+  };
 };
 const onMouseUp = (upEvt) => {
   upEvt.preventDefault();

@@ -10,6 +10,7 @@
 const LEFT_MOUSE_BUTTON = 0;
 const BUTTON_ENTER = `Enter`;
 const BUTTON_ESCAPE = `Escape`;
+const MAIN_PIN_ARROW = 18;
 const map = document.querySelector(`.map`);
 const mainPin = map.querySelector(`.map__pin--main`);
 
@@ -18,7 +19,8 @@ window.data = {
   mainPin,
   LEFT_MOUSE_BUTTON,
   BUTTON_ENTER,
-  BUTTON_ESCAPE
+  BUTTON_ESCAPE,
+  MAIN_PIN_ARROW
 };
 
 })();
@@ -226,7 +228,6 @@ window.card = {
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements:  */
 
-const MAIN_PIN_ARROW = 18;
 const MIN_PRICE_FOR_NIGHT = {
   bungalow: `0`,
   flat: `1000`,
@@ -260,38 +261,15 @@ const setNewAddress = (isFirstTime) => {
   const mapCoords = getCoords(window.data.map);
   let coordsMainPin = getCoords(window.data.mainPin);
   let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
-  let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
+  let y = Math.floor(coordsMainPin.top + mainPinHeight + window.data.MAIN_PIN_ARROW);
   let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);
-  let coords = checkLimits(x, y);
-  adAddress.value = `${coords.x}, ${coords.y}`;
+  adAddress.value = `${x}, ${y}`;
   if (isFirstTime) {
     y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
-    coords = checkLimits(x, y);
-    adAddress.value = `${coords.x}, ${coords.y}`;
+    adAddress.value = `${x}, ${y}`;
   }
 };
-const checkLimits = (x, y) => {
-  const limits = {
-    minYCoord: 130,
-    maxYCoord: 630,
-    minXCoord: 0,
-    maxXCoord: window.data.map.offsetWidth
-  };
-  if (y < limits.minYCoord) {
-    y = limits.minYCoord;
-  } else if (y > limits.maxYCoord) {
-    y = limits.maxYCoord;
-  }
-  if (x < limits.minXCoord) {
-    x = limits.minXCoord;
-  } else if (x > limits.maxXCoord) {
-    x = limits.maxXCoord;
-  }
-  return {
-    x,
-    y
-  };
-};
+
 const verifyRoomsCapacity = () => {
   if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
     adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
@@ -632,6 +610,7 @@ window.map = {
 const pinsContainer = window.map.pinsContainer;
 const map = window.data.map;
 const mainPin = window.data.mainPin;
+const mainPinAllHeight = mainPin.offsetHeight + window.data.MAIN_PIN_ARROW;
 const mapWidth = map.offsetWidth;
 const mapHeight = map.offsetHeight;
 let isActive;
@@ -676,16 +655,14 @@ const setActive = () => {
 };
 
 const onMainPinMouseDown = (evt) => {
-  startCoords = getCoords(evt);
-  window.map.pinsContainer.addEventListener(`mousemove`, onMouseMove);
-  window.map.pinsContainer.addEventListener(`mouseup`, onMouseUp);
-};
-const getCoords = (evt) => {
-  return {
+  startCoords = {
     x: evt.clientX,
     y: evt.clientY
   };
+  window.map.pinsContainer.addEventListener(`mousemove`, onMouseMove);
+  window.map.pinsContainer.addEventListener(`mouseup`, onMouseUp);
 };
+
 const onMouseMove = (moveEvt) => {
   moveEvt.preventDefault();
 
@@ -698,8 +675,40 @@ const onMouseMove = (moveEvt) => {
     x: moveEvt.clientX,
     y: moveEvt.clientY
   };
-  mainPin.style.top = `${mainPin.offsetTop - shift.y}px`;
-  mainPin.style.left = `${mainPin.offsetLeft - shift.x}px`;
+  let arrowShift = checkCoordsLimits(shift);
+  mainPin.style.top = `${mainPin.offsetTop - arrowShift.y}px`;
+  mainPin.style.left = `${mainPin.offsetLeft - arrowShift.x}px`;
+};
+const checkCoordsLimits = (shift)=>{
+  const CoordLimits = {
+    minY: 130,
+    maxY: 630,
+    minX: 0,
+    maxX: window.data.map.offsetWidth
+  };
+  let mainPinStartArrowCoords = {
+    y: mainPin.offsetTop + mainPinAllHeight,
+    x: mainPin.offsetLeft + mainPin.offsetWidth / 2
+  };
+  let moveToCoords = {
+    x: mainPinStartArrowCoords.x - shift.x,
+    y: mainPinStartArrowCoords.y - shift.y
+  };
+  if (moveToCoords.y < CoordLimits.minY) {
+    moveToCoords.y = CoordLimits.minY;
+  } else if (moveToCoords.y > CoordLimits.maxY) {
+    moveToCoords.y = CoordLimits.maxY;
+  }
+  if (moveToCoords.x < CoordLimits.minX) {
+    moveToCoords.x = CoordLimits.minX;
+  } else if (moveToCoords.x > CoordLimits.maxX) {
+    moveToCoords.x = CoordLimits.maxX;
+  }
+
+  return {
+    x: mainPinStartArrowCoords.x - moveToCoords.x,
+    y: mainPinStartArrowCoords.y - moveToCoords.y
+  };
 };
 const onMouseUp = (upEvt) => {
   upEvt.preventDefault();
