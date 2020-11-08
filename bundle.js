@@ -178,7 +178,6 @@ const fillPhotos = (advertisement, newCard) => {
 
 const fillFeatures = (advertisement, newCard) => {
   const features = newCard.querySelectorAll(`.popup__feature`);
-  debugger;
   for (let i = 0; i < features.length; i++) {
     let res = advertisement.offer.features.some((chosenItem)=>{
       return features[i].className.endsWith(`--${chosenItem}`);
@@ -186,29 +185,7 @@ const fillFeatures = (advertisement, newCard) => {
     if (!res) {
       features[i].remove();
     }
-    /* for (j; j < advertisement.offer.features.length; j++) {
-      if (features[i].className.endsWith(`--${advertisement.offer.features[j]}`)) {
-        res.push(features[i]);
-        break;
-      }
-    }*/
   }
-
-  /* let res = [];
-  for (let i = 0; i < features.length; i++) {
-    let j = res.length;
-    for (j; j < advertisement.offer.features.length; j++) {
-      if (features[i].className.endsWith(`--${advertisement.offer.features[j]}`)) {
-        res.push(features[i]);
-        break;
-      }
-    }
-  }
-  features.forEach((x)=> {
-    if (!res.includes(x)) {
-      x.remove();
-    }
-  });*/
 };
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
@@ -390,6 +367,7 @@ const onLoadImg = (input, preview)=>{
       preview.style = `display: flex; align-items: center; justify-content: center;`;
       img = document.createElement(`img`);
       img.src = reader.result;
+      img.style = `max-width: 100%;`;
       preview.appendChild(img);
     }
   });

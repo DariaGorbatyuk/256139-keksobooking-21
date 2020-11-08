@@ -26,6 +26,7 @@ const onLoadImg = (input, preview)=>{
       preview.style = `display: flex; align-items: center; justify-content: center;`;
       img = document.createElement(`img`);
       img.src = reader.result;
+      img.style = `max-width: 100%;`;
       preview.appendChild(img);
     }
   });
