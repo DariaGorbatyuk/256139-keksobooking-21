@@ -178,7 +178,23 @@ const fillPhotos = (advertisement, newCard) => {
 
 const fillFeatures = (advertisement, newCard) => {
   const features = newCard.querySelectorAll(`.popup__feature`);
-  let res = [];
+  debugger;
+  for (let i = 0; i < features.length; i++) {
+    let res = advertisement.offer.features.some((chosenItem)=>{
+      return features[i].className.endsWith(`--${chosenItem}`);
+    });
+    if (!res) {
+      features[i].remove();
+    }
+    /* for (j; j < advertisement.offer.features.length; j++) {
+      if (features[i].className.endsWith(`--${advertisement.offer.features[j]}`)) {
+        res.push(features[i]);
+        break;
+      }
+    }*/
+  }
+
+  /* let res = [];
   for (let i = 0; i < features.length; i++) {
     let j = res.length;
     for (j; j < advertisement.offer.features.length; j++) {
@@ -192,9 +208,8 @@ const fillFeatures = (advertisement, newCard) => {
     if (!res.includes(x)) {
       x.remove();
     }
-  });
+  });*/
 };
-
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
   let newCard = cardTemplate.cloneNode(true);
