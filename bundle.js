@@ -460,24 +460,20 @@ const filterByFeatures = (features, advValue)=>{
   });
   return containedFeatures.length === chosenFeatures.length;
 };
+const checkAdvert = (advert, selectedFilters)=>{
+  return selectedFilters.every((filter)=>{
+    let advValue = filter.name === `price` ? getPrice(advert.offer[filter.name]) : advert.offer[filter.name];
+    switch (filter.name) {
+      case (`features`):
+        return filterByFeatures(filter, advValue);
+      default:
+        return filter.node.value === advValue.toString();
+    }
+  });
+};
 const getNewAdverts = (adverts, selectedFilters) => {
   return adverts.filter((item) => {
-    for (let i = 0; i < selectedFilters.length; i++) {
-      let filter = selectedFilters[i];
-      let isMatchFilter;
-      let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
-      switch (filter.name) {
-        case (`features`):
-          isMatchFilter = filterByFeatures(filter, advValue);
-          break;
-        default:
-          isMatchFilter = filter.node.value === advValue.toString();
-      }
-      if (!isMatchFilter) {
-        return false;
-      }
-    }
-    return true;
+    return checkAdvert(item, selectedFilters);
   });
 };
 const updateAdverts = ()=>{
