@@ -290,9 +290,13 @@ const deletePinsAndCard = () => {
 };
 const onReset = () => {
   deletePinsAndCard();
-  window.mode.setPassive();
   adForm.reset();
   filter.reset();
+  window.mode.setPassive();
+  window.preview.previewAvatar.src = `img/muffin-grey.svg`;
+  if (window.preview.previewAdverb.firstChild) {
+    window.preview.previewAdverb.firstChild.remove();
+  }
 };
 
 resetButton.addEventListener(`click`, onReset);
@@ -364,6 +368,11 @@ const onLoadImg = (input, preview)=>{
 };
 fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, previewAvatar));
 fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, previewAdverb));
+
+window.preview = {
+  previewAvatar,
+  previewAdverb
+};
 
 })();
 

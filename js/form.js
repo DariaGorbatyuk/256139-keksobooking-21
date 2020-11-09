@@ -81,9 +81,13 @@ const deletePinsAndCard = () => {
 };
 const onReset = () => {
   deletePinsAndCard();
-  window.mode.setPassive();
   adForm.reset();
   filter.reset();
+  window.mode.setPassive();
+  window.preview.previewAvatar.src = `img/muffin-grey.svg`;
+  if (window.preview.previewAdverb.firstChild) {
+    window.preview.previewAdverb.firstChild.remove();
+  }
 };
 
 resetButton.addEventListener(`click`, onReset);

@@ -35,3 +35,8 @@ const onLoadImg = (input, preview)=>{
 };
 fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, previewAvatar));
 fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, previewAdverb));
+
+window.preview = {
+  previewAvatar,
+  previewAdverb
+};
