@@ -22,7 +22,7 @@ const setPassive = () => {
   setStateForTags(window.filterForm.selects, true);
   mainPin.style = `left: ${(mapWidth - mainPin.offsetWidth) / 2}px; top: ${mapHeight / 2}px;`;
   window.form.setNewAddress(true);
-  mainPin.addEventListener(`click`, onMainPinActive);
+  mainPin.addEventListener(`mousedown`, onMainPinActive);
   mainPin.addEventListener(`keydown`, onMainPinActive);
   mainPin.removeEventListener(`mousedown`, onMainPinMouseDown);
 };
@@ -117,7 +117,7 @@ const onMainPinActive = (evt) => {
     setActive();
   }
   mainPin.removeEventListener(`keydown`, onMainPinActive);
-  mainPin.removeEventListener(`click`, onMainPinActive);
+  mainPin.removeEventListener(`mousedown`, onMainPinActive);
 };
 
 window.mode = {
