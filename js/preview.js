@@ -8,7 +8,7 @@ const previewAdverb = window.form.add.querySelector(`.ad-form__photo`);
 const onLoadImg = (input, preview)=>{
   let file = input.files[0];
   let fileType = file.type;
-  let matches = FILE_TYPES.some(function (type) {
+  let matches = FILE_TYPES.some((type)=> {
     return fileType.endsWith(type);
   });
   if (!matches) {
