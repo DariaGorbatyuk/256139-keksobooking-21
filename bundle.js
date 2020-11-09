@@ -214,17 +214,17 @@ const MIN_PRICE_FOR_NIGHT = {
   house: `5000`,
   palace: `10000`
 };
-const adForm = document.querySelector(`.ad-form`);
+const add = document.querySelector(`.ad-form`);
 const filter = window.data.map.querySelector(`.map__filters`);
-const adFieldsets = adForm.querySelectorAll(`fieldset`);
-const adAddress = adForm.querySelector(`#address`);
-const adRoomNumber = adForm.querySelector(`#room_number`);
-const adRoomCapacity = adForm.querySelector(`#capacity`);
-const adTypeOfHousing = adForm.querySelector(`#type`);
-const adPriceForNight = adForm.querySelector(`#price`);
-const timeIn = adForm.querySelector(`#timein`);
-const timeOut = adForm.querySelector(`#timeout`);
-const resetButton = adForm.querySelector(`.ad-form__reset`);
+const adFieldsets = add.querySelectorAll(`fieldset`);
+const adAddress = add.querySelector(`#address`);
+const adRoomNumber = add.querySelector(`#room_number`);
+const adRoomCapacity = add.querySelector(`#capacity`);
+const adTypeOfHousing = add.querySelector(`#type`);
+const adPriceForNight = add.querySelector(`#price`);
+const timeIn = add.querySelector(`#timein`);
+const timeOut = add.querySelector(`#timeout`);
+const resetButton = add.querySelector(`.ad-form__reset`);
 const mainPinWidth = window.data.mainPin.offsetWidth;
 const mainPinHeight = window.data.mainPin.offsetHeight;
 
@@ -290,7 +290,7 @@ const deletePinsAndCard = () => {
 };
 const onReset = () => {
   deletePinsAndCard();
-  adForm.reset();
+  add.reset();
   filter.reset();
   window.mode.setPassive();
   window.preview.previewAvatar.src = `img/muffin-grey.svg`;
@@ -302,7 +302,7 @@ const onReset = () => {
 resetButton.addEventListener(`click`, onReset);
 window.form = {
   filter,
-  adForm,
+  add,
   adFieldsets,
   adAddress,
   adRoomNumber,
@@ -333,10 +333,10 @@ window.form = {
 /*! runtime requirements:  */
 
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
-const fileChooserAvatar = window.form.adForm.querySelector(`.ad-form__field input[type=file]`);
-const previewAvatar = window.form.adForm.querySelector(`.ad-form-header__preview img`);
-const fileChooserAdverb = window.form.adForm.querySelector(`.ad-form__upload input[type=file]`);
-const previewAdverb = window.form.adForm.querySelector(`.ad-form__photo`);
+const fileChooserAvatar = window.form.add.querySelector(`.ad-form__field input[type=file]`);
+const previewAvatar = window.form.add.querySelector(`.ad-form-header__preview img`);
+const fileChooserAdverb = window.form.add.querySelector(`.ad-form__upload input[type=file]`);
+const previewAdverb = window.form.add.querySelector(`.ad-form__photo`);
 
 const onLoadImg = (input, preview)=>{
   let file = input.files[0];
@@ -616,7 +616,7 @@ const setStateForTags = (tags, state) => {
 const setPassive = () => {
   isActive = false;
   window.data.map.classList.add(`map--faded`);
-  window.form.adForm.classList.add(`ad-form--disabled`);
+  window.form.add.classList.add(`ad-form--disabled`);
   setStateForTags(window.form.adFieldsets, true);
   setStateForTags(window.filterForm.selects, true);
   mainPin.style = `left: ${(mapWidth - mainPin.offsetWidth) / 2}px; top: ${mapHeight / 2}px;`;
@@ -631,7 +631,7 @@ const setActive = () => {
   setStateForTags(window.form.adFieldsets, false);
   setStateForTags(window.filterForm.selects, false);
   window.data.map.classList.remove(`map--faded`);
-  window.form.adForm.classList.remove(`ad-form--disabled`);
+  window.form.add.classList.remove(`ad-form--disabled`);
   window.map.renderPinsList(window.download.advertisements);
   window.form.adAddress.readOnly = true;
   window.form.verifyRoomsCapacity();
@@ -782,11 +782,11 @@ const onSubmit = (evt) => {
   });
   xhr.timeout = window.download.TIMEOUT;
   xhr.open(`POST`, LINK);
-  xhr.send(new FormData(window.form.adForm));
+  xhr.send(new FormData(window.form.add));
 
 };
 
-window.form.adForm.addEventListener(`submit`, onSubmit);
+window.form.add.addEventListener(`submit`, onSubmit);
 
 
 })();

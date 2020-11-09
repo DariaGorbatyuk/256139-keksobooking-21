@@ -5,17 +5,17 @@ const MIN_PRICE_FOR_NIGHT = {
   house: `5000`,
   palace: `10000`
 };
-const adForm = document.querySelector(`.ad-form`);
+const add = document.querySelector(`.ad-form`);
 const filter = window.data.map.querySelector(`.map__filters`);
-const adFieldsets = adForm.querySelectorAll(`fieldset`);
-const adAddress = adForm.querySelector(`#address`);
-const adRoomNumber = adForm.querySelector(`#room_number`);
-const adRoomCapacity = adForm.querySelector(`#capacity`);
-const adTypeOfHousing = adForm.querySelector(`#type`);
-const adPriceForNight = adForm.querySelector(`#price`);
-const timeIn = adForm.querySelector(`#timein`);
-const timeOut = adForm.querySelector(`#timeout`);
-const resetButton = adForm.querySelector(`.ad-form__reset`);
+const adFieldsets = add.querySelectorAll(`fieldset`);
+const adAddress = add.querySelector(`#address`);
+const adRoomNumber = add.querySelector(`#room_number`);
+const adRoomCapacity = add.querySelector(`#capacity`);
+const adTypeOfHousing = add.querySelector(`#type`);
+const adPriceForNight = add.querySelector(`#price`);
+const timeIn = add.querySelector(`#timein`);
+const timeOut = add.querySelector(`#timeout`);
+const resetButton = add.querySelector(`.ad-form__reset`);
 const mainPinWidth = window.data.mainPin.offsetWidth;
 const mainPinHeight = window.data.mainPin.offsetHeight;
 
@@ -81,7 +81,7 @@ const deletePinsAndCard = () => {
 };
 const onReset = () => {
   deletePinsAndCard();
-  adForm.reset();
+  add.reset();
   filter.reset();
   window.mode.setPassive();
   window.preview.previewAvatar.src = `img/muffin-grey.svg`;
@@ -93,7 +93,7 @@ const onReset = () => {
 resetButton.addEventListener(`click`, onReset);
 window.form = {
   filter,
-  adForm,
+  add,
   adFieldsets,
   adAddress,
   adRoomNumber,

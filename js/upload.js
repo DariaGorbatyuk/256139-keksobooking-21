@@ -46,9 +46,9 @@ const onSubmit = (evt) => {
   });
   xhr.timeout = window.download.TIMEOUT;
   xhr.open(`POST`, LINK);
-  xhr.send(new FormData(window.form.adForm));
+  xhr.send(new FormData(window.form.add));
 
 };
 
-window.form.adForm.addEventListener(`submit`, onSubmit);
+window.form.add.addEventListener(`submit`, onSubmit);
 

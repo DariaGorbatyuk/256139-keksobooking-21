@@ -17,7 +17,7 @@ const setStateForTags = (tags, state) => {
 const setPassive = () => {
   isActive = false;
   window.data.map.classList.add(`map--faded`);
-  window.form.adForm.classList.add(`ad-form--disabled`);
+  window.form.add.classList.add(`ad-form--disabled`);
   setStateForTags(window.form.adFieldsets, true);
   setStateForTags(window.filterForm.selects, true);
   mainPin.style = `left: ${(mapWidth - mainPin.offsetWidth) / 2}px; top: ${mapHeight / 2}px;`;
@@ -32,7 +32,7 @@ const setActive = () => {
   setStateForTags(window.form.adFieldsets, false);
   setStateForTags(window.filterForm.selects, false);
   window.data.map.classList.remove(`map--faded`);
-  window.form.adForm.classList.remove(`ad-form--disabled`);
+  window.form.add.classList.remove(`ad-form--disabled`);
   window.map.renderPinsList(window.download.advertisements);
   window.form.adAddress.readOnly = true;
   window.form.verifyRoomsCapacity();
