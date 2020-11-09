@@ -128,16 +128,8 @@ const get = (advertisement, i) => {
   const pinImg = newPin.querySelector(`img`);
   newPin.style = `left: ${advertisement.location.x - PIN_WIDTH / 2}px; top: ${advertisement.location.y - PIN_HEIGHT}px`;
   newPin.dataset.id = i;
-  try {
-    pinImg.src = advertisement.author.avatar;
-  } catch (e) {
-    pinImg.remove();
-  }
-  try {
-    pinImg.alt = advertisement.offer.title;
-  } catch (e) {
-    return null;
-  }
+  pinImg.src = advertisement.author.avatar;
+  pinImg.alt = advertisement.offer.title;
   return newPin;
 };
 window.pin = {
@@ -177,7 +169,6 @@ const fillPhotos = (advertisement, newCard) => {
 };
 
 const fillFeatures = (advertisement, newCard) => {
-  debugger;
   const features = newCard.querySelectorAll(`.popup__feature`);
   features.forEach((feature)=>{
     let res = advertisement.offer.features.some((chosenFeature)=>{
@@ -187,14 +178,6 @@ const fillFeatures = (advertisement, newCard) => {
       feature.remove();
     }
   });
-  /* for (let i = 0; i < features.length; i++) {
-    let res = advertisement.offer.features.some((chosenItem)=>{
-      return features[i].className.endsWith(`--${chosenItem}`);
-    });
-    if (!res) {
-      features[i].remove();
-    }
-  }*/
 };
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
@@ -206,11 +189,7 @@ const get = (advertisement) => {
   newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
   newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
   newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
-  try {
-    newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
-  } catch (e) {
-    newCard.querySelector(`.popup__avatar`).remove();
-  }
+  newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
   fillFeatures(advertisement, newCard);
   fillPhotos(advertisement, newCard);
   return newCard;
@@ -537,11 +516,9 @@ const renderPinsList = (advertisements) => {
   const fragment = document.createDocumentFragment();
   let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
   for (let i = 0; i < count; i++) {
-    let pin = window.pin.get(advertisements[i], i);
-    try {
+    if (advertisements[i].offer) {
+      let pin = window.pin.get(advertisements[i], i);
       fragment.appendChild(pin);
-    } catch (e) {
-      pin = null;
     }
   }
   pinsContainer.appendChild(fragment);
