@@ -35,10 +35,7 @@ const onSmallPinActivated = (evt) => {
   if (mapCard) {
     mapCard.remove();
   }
-  let pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
-  pins.forEach((pin)=>{
-    pin.classList.remove(`map__pin--active`);
-  });
+  removeClassPinActive();
   if (evt.target.dataset.id) {
     indexAdv = evt.target.dataset.id;
     evt.target.classList.add(`map__pin--active`);
@@ -58,7 +55,14 @@ const onPopupClose = (evt) => {
     return;
   }
   map.querySelector(`.map__card `).remove();
+  removeClassPinActive();
   document.removeEventListener(`keydown`, onPopupClose);
+};
+const removeClassPinActive = ()=>{
+  let pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  pins.forEach((pin)=>{
+    pin.classList.remove(`map__pin--active`);
+  });
 };
 
 window.map = {
