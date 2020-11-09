@@ -177,15 +177,24 @@ const fillPhotos = (advertisement, newCard) => {
 };
 
 const fillFeatures = (advertisement, newCard) => {
+  debugger;
   const features = newCard.querySelectorAll(`.popup__feature`);
-  for (let i = 0; i < features.length; i++) {
+  features.forEach((feature)=>{
+    let res = advertisement.offer.features.some((chosenFeature)=>{
+      return feature.className.endsWith(`--${chosenFeature}`);
+    });
+    if (!res) {
+      feature.remove();
+    }
+  });
+  /* for (let i = 0; i < features.length; i++) {
     let res = advertisement.offer.features.some((chosenItem)=>{
       return features[i].className.endsWith(`--${chosenItem}`);
     });
     if (!res) {
       features[i].remove();
     }
-  }
+  }*/
 };
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);

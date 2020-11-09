@@ -24,14 +24,14 @@ const fillPhotos = (advertisement, newCard) => {
 
 const fillFeatures = (advertisement, newCard) => {
   const features = newCard.querySelectorAll(`.popup__feature`);
-  for (let i = 0; i < features.length; i++) {
-    let res = advertisement.offer.features.some((chosenItem)=>{
-      return features[i].className.endsWith(`--${chosenItem}`);
+  features.forEach((feature)=>{
+    let res = advertisement.offer.features.some((chosenFeature)=>{
+      return feature.className.endsWith(`--${chosenFeature}`);
     });
     if (!res) {
-      features[i].remove();
+      feature.remove();
     }
-  }
+  });
 };
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
