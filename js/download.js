@@ -1,11 +1,10 @@
 'use strict';
 const TIMEOUT = 5000;
 const LINK = `https://21.javascript.pages.academy/keksobooking/data`;
-const xhr = new XMLHttpRequest();
-xhr.responseType = `json`;
 
 const onSuccess = (data) => {
   window.download.advertisements = data;
+  window.map.renderPinsList(data);
 };
 const onError = (error) => {
   let node = document.createElement(`div`);
@@ -13,18 +12,24 @@ const onError = (error) => {
   node.textContent = error;
   window.data.map.insertAdjacentElement(`afterbegin`, node);
 };
-xhr.open(`GET`, LINK);
-xhr.send();
-xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
-xhr.addEventListener(`error`, () => {
-  onError(`Запрос не может быть выполнен, ошибка соединения`);
-});
-xhr.addEventListener(`timeout`, () => {
-  onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
-});
-xhr.timeout = TIMEOUT;
+
+const getData = ()=>{
+  const xhr = new XMLHttpRequest();
+  xhr.responseType = `json`;
+  xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
+  xhr.addEventListener(`error`, () => {
+    onError(`Запрос не может быть выполнен, ошибка соединения`);
+  });
+  xhr.addEventListener(`timeout`, () => {
+    onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+  });
+  xhr.open(`GET`, LINK);
+  xhr.send();
+  xhr.timeout = TIMEOUT;
+};
+
 window.download = {
-  advertisements: [],
-  TIMEOUT
+  TIMEOUT,
+  getData
 };
 

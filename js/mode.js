@@ -33,7 +33,7 @@ const setActive = () => {
   setStateForTags(window.filterForm.selects, false);
   window.data.map.classList.remove(`map--faded`);
   window.form.add.classList.remove(`ad-form--disabled`);
-  window.map.renderPinsList(window.download.advertisements);
+  window.download.getData();
   window.form.adAddress.readOnly = true;
   window.form.verifyRoomsCapacity();
   window.form.verifyPriceForNight();
