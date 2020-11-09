@@ -2,7 +2,7 @@
 const MIN_PRICE = 10000;
 const MAX_PRICE = 50000;
 const FILTER_DELAY = 500;
-const filterForm = window.data.map.querySelector(`.map__filters`);
+const filterForm = window.form.filter;
 const selects = filterForm.querySelectorAll(`select`);
 const housingType = filterForm.querySelector(`#housing-type`);
 const housingPrice = filterForm.querySelector(`#housing-price`);
@@ -52,15 +52,12 @@ const getPrice = (price) => {
   }
 };
 
-const checkSelected = (keys) => {
+const checkSelected = (keys) => { // переписать через some
   keys.forEach((key) => {
     if (key.name === `features`) {
-      for (let i = 0; i < key.nodes.length; i++) {
-        if (key.nodes[i].checked) {
-          key.selected = true;
-          break;
-        }
-      }
+      key.selected = key.nodes.some((feature)=>{
+        return feature.checked;
+      });
     } else {
       key.selected = key.node.value !== `any`;
     }

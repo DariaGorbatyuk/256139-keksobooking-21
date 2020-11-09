@@ -1,5 +1,4 @@
 'use strict';
-const MAIN_PIN_ARROW = 18;
 const MIN_PRICE_FOR_NIGHT = {
   bungalow: `0`,
   flat: `1000`,
@@ -7,6 +6,7 @@ const MIN_PRICE_FOR_NIGHT = {
   palace: `10000`
 };
 const adForm = document.querySelector(`.ad-form`);
+const filter = window.data.map.querySelector(`.map__filters`);
 const adFieldsets = adForm.querySelectorAll(`fieldset`);
 const adAddress = adForm.querySelector(`#address`);
 const adRoomNumber = adForm.querySelector(`#room_number`);
@@ -32,38 +32,15 @@ const setNewAddress = (isFirstTime) => {
   const mapCoords = getCoords(window.data.map);
   let coordsMainPin = getCoords(window.data.mainPin);
   let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
-  let y = Math.floor(coordsMainPin.top + mainPinHeight + MAIN_PIN_ARROW);
+  let y = Math.floor(coordsMainPin.top + mainPinHeight + window.data.MAIN_PIN_ARROW);
   let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);
-  let coords = checkLimits(x, y);
-  adAddress.value = `${coords.x}, ${coords.y}`;
+  adAddress.value = `${x}, ${y}`;
   if (isFirstTime) {
     y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
-    coords = checkLimits(x, y);
-    adAddress.value = `${coords.x}, ${coords.y}`;
+    adAddress.value = `${x}, ${y}`;
   }
 };
-const checkLimits = (x, y) => {
-  const limits = {
-    minYCoord: 130,
-    maxYCoord: 630,
-    minXCoord: 0,
-    maxXCoord: window.data.map.offsetWidth
-  };
-  if (y < limits.minYCoord) {
-    y = limits.minYCoord;
-  } else if (y > limits.maxYCoord) {
-    y = limits.maxYCoord;
-  }
-  if (x < limits.minXCoord) {
-    x = limits.minXCoord;
-  } else if (x > limits.maxXCoord) {
-    x = limits.maxXCoord;
-  }
-  return {
-    x,
-    y
-  };
-};
+
 const verifyRoomsCapacity = () => {
   if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
     adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
@@ -104,16 +81,18 @@ const deletePinsAndCard = () => {
 };
 const onReset = () => {
   deletePinsAndCard();
+  adForm.reset();
+  filter.reset();
   window.mode.setPassive();
-  window.form.adForm.reset();
+  window.preview.previewAvatar.src = `img/muffin-grey.svg`;
+  if (window.preview.previewAdverb.firstChild) {
+    window.preview.previewAdverb.firstChild.remove();
+  }
 };
 
 resetButton.addEventListener(`click`, onReset);
 window.form = {
-  setNewAddress,
-  verifyRoomsCapacity,
-  verifyPriceForNight,
-  setTimeInOut,
+  filter,
   adForm,
   adFieldsets,
   adAddress,
@@ -123,6 +102,10 @@ window.form = {
   adPriceForNight,
   timeIn,
   timeOut,
+  setNewAddress,
+  verifyRoomsCapacity,
+  verifyPriceForNight,
+  setTimeInOut,
   onChangeAdRoomCapacity,
   onChangeAdTypeOfHousing,
   onTimeChange,

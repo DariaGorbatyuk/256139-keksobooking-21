@@ -1,1 +1,791 @@
-(()=>{"use strict";(()=>{const e=document.querySelector(".map"),t=e.querySelector(".map__pin--main");window.data={map:e,mainPin:t,LEFT_MOUSE_BUTTON:0,BUTTON_ENTER:"Enter",BUTTON_ESCAPE:"Escape"}})(),window.api={onLoad:(e,t,o)=>{let n;switch(e.status){case 200:case 201:t(e.response);break;case 400:n="Неверный запрос";break;case 401:n="Пользователь не авторизован";break;case 404:n="Запрашиваемый ресурс не найден";break;case 500:n="Внутренняя ошибка сервера";break;default:n="Cтатус ответа: : "+e.status+" "+e.statusText}n&&o(n)}},(()=>{const e=new XMLHttpRequest;e.responseType="json";const t=e=>{let t=document.createElement("div");t.style="z-index: 100; text-align: center; background-color: gold; position: absolute; left: 0; right: 0; top: 280px; font-size: 25px;",t.textContent=e,window.data.map.insertAdjacentElement("afterbegin",t)};e.open("GET","https://21.javascript.pages.academy/keksobooking/data"),e.send(),e.addEventListener("load",window.api.onLoad.bind(null,e,(e=>{window.download.advertisements=e}),t)),e.addEventListener("error",(()=>{t("Запрос не может быть выполнен, ошибка соединения")})),e.addEventListener("timeout",(()=>{t("Запрос не успел выполниться за "+e.timeout+"мс")})),e.timeout=5e3,window.download={advertisements:void 0,TIMEOUT:5e3}})(),window.pin={get:(e,t)=>{let o=document.querySelector("#pin").content.querySelector(".map__pin").cloneNode(!0);const n=o.querySelector("img");return o.style=`left: ${e.location.x-25}px; top: ${e.location.y-70}px`,o.dataset.id=t,n.src=e.author.avatar,n.alt=e.offer.title,o}},(()=>{const e={palace:"Дворец",flat:"Квартира",house:"Дом",bungalow:"Бунгало"};window.card={get:t=>{let o=document.querySelector("#card").content.querySelector(".popup").cloneNode(!0);return o.querySelector(".popup__title").textContent=t.offer.title,o.querySelector(".popup__text--address").textContent=t.offer.address,o.querySelector(".popup__text--price").textContent=t.offer.price+"р/ночь",o.querySelector(".popup__type").textContent=e[t.offer.type],o.querySelector(".popup__text--capacity").textContent=`${t.offer.rooms} комнаты для ${t.offer.guests} гостей`,o.querySelector(".popup__text--time").textContent=`Заезд после ${t.offer.checkin}, выезд до ${t.offer.checkout}`,o.querySelector(".popup__description").textContent=t.offer.description,o.querySelector(".popup__avatar").src=t.author.avatar,((e,t)=>{const o=t.querySelectorAll(".popup__feature");let n=[];for(let t=0;t<o.length;t++){let r=n.length;for(;r<e.offer.features.length;r++)if(31===o[t].className.indexOf(e.offer.features[r])){n.push(o[t]);break}}o.forEach((e=>{n.includes(e)||e.remove()}))})(t,o),((e,t)=>{const o=t.querySelector(".popup__photos"),n=o.querySelector(".popup__photo");0===e.offer.photos.length?n.remove():n.src=e.offer.photos[0];const r=document.createDocumentFragment();e.offer.photos.forEach((e=>{let t=n.cloneNode();t.src=e,r.appendChild(t)})),o.appendChild(r)})(t,o),o}}})(),(()=>{const e={bungalow:"0",flat:"1000",house:"5000",palace:"10000"},t=document.querySelector(".ad-form"),o=t.querySelectorAll("fieldset"),n=t.querySelector("#address"),r=t.querySelector("#room_number"),a=t.querySelector("#capacity"),d=t.querySelector("#type"),i=t.querySelector("#price"),s=t.querySelector("#timein"),l=t.querySelector("#timeout"),c=t.querySelector(".ad-form__reset"),m=window.data.mainPin.offsetWidth,u=window.data.mainPin.offsetHeight,p=e=>{let t=e.getBoundingClientRect();return{top:t.top+pageYOffset,left:t.left+pageXOffset}},w=(e,t)=>{const o={minYCoord:130,maxYCoord:630,minXCoord:0,maxXCoord:window.data.map.offsetWidth};return t<o.minYCoord?t=o.minYCoord:t>o.maxYCoord&&(t=o.maxYCoord),e<o.minXCoord?e=o.minXCoord:e>o.maxXCoord&&(e=o.maxXCoord),{x:e,y:t}},f=()=>{"0"!==a.value&&"100"===r.value||"100"!==r.value&&"0"===a.value?a.setCustomValidity("не для гостей - 100 комнат"):a.value>r.value?a.setCustomValidity(`${r.value} комната/ы — для ${r.value} или меньше гостей`):a.setCustomValidity("")},y=()=>{i.min=e[d.value],i.placeholder=e[d.value]},v=e=>{s.value=e.target.value,l.value=e.target.value},g=()=>{window.data.map.querySelectorAll(".map__pin:not(.map__pin--main)").forEach((e=>{e.remove()}));const e=window.data.map.querySelector(".map__card");e&&e.remove()},h=()=>{g(),window.mode.setPassive(),window.form.adForm.reset()};c.addEventListener("click",h),window.form={setNewAddress:e=>{const t=p(window.data.map);let o=p(window.data.mainPin),r=o.left-t.left,a=Math.floor(o.top+u+18),d=Math.floor(r+m/2),i=w(d,a);n.value=`${i.x}, ${i.y}`,e&&(a=Math.floor(o.top+u/2),i=w(d,a),n.value=`${i.x}, ${i.y}`)},verifyRoomsCapacity:f,verifyPriceForNight:y,setTimeInOut:v,adForm:t,adFieldsets:o,adAddress:n,adRoomNumber:r,adRoomCapacity:a,adTypeOfHousing:d,adPriceForNight:i,timeIn:s,timeOut:l,onChangeAdRoomCapacity:()=>{f()},onChangeAdTypeOfHousing:()=>{y()},onTimeChange:e=>{v(e)},onReset:h,getCoords:p,deletePinsAndCard:g}})(),(()=>{const e=window.data.map.querySelector(".map__filters"),t=e.querySelectorAll("select");let o;const n=[{name:"type",node:e.querySelector("#housing-type"),selected:!1},{name:"price",node:e.querySelector("#housing-price"),selected:!1},{name:"rooms",node:e.querySelector("#housing-rooms"),selected:!1},{name:"guests",node:e.querySelector("#housing-guests"),selected:!1},{name:"features",nodes:[e.querySelector("#filter-wifi"),e.querySelector("#filter-dishwasher"),e.querySelector("#filter-parking"),e.querySelector("#filter-washer"),e.querySelector("#filter-elevator"),e.querySelector("#filter-conditioner")],selected:!1}],r=(e,t)=>{let o=(e=>e.nodes.filter((e=>e.checked)))(e);return o.filter((e=>t.includes(e.value))).length===o.length},a=()=>{n.forEach((e=>{if("features"===e.name){for(let t=0;t<e.nodes.length;t++)if(e.nodes[t].checked){e.selected=!0;break}}else e.selected="any"!==e.node.value}));let e=n.filter((e=>e.selected)),t=window.download.advertisements;0!==e.length&&(t=((e,t)=>e.filter((e=>{for(let n=0;n<t.length;n++){let a,d=t[n],i="price"===d.name?(o=e.offer[d.name])<=1e4?"low":1e4<o&&o<5e4?"middle":"high":e.offer[d.name];switch(d.name){case"features":a=r(d,i);break;default:a=d.node.value===i.toString()}if(!a)return!1}var o;return!0})))(t,e)),window.form.deletePinsAndCard(),window.map.renderPinsList(t),window.filterForm.advertisements=t};e.addEventListener("change",(()=>{o&&clearTimeout(o),o=setTimeout(a,500)})),window.filterForm={selects:t}})(),(()=>{const e=window.data.map,t=e.querySelector(".map__pins"),o=t=>{t.key!==window.data.BUTTON_ESCAPE&&t.button!==window.data.LEFT_MOUSE_BUTTON||e.querySelector(".map__card ").remove()};window.map={renderPinsList:e=>{const o=document.createDocumentFragment();let n=e.length<5?e.length:5;for(let t=0;t<n;t++){let n=window.pin.get(e[t],t);o.appendChild(n)}t.appendChild(o)},renderCard:t=>{const n=window.card.get(t),r=n.querySelector(".popup__close");e.insertBefore(n,e.querySelector(".map__filters-container")),r.addEventListener("click",o),document.addEventListener("keydown",o)},pinsContainer:t,onSmallPinActivated:e=>{let o;if(e.key!==window.data.BUTTON_ENTER&&e.button!==window.data.LEFT_MOUSE_BUTTON)return;if("button"!==e.target.parentNode.type&&"button"!==e.target.type)return;const n=window.data.map.querySelector(".map__card ");n&&n.remove(),t.querySelectorAll(".map__pin:not(.map__pin--main)").forEach((e=>{e.classList.remove("map__pin--active")})),e.target.dataset.id?(o=e.target.dataset.id,e.target.classList.add("map__pin--active")):(o=e.target.parentNode.dataset.id,e.target.parentNode.classList.add("map__pin--active"));let r=window.download.advertisements;window.filterForm.advertisements&&(r=window.filterForm.advertisements),window.map.renderCard(r[o])}}})(),(()=>{const e=window.map.pinsContainer,t=window.data.map,o=window.data.mainPin,n=t.offsetWidth,r=t.offsetHeight;let a,d={x:0,y:0};const i=(e,t)=>{e.forEach((e=>{e.disabled=t}))},s=()=>{a=!1,window.data.map.classList.add("map--faded"),window.form.adForm.classList.add("ad-form--disabled"),i(window.form.adFieldsets,!0),i(window.filterForm.selects,!0),o.style=`left: ${(n-o.offsetWidth)/2}px; top: ${r/2}px;`,window.form.setNewAddress(!0),o.addEventListener("click",w),o.addEventListener("keydown",w),o.addEventListener("mousedown",c)},l=()=>{a=!0,i(window.form.adFieldsets,!1),i(window.filterForm.selects,!1),window.data.map.classList.remove("map--faded"),window.form.adForm.classList.remove("ad-form--disabled"),window.map.renderPinsList(window.download.advertisements),window.form.adAddress.readOnly=!0,window.form.verifyRoomsCapacity(),window.form.verifyPriceForNight(),e.addEventListener("click",window.map.onSmallPinActivated),e.addEventListener("keydown",window.map.onSmallPinActivated),window.form.adTypeOfHousing.addEventListener("change",window.form.onChangeAdTypeOfHousing),window.form.adRoomNumber.addEventListener("change",window.form.onChangeAdRoomCapacity),window.form.adRoomCapacity.addEventListener("change",window.form.onChangeAdRoomCapacity),window.form.timeIn.addEventListener("change",window.form.onTimeChange),window.form.timeOut.addEventListener("change",window.form.onTimeChange)},c=e=>{d=m(e),window.map.pinsContainer.addEventListener("mousemove",u),window.map.pinsContainer.addEventListener("mouseup",p)},m=e=>({x:e.clientX,y:e.clientY}),u=e=>{e.preventDefault();let t=d.x-e.clientX,n=d.y-e.clientY;d={x:e.clientX,y:e.clientY},o.style.top=o.offsetTop-n+"px",o.style.left=o.offsetLeft-t+"px"},p=e=>{e.preventDefault(),window.form.setNewAddress(!1),window.map.pinsContainer.removeEventListener("mousemove",u),window.map.pinsContainer.removeEventListener("mouseup",p)},w=e=>{e.button!==window.data.LEFT_MOUSE_BUTTON&&e.key!==window.data.BUTTON_ENTER||(a||l(),o.removeEventListener("keydown",w),o.removeEventListener("click",w))};window.mode={setActive:l,setPassive:s},s()})(),(()=>{const e=document.querySelector("main");let t;const o=(e,n)=>{n.button!==window.data.LEFT_MOUSE_BUTTON&&n.key!==window.data.BUTTON_ESCAPE||(e.remove(),document.removeEventListener("keydown",o.bind(null,t)),document.removeEventListener("click",o.bind(null,t)))},n=()=>{window.form.onReset(),(()=>{const n=document.querySelector("#success").content.querySelector(".success").cloneNode(!0);e.insertAdjacentElement("afterbegin",n),t=n,document.addEventListener("keydown",o.bind(null,t)),document.addEventListener("click",o.bind(null,t))})()},r=()=>{let n=document.querySelector("#error").content.querySelector(".error").cloneNode(!0);e.insertAdjacentElement("afterbegin",n),t=n,n.querySelector(".error__button").addEventListener("click",o.bind(null,t)),document.addEventListener("keydown",o.bind(null,t)),document.addEventListener("click",o.bind(null,t))};window.form.adForm.addEventListener("submit",(e=>{e.preventDefault();let t=new XMLHttpRequest;t.addEventListener("load",window.api.onLoad.bind(null,t,n,r)),t.addEventListener("error",(()=>{r()})),t.addEventListener("timeout",(()=>{r(t.timeout)})),t.timeout=window.download.TIMEOUT,t.open("POST","https://21.javascript.pages.academy/keksobooking"),t.send(new FormData(window.form.adForm))}))})()})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+(() => {
+/*!********************!*\
+  !*** ./js/data.js ***!
+  \********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const LEFT_MOUSE_BUTTON = 0;
+const BUTTON_ENTER = `Enter`;
+const BUTTON_ESCAPE = `Escape`;
+const MAIN_PIN_ARROW = 18;
+const map = document.querySelector(`.map`);
+const mainPin = map.querySelector(`.map__pin--main`);
+
+window.data = {
+  map,
+  mainPin,
+  LEFT_MOUSE_BUTTON,
+  BUTTON_ENTER,
+  BUTTON_ESCAPE,
+  MAIN_PIN_ARROW
+};
+
+})();
+
+(() => {
+/*!*******************!*\
+  !*** ./js/api.js ***!
+  \*******************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const Code = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  SERVER_ERROR: 500
+};
+const onLoad = (xhr, onSuccess, onError) => {
+  let error;
+  switch (xhr.status) {
+    case Code.OK:
+      onSuccess(xhr.response);
+      break;
+    case Code.CREATED:
+      onSuccess(xhr.response);
+      break;
+    case Code.BAD_REQUEST:
+      error = `Неверный запрос`;
+      break;
+    case Code.UNAUTHORIZED:
+      error = `Пользователь не авторизован`;
+      break;
+    case Code.NOT_FOUND:
+      error = `Запрашиваемый ресурс не найден`;
+      break;
+    case Code.SERVER_ERROR:
+      error = `Внутренняя ошибка сервера`;
+      break;
+    default:
+      error = `Cтатус ответа: : ` + xhr.status + ` ` + xhr.statusText;
+  }
+  if (error) {
+    onError(error);
+  }
+};
+window.api = {
+  onLoad
+};
+
+})();
+
+(() => {
+/*!************************!*\
+  !*** ./js/download.js ***!
+  \************************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const TIMEOUT = 5000;
+const LINK = `https://21.javascript.pages.academy/keksobooking/data`;
+const xhr = new XMLHttpRequest();
+xhr.responseType = `json`;
+
+const onSuccess = (data) => {
+  window.download.advertisements = data;
+};
+const onError = (error) => {
+  let node = document.createElement(`div`);
+  node.style = `z-index: 100; text-align: center; background-color: gold; position: absolute; left: 0; right: 0; top: 280px; font-size: 25px;`;
+  node.textContent = error;
+  window.data.map.insertAdjacentElement(`afterbegin`, node);
+};
+xhr.open(`GET`, LINK);
+xhr.send();
+xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
+xhr.addEventListener(`error`, () => {
+  onError(`Запрос не может быть выполнен, ошибка соединения`);
+});
+xhr.addEventListener(`timeout`, () => {
+  onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+});
+xhr.timeout = TIMEOUT;
+window.download = {
+  advertisements: [],
+  TIMEOUT
+};
+
+
+})();
+
+(() => {
+/*!*******************!*\
+  !*** ./js/pin.js ***!
+  \*******************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const get = (advertisement, i) => {
+  const PIN_WIDTH = 50;
+  const PIN_HEIGHT = 70;
+  const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+  let newPin = pinTemplate.cloneNode(true);
+  const pinImg = newPin.querySelector(`img`);
+  newPin.style = `left: ${advertisement.location.x - PIN_WIDTH / 2}px; top: ${advertisement.location.y - PIN_HEIGHT}px`;
+  newPin.dataset.id = i;
+  pinImg.src = advertisement.author.avatar;
+  pinImg.alt = advertisement.offer.title;
+  return newPin;
+};
+window.pin = {
+  get
+};
+
+})();
+
+(() => {
+/*!********************!*\
+  !*** ./js/card.js ***!
+  \********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const ApartmentsType = {
+  palace: `Дворец`,
+  flat: `Квартира`,
+  house: `Дом`,
+  bungalow: `Бунгало`
+};
+const fillPhotos = (advertisement, newCard) => {
+  const photos = newCard.querySelector(`.popup__photos`);
+  const photo = photos.querySelector(`.popup__photo`);
+  if (advertisement.offer.photos.length === 0) {
+    photo.remove();
+  } else {
+    photo.src = advertisement.offer.photos[0];
+  }
+  const fragment = document.createDocumentFragment();
+  advertisement.offer.photos.forEach((advertPhoto) => {
+    let newPhoto = photo.cloneNode();
+    newPhoto.src = advertPhoto;
+    fragment.appendChild(newPhoto);
+  });
+  photos.appendChild(fragment);
+};
+
+const fillFeatures = (advertisement, newCard) => {
+  const features = newCard.querySelectorAll(`.popup__feature`);
+  features.forEach((feature)=>{
+    let res = advertisement.offer.features.some((chosenFeature)=>{
+      return feature.className.endsWith(`--${chosenFeature}`);
+    });
+    if (!res) {
+      feature.remove();
+    }
+  });
+};
+const get = (advertisement) => {
+  const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
+  let newCard = cardTemplate.cloneNode(true);
+  newCard.querySelector(`.popup__title`).textContent = advertisement.offer.title;
+  newCard.querySelector(`.popup__text--address`).textContent = advertisement.offer.address;
+  newCard.querySelector(`.popup__text--price`).textContent = `${advertisement.offer.price}р/ночь`;
+  newCard.querySelector(`.popup__type`).textContent = ApartmentsType[advertisement.offer.type];
+  newCard.querySelector(`.popup__text--capacity`).textContent = `${advertisement.offer.rooms} комнаты для ${advertisement.offer.guests} гостей`;
+  newCard.querySelector(`.popup__text--time`).textContent = `Заезд после ${advertisement.offer.checkin}, выезд до ${advertisement.offer.checkout}`;
+  newCard.querySelector(`.popup__description`).textContent = advertisement.offer.description;
+  newCard.querySelector(`.popup__avatar`).src = advertisement.author.avatar;
+  fillFeatures(advertisement, newCard);
+  fillPhotos(advertisement, newCard);
+  return newCard;
+};
+
+window.card = {
+  get
+};
+
+})();
+
+(() => {
+/*!********************!*\
+  !*** ./js/form.js ***!
+  \********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const MIN_PRICE_FOR_NIGHT = {
+  bungalow: `0`,
+  flat: `1000`,
+  house: `5000`,
+  palace: `10000`
+};
+const adForm = document.querySelector(`.ad-form`);
+const filter = window.data.map.querySelector(`.map__filters`);
+const adFieldsets = adForm.querySelectorAll(`fieldset`);
+const adAddress = adForm.querySelector(`#address`);
+const adRoomNumber = adForm.querySelector(`#room_number`);
+const adRoomCapacity = adForm.querySelector(`#capacity`);
+const adTypeOfHousing = adForm.querySelector(`#type`);
+const adPriceForNight = adForm.querySelector(`#price`);
+const timeIn = adForm.querySelector(`#timein`);
+const timeOut = adForm.querySelector(`#timeout`);
+const resetButton = adForm.querySelector(`.ad-form__reset`);
+const mainPinWidth = window.data.mainPin.offsetWidth;
+const mainPinHeight = window.data.mainPin.offsetHeight;
+
+const getCoords = (elem) => {
+  let box = elem.getBoundingClientRect();
+
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+};
+
+const setNewAddress = (isFirstTime) => {
+  const mapCoords = getCoords(window.data.map);
+  let coordsMainPin = getCoords(window.data.mainPin);
+  let coordsMainPinLeft = coordsMainPin.left - mapCoords.left;
+  let y = Math.floor(coordsMainPin.top + mainPinHeight + window.data.MAIN_PIN_ARROW);
+  let x = Math.floor(coordsMainPinLeft + mainPinWidth / 2);
+  adAddress.value = `${x}, ${y}`;
+  if (isFirstTime) {
+    y = Math.floor(coordsMainPin.top + mainPinHeight / 2);
+    adAddress.value = `${x}, ${y}`;
+  }
+};
+
+const verifyRoomsCapacity = () => {
+  if ((adRoomCapacity.value !== `0` && adRoomNumber.value === `100`) || (adRoomNumber.value !== `100` && adRoomCapacity.value === `0`)) {
+    adRoomCapacity.setCustomValidity(`не для гостей - 100 комнат`);
+  } else if (adRoomCapacity.value > adRoomNumber.value) {
+    adRoomCapacity.setCustomValidity(`${adRoomNumber.value} комната/ы — для ${adRoomNumber.value} или меньше гостей`);
+  } else {
+    adRoomCapacity.setCustomValidity(``);
+  }
+};
+const verifyPriceForNight = () => {
+  adPriceForNight.min = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
+  adPriceForNight.placeholder = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
+};
+
+const setTimeInOut = (evt) => {
+  timeIn.value = evt.target.value;
+  timeOut.value = evt.target.value;
+};
+
+const onChangeAdRoomCapacity = () => {
+  verifyRoomsCapacity();
+};
+const onChangeAdTypeOfHousing = () => {
+  verifyPriceForNight();
+};
+const onTimeChange = (evt) => {
+  setTimeInOut(evt);
+};
+const deletePinsAndCard = () => {
+  let collection = window.data.map.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  collection.forEach((item) => {
+    item.remove();
+  });
+  const card = window.data.map.querySelector(`.map__card`);
+  if (card) {
+    card.remove();
+  }
+};
+const onReset = () => {
+  deletePinsAndCard();
+  adForm.reset();
+  filter.reset();
+  window.mode.setPassive();
+  window.preview.previewAvatar.src = `img/muffin-grey.svg`;
+  if (window.preview.previewAdverb.firstChild) {
+    window.preview.previewAdverb.firstChild.remove();
+  }
+};
+
+resetButton.addEventListener(`click`, onReset);
+window.form = {
+  filter,
+  adForm,
+  adFieldsets,
+  adAddress,
+  adRoomNumber,
+  adRoomCapacity,
+  adTypeOfHousing,
+  adPriceForNight,
+  timeIn,
+  timeOut,
+  setNewAddress,
+  verifyRoomsCapacity,
+  verifyPriceForNight,
+  setTimeInOut,
+  onChangeAdRoomCapacity,
+  onChangeAdTypeOfHousing,
+  onTimeChange,
+  onReset,
+  getCoords,
+  deletePinsAndCard
+};
+
+})();
+
+(() => {
+/*!***********************!*\
+  !*** ./js/preview.js ***!
+  \***********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
+const fileChooserAvatar = window.form.adForm.querySelector(`.ad-form__field input[type=file]`);
+const previewAvatar = window.form.adForm.querySelector(`.ad-form-header__preview img`);
+const fileChooserAdverb = window.form.adForm.querySelector(`.ad-form__upload input[type=file]`);
+const previewAdverb = window.form.adForm.querySelector(`.ad-form__photo`);
+
+const onLoadImg = (input, preview)=>{
+  let file = input.files[0];
+  let fileType = file.type;
+  let matches = FILE_TYPES.some(function (type) {
+    return fileType.endsWith(type);
+  });
+  if (!matches) {
+    return;
+  }
+  let reader = new FileReader();
+  reader.addEventListener(`load`, ()=> {
+    if (preview.src) {
+      preview.src = reader.result;
+    } else {
+      let img = preview.querySelector(`img`);
+      if (img) {
+        img.remove();
+      }
+      preview.style = `display: flex; align-items: center; justify-content: center;`;
+      img = document.createElement(`img`);
+      img.src = reader.result;
+      img.style = `max-width: 100%;`;
+      preview.appendChild(img);
+    }
+  });
+  reader.readAsDataURL(file);
+
+};
+fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, previewAvatar));
+fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, previewAdverb));
+
+window.preview = {
+  previewAvatar,
+  previewAdverb
+};
+
+})();
+
+(() => {
+/*!***************************!*\
+  !*** ./js/filter-form.js ***!
+  \***************************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const MIN_PRICE = 10000;
+const MAX_PRICE = 50000;
+const FILTER_DELAY = 500;
+const filterForm = window.form.filter;
+const selects = filterForm.querySelectorAll(`select`);
+const housingType = filterForm.querySelector(`#housing-type`);
+const housingPrice = filterForm.querySelector(`#housing-price`);
+const housingRooms = filterForm.querySelector(`#housing-rooms`);
+const housingGuests = filterForm.querySelector(`#housing-guests`);
+const wifi = filterForm.querySelector(`#filter-wifi`);
+const dishWasher = filterForm.querySelector(`#filter-dishwasher`);
+const parking = filterForm.querySelector(`#filter-parking`);
+const washer = filterForm.querySelector(`#filter-washer`);
+const elevator = filterForm.querySelector(`#filter-elevator`);
+const conditioner = filterForm.querySelector(`#filter-conditioner`);
+let lastTimeout;
+const filters = [
+  {
+    name: `type`,
+    node: housingType,
+    selected: false
+  },
+  {
+    name: `price`,
+    node: housingPrice,
+    selected: false
+  },
+  {
+    name: `rooms`,
+    node: housingRooms,
+    selected: false
+  },
+  {
+    name: `guests`,
+    node: housingGuests,
+    selected: false
+  },
+  {
+    name: `features`,
+    nodes: [wifi, dishWasher, parking, washer, elevator, conditioner],
+    selected: false
+  }
+];
+const getPrice = (price) => {
+  if (price <= MIN_PRICE) {
+    return `low`;
+  } else if (MIN_PRICE < price && price < MAX_PRICE) {
+    return `middle`;
+  } else {
+    return `high`;
+  }
+};
+
+const checkSelected = (keys) => { // переписать через some
+  keys.forEach((key) => {
+    if (key.name === `features`) {
+      key.selected = key.nodes.some((feature)=>{
+        return feature.checked;
+      });
+    } else {
+      key.selected = key.node.value !== `any`;
+    }
+  });
+};
+
+const getCheckedFeatures = (features)=>{
+  return features.nodes.filter((feature) => {
+    return feature.checked;
+  });
+};
+const filterByFeatures = (features, advValue)=>{
+  let chosenFeatures = getCheckedFeatures(features);
+  let containedFeatures = chosenFeatures.filter((feature)=>{
+    return advValue.includes(feature.value);
+  });
+  return containedFeatures.length === chosenFeatures.length;
+};
+const getNewAdverts = (adverts, selectedFilters) => {
+  return adverts.filter((item) => {
+    for (let i = 0; i < selectedFilters.length; i++) {
+      let filter = selectedFilters[i];
+      let isMatchFilter;
+      let advValue = filter.name === `price` ? getPrice(item.offer[filter.name]) : item.offer[filter.name];
+      switch (filter.name) {
+        case (`features`):
+          isMatchFilter = filterByFeatures(filter, advValue);
+          break;
+        default:
+          isMatchFilter = filter.node.value === advValue.toString();
+      }
+      if (!isMatchFilter) {
+        return false;
+      }
+    }
+    return true;
+  });
+};
+const updateAdverts = ()=>{
+  checkSelected(filters);
+  let selectedFilters = filters.filter((filter) => {
+    return filter.selected;
+  });
+  let adverts = window.download.advertisements;
+  if (selectedFilters.length !== 0) {
+    adverts = getNewAdverts(adverts, selectedFilters);
+  }
+  window.form.deletePinsAndCard();
+  window.map.renderPinsList(adverts);
+  window.filterForm.advertisements = adverts;
+};
+const onFilterChange = () => {
+  if (lastTimeout) {
+    clearTimeout(lastTimeout);
+  }
+  lastTimeout = setTimeout(updateAdverts, FILTER_DELAY);
+
+};
+filterForm.addEventListener(`change`, onFilterChange);
+
+
+window.filterForm = {
+  selects
+};
+
+})();
+
+(() => {
+/*!*******************!*\
+  !*** ./js/map.js ***!
+  \*******************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+let MAX_PIN_COUNT = 5;
+const map = window.data.map;
+const pinsContainer = map.querySelector(`.map__pins`);
+
+
+const renderPinsList = (advertisements) => {
+  const fragment = document.createDocumentFragment();
+  let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
+  for (let i = 0; i < count; i++) {
+    if (advertisements[i].offer) {
+      let pin = window.pin.get(advertisements[i], i);
+      fragment.appendChild(pin);
+    }
+  }
+  pinsContainer.appendChild(fragment);
+};
+const renderCard = (advertisement) => {
+  const newCard = window.card.get(advertisement);
+  const cardClose = newCard.querySelector(`.popup__close`);
+  map.insertBefore(newCard, map.querySelector(`.map__filters-container`));
+  cardClose.addEventListener(`click`, onPopupClose);
+  document.addEventListener(`keydown`, onPopupClose);
+};
+
+const onSmallPinActivated = (evt) => {
+  let indexAdv;
+  if (evt.key !== window.data.BUTTON_ENTER && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
+    return;
+  }
+  if (evt.target.parentNode.type !== `button` && evt.target.type !== `button`) {
+    return;
+  }
+  const mapCard = window.data.map.querySelector(`.map__card `);
+  if (mapCard) {
+    mapCard.remove();
+  }
+  let pins = pinsContainer.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+  pins.forEach((pin)=>{
+    pin.classList.remove(`map__pin--active`);
+  });
+  if (evt.target.dataset.id) {
+    indexAdv = evt.target.dataset.id;
+    evt.target.classList.add(`map__pin--active`);
+  } else {
+    indexAdv = evt.target.parentNode.dataset.id;
+    evt.target.parentNode.classList.add(`map__pin--active`);
+  }
+  let adv = window.download.advertisements;
+  if (window.filterForm.advertisements) {
+    adv = window.filterForm.advertisements;
+  }
+  window.map.renderCard(adv[indexAdv]);
+};
+
+const onPopupClose = (evt) => {
+  if (evt.key !== window.data.BUTTON_ESCAPE && evt.button !== window.data.LEFT_MOUSE_BUTTON) {
+    return;
+  }
+  map.querySelector(`.map__card `).remove();
+  document.removeEventListener(`keydown`, onPopupClose);
+};
+
+window.map = {
+  renderPinsList,
+  renderCard,
+  pinsContainer,
+  onSmallPinActivated
+};
+
+})();
+
+(() => {
+/*!********************!*\
+  !*** ./js/mode.js ***!
+  \********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+
+const pinsContainer = window.map.pinsContainer;
+const map = window.data.map;
+const mainPin = window.data.mainPin;
+const mainPinAllHeight = mainPin.offsetHeight + window.data.MAIN_PIN_ARROW;
+const mapWidth = map.offsetWidth;
+const mapHeight = map.offsetHeight;
+let isActive;
+let startCoords = {x: 0, y: 0};
+
+const setStateForTags = (tags, state) => {
+  tags.forEach((item) => {
+    item.disabled = state;
+  });
+};
+const setPassive = () => {
+  isActive = false;
+  window.data.map.classList.add(`map--faded`);
+  window.form.adForm.classList.add(`ad-form--disabled`);
+  setStateForTags(window.form.adFieldsets, true);
+  setStateForTags(window.filterForm.selects, true);
+  mainPin.style = `left: ${(mapWidth - mainPin.offsetWidth) / 2}px; top: ${mapHeight / 2}px;`;
+  window.form.setNewAddress(true);
+  mainPin.addEventListener(`click`, onMainPinActive);
+  mainPin.addEventListener(`keydown`, onMainPinActive);
+  mainPin.removeEventListener(`mousedown`, onMainPinMouseDown);
+};
+
+const setActive = () => {
+  isActive = true;
+  setStateForTags(window.form.adFieldsets, false);
+  setStateForTags(window.filterForm.selects, false);
+  window.data.map.classList.remove(`map--faded`);
+  window.form.adForm.classList.remove(`ad-form--disabled`);
+  window.map.renderPinsList(window.download.advertisements);
+  window.form.adAddress.readOnly = true;
+  window.form.verifyRoomsCapacity();
+  window.form.verifyPriceForNight();
+  mainPin.addEventListener(`mousedown`, onMainPinMouseDown);
+  pinsContainer.addEventListener(`click`, window.map.onSmallPinActivated);
+  pinsContainer.addEventListener(`keydown`, window.map.onSmallPinActivated);
+  window.form.adTypeOfHousing.addEventListener(`change`, window.form.onChangeAdTypeOfHousing);
+  window.form.adRoomNumber.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
+  window.form.adRoomCapacity.addEventListener(`change`, window.form.onChangeAdRoomCapacity);
+  window.form.timeIn.addEventListener(`change`, window.form.onTimeChange);
+  window.form.timeOut.addEventListener(`change`, window.form.onTimeChange);
+};
+
+const onMainPinMouseDown = (evt) => {
+  startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+  window.map.pinsContainer.addEventListener(`mousemove`, onMouseMove);
+  window.map.pinsContainer.addEventListener(`mouseup`, onMouseUp);
+};
+
+const onMouseMove = (moveEvt) => {
+  moveEvt.preventDefault();
+
+  let shift = {
+    x: startCoords.x - moveEvt.clientX,
+    y: startCoords.y - moveEvt.clientY
+  };
+
+  startCoords = {
+    x: moveEvt.clientX,
+    y: moveEvt.clientY
+  };
+  let arrowShift = checkCoordsLimits(shift);
+  mainPin.style.top = `${mainPin.offsetTop - arrowShift.y}px`;
+  mainPin.style.left = `${mainPin.offsetLeft - arrowShift.x}px`;
+};
+const checkCoordsLimits = (shift)=>{
+  const CoordLimits = {
+    minY: 130,
+    maxY: 630,
+    minX: 0,
+    maxX: window.data.map.offsetWidth
+  };
+  let mainPinStartArrowCoords = {
+    y: mainPin.offsetTop + mainPinAllHeight,
+    x: mainPin.offsetLeft + mainPin.offsetWidth / 2
+  };
+  let moveToCoords = {
+    x: mainPinStartArrowCoords.x - shift.x,
+    y: mainPinStartArrowCoords.y - shift.y
+  };
+  if (moveToCoords.y < CoordLimits.minY) {
+    moveToCoords.y = CoordLimits.minY;
+  } else if (moveToCoords.y > CoordLimits.maxY) {
+    moveToCoords.y = CoordLimits.maxY;
+  }
+  if (moveToCoords.x < CoordLimits.minX) {
+    moveToCoords.x = CoordLimits.minX;
+  } else if (moveToCoords.x > CoordLimits.maxX) {
+    moveToCoords.x = CoordLimits.maxX;
+  }
+
+  return {
+    x: mainPinStartArrowCoords.x - moveToCoords.x,
+    y: mainPinStartArrowCoords.y - moveToCoords.y
+  };
+};
+const onMouseUp = (upEvt) => {
+  upEvt.preventDefault();
+  window.form.setNewAddress(false);
+  window.map.pinsContainer.removeEventListener(`mousemove`, onMouseMove);
+  window.map.pinsContainer.removeEventListener(`mouseup`, onMouseUp);
+};
+const onMainPinActive = (evt) => {
+  if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ENTER) {
+    return;
+  }
+  if (!isActive) {
+    setActive();
+  }
+  mainPin.removeEventListener(`keydown`, onMainPinActive);
+  mainPin.removeEventListener(`click`, onMainPinActive);
+};
+
+window.mode = {
+  setActive,
+  setPassive
+};
+
+setPassive();
+
+})();
+
+(() => {
+/*!**********************!*\
+  !*** ./js/upload.js ***!
+  \**********************/
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements:  */
+
+const main = document.querySelector(`main`);
+const LINK = `https://21.javascript.pages.academy/keksobooking`;
+let removeTarget;
+
+const onRemoveMessage = (target, evt) => {
+  if (evt.button !== window.data.LEFT_MOUSE_BUTTON && evt.key !== window.data.BUTTON_ESCAPE) {
+    return;
+  }
+  target.remove();
+  document.removeEventListener(`keydown`, onRemoveMessage.bind(null, removeTarget));
+  document.removeEventListener(`click`, onRemoveMessage.bind(null, removeTarget));
+};
+const successMessage = () => {
+  const messageTemplate = document.querySelector(`#success`).content.querySelector(`.success`);
+  const newMessage = messageTemplate.cloneNode(true);
+  main.insertAdjacentElement(`afterbegin`, newMessage);
+  removeTarget = newMessage;
+  document.addEventListener(`keydown`, onRemoveMessage.bind(null, removeTarget));
+  document.addEventListener(`click`, onRemoveMessage.bind(null, removeTarget));
+};
+const onSuccess = () => {
+  window.form.onReset();
+  successMessage();
+};
+const onError = () => {
+
+  const errorTemplate = document.querySelector(`#error`).content.querySelector(`.error`);
+  let newError = errorTemplate.cloneNode(true);
+  main.insertAdjacentElement(`afterbegin`, newError);
+  removeTarget = newError;
+  newError.querySelector(`.error__button`).addEventListener(`click`, onRemoveMessage.bind(null, removeTarget));
+  document.addEventListener(`keydown`, onRemoveMessage.bind(null, removeTarget));
+  document.addEventListener(`click`, onRemoveMessage.bind(null, removeTarget));
+};
+
+const onSubmit = (evt) => {
+  evt.preventDefault();
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener(`load`, window.api.onLoad.bind(null, xhr, onSuccess, onError));
+  xhr.addEventListener(`error`, () => {
+    onError(`Запрос не может быть выполнен, ошибка соединения`);
+  });
+  xhr.addEventListener(`timeout`, () => {
+    onError(`Запрос не успел выполниться за ` + xhr.timeout + `мс`);
+  });
+  xhr.timeout = window.download.TIMEOUT;
+  xhr.open(`POST`, LINK);
+  xhr.send(new FormData(window.form.adForm));
+
+};
+
+window.form.adForm.addEventListener(`submit`, onSubmit);
+
+
+})();
+
+/******/ })()
+;

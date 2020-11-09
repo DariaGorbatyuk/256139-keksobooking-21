@@ -1,5 +1,4 @@
 'use strict';
-const INDEX_NAME_FEATURE = 31;
 const ApartmentsType = {
   palace: `Дворец`,
   flat: `Квартира`,
@@ -25,24 +24,15 @@ const fillPhotos = (advertisement, newCard) => {
 
 const fillFeatures = (advertisement, newCard) => {
   const features = newCard.querySelectorAll(`.popup__feature`);
-  let res = [];
-  for (let i = 0; i < features.length; i++) {
-    let j = res.length;
-    for (j; j < advertisement.offer.features.length; j++) {
-      let ind = features[i].className.indexOf(advertisement.offer.features[j]);
-      if (ind === INDEX_NAME_FEATURE) {
-        res.push(features[i]);
-        break;
-      }
-    }
-  }
-  features.forEach((x)=> {
-    if (!res.includes(x)) {
-      x.remove();
+  features.forEach((feature)=>{
+    let res = advertisement.offer.features.some((chosenFeature)=>{
+      return feature.className.endsWith(`--${chosenFeature}`);
+    });
+    if (!res) {
+      feature.remove();
     }
   });
 };
-
 const get = (advertisement) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.popup`);
   let newCard = cardTemplate.cloneNode(true);

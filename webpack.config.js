@@ -8,6 +8,7 @@ entry: [
   "./js/pin.js",
   "./js/card.js",
   "./js/form.js",
+  "./js/preview.js",
   "./js/filter-form.js",
   "./js/map.js",
   "./js/mode.js",

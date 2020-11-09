@@ -8,8 +8,10 @@ const renderPinsList = (advertisements) => {
   const fragment = document.createDocumentFragment();
   let count = advertisements.length < 5 ? advertisements.length : MAX_PIN_COUNT;
   for (let i = 0; i < count; i++) {
-    let pin = window.pin.get(advertisements[i], i);
-    fragment.appendChild(pin);
+    if (advertisements[i].offer) {
+      let pin = window.pin.get(advertisements[i], i);
+      fragment.appendChild(pin);
+    }
   }
   pinsContainer.appendChild(fragment);
 };
@@ -56,6 +58,7 @@ const onPopupClose = (evt) => {
     return;
   }
   map.querySelector(`.map__card `).remove();
+  document.removeEventListener(`keydown`, onPopupClose);
 };
 
 window.map = {
