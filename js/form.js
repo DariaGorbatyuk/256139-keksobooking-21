@@ -1,5 +1,5 @@
 'use strict';
-const MIN_PRICE_FOR_NIGHT = {
+const MinPriceForNight = {
   bungalow: `0`,
   flat: `1000`,
   house: `5000`,
@@ -51,8 +51,8 @@ const verifyRoomsCapacity = () => {
   }
 };
 const verifyPriceForNight = () => {
-  adPriceForNight.min = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
-  adPriceForNight.placeholder = MIN_PRICE_FOR_NIGHT[adTypeOfHousing.value];
+  adPriceForNight.min = MinPriceForNight[adTypeOfHousing.value];
+  adPriceForNight.placeholder = MinPriceForNight[adTypeOfHousing.value];
 };
 
 const setTimeInOut = (evt) => {
