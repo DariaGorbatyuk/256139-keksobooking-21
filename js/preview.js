@@ -1,9 +1,9 @@
 'use strict';
 const FILE_TYPES = [`gif`, `jpg`, `jpeg`, `png`];
 const fileChooserAvatar = window.form.add.querySelector(`.ad-form__field input[type=file]`);
-const previewAvatar = window.form.add.querySelector(`.ad-form-header__preview img`);
+const avatar = window.form.add.querySelector(`.ad-form-header__preview img`);
 const fileChooserAdverb = window.form.add.querySelector(`.ad-form__upload input[type=file]`);
-const previewAdverb = window.form.add.querySelector(`.ad-form__photo`);
+const adverb = window.form.add.querySelector(`.ad-form__photo`);
 
 const onLoadImg = (input, preview)=>{
   let file = input.files[0];
@@ -33,10 +33,10 @@ const onLoadImg = (input, preview)=>{
   reader.readAsDataURL(file);
 
 };
-fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, previewAvatar));
-fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, previewAdverb));
+fileChooserAvatar.addEventListener(`change`, onLoadImg.bind(null, fileChooserAvatar, avatar));
+fileChooserAdverb.addEventListener(`change`, onLoadImg.bind(null, fileChooserAdverb, adverb));
 
 window.preview = {
-  previewAvatar,
-  previewAdverb
+  avatar,
+  adverb
 };
