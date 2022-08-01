@@ -23,6 +23,6 @@
     "build": "webpack --mode development"
   },
   "engines": {
-    "node": "12.x"
+    "node": "14.x"
   }
 }
