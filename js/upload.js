@@ -1,6 +1,6 @@
 'use strict';
 const main = document.querySelector(`main`);
-const LINK = `https://21.javascript.pages.academy/keksobooking`;
+const LINK = `https://25.javascript.pages.academy/keksobooking`;
 let removeTarget;
 
 const onRemoveMessage = (target, evt) => {
