@@ -556,7 +556,7 @@ window.map = {
 /*! runtime requirements:  */
 
 const TIMEOUT = 5000;
-const LINK = `https://21.javascript.pages.academy/keksobooking/data`;
+const LINK = `https://25.javascript.pages.academy/keksobooking/data`;
 
 const onSuccess = (data) => {
   // debugger;
